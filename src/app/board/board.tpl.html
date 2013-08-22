@@ -1,0 +1,38 @@
+<div ng-controller="UsersListCtrl">
+  <ul>
+    <li ng-repeat="user in users" class="user" ng-draggable="getDragData()" >
+      <img class="avatar" src="{{user.avatar_url}}?s=30" ></img>
+      {{user.login}}
+    </li>
+  </ul>
+</div>
+
+<div ng-controller="ColumnsCtrl" >
+  <ul class="columns" >
+    <li ng-repeat="col in columns" class="column" >
+      <h1>{{col}}</h1>
+      <ul class="column-body" >
+        <li class="card"
+            ng-draggable="getDragData()"
+            ng-dropzone="getDropData()"
+            ng-repeat="issue in allIssues | filter:hasLabel(col);" \>
+          <div class="header">
+            <img class="avatar"
+                 title="Assigned to {{issue.user.login}}"
+                 src="{{issue.user.avatar_url}}?s=30"></img>
+            <span class="title" >
+              {{issue.title}}
+            </span>
+          </div>
+          <div class="milestone" ng-show="issue.milestone">{{issue.milestone.title}}</div>
+          <ul class="labels">
+            <li ng-repeat="label in issue.labels" style="background-color: #{{label.color}}">
+              {{label.name}}
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </li>
+  </ul>
+</div>

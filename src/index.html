@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="GitKan" ng-controller="AppCtrl" >
+  <head>
+    <title>GitKan</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.3.1/lodash.min.js"></script>
+
+    <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
+
+    <!--[if IE 7>
+    <link rel="stylesheet" href="assets/font-awesome-ie7.min.css />
+    <![endif]-->
+
+    <!-- compiled CSS --><% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script><% }); %>
+
+  </head>
+  <body ui-view>
+    <a href="#/board">
+      <i class="icon-home"></i>
+      Home
+    </a>
+  </body>
+</html>
