@@ -2,7 +2,6 @@ angular.module( 'GitKan', [
   'templates-app',
   'templates-common',
   'GitKan.board',
-  'GitKan.about',
   'GitKan.login',
   'GitKan.repo_list',
   'github.api',
