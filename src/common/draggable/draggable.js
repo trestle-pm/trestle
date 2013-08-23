@@ -1,6 +1,18 @@
+/**
+ Provides the basics for drag and dropping of items in an angular application.
+
+ @ngdoc module
+ @name draggable
+ */
 angular.module('draggable', [])
 
 .directive('ngDraggable', function($parse) {
+   /**
+    Directive for stuff
+
+    @ngdoc directive
+    @name ngDraggable
+    */
    return {
       link: function(scope, element, attrs, controller) {
          // Mark the item as draggable

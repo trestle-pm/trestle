@@ -1,3 +1,11 @@
+/**
+ @ngdoc overview
+ @name  octoboard.login
+
+ @description
+ stuff about login
+ */
+
 // Add our module to the namespace
 angular.module( 'GitKan.login', [
   'ui.state'

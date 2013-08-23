@@ -5,10 +5,15 @@ Build It
 --------
 
 ```bash
+# Install helpers
+gem install compass jsduck
+
 # Get the development deps
 npm install
+
 # Get the client side deps
 ./node_modules/.bin/bower install
+
 # Build the how thing
 ./node_modules/.bin/grunt
 ```

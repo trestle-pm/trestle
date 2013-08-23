@@ -30,8 +30,11 @@ angular.module('GitKan.board')
     Called when an issue starts being dragged so to set the mime-type/data for
     the drag event.  This data is used by other systems to determine if
     they can handle the event.
+
+    It is good to pass as many versions of the data as possible so that we
+    can interoperate with as many other systems as possible.
     */
-   $scope.getDragData = function(issue, $event) {
+   $scope.onIssueDragStart = function(issue, $event) {
       // Return three of the common ways to pass urls
       // Ideally, this will allow us to interoperate with other systems.
       return {
@@ -45,9 +48,15 @@ angular.module('GitKan.board')
     Called when a drag is over a column.  The goal is to check the mime-type/data
     for the drag event and return if the column can handle the data.
 
-    In this case we handle:
+    The column can handle the following URLS:
      * issue urls
      * pull urls
+
+    URLs can be stored in the drag data as any of the following types:
+    @see
+     * URL
+     * text/uri-list
+     * text/plain
     */
    $scope.canHandleDrop = function($event) {
       // See if there is a github URL

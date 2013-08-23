@@ -1,11 +1,40 @@
-angular.module('github.api', [])
+/**
+ @ngdoc overview
+ @name  github.api
 
-.service('gh', ['$http', '$rootScope', '$q', function ($http, $rootScope, $q) {
+ @description
+ Module which provides an interface for the GitHub Api.
+ */
+angular.module('github-api', [])
+
+
+/**
+ @ngdoc service
+ @name  github.api.gh
+
+ @description
+ Angular service `gh` which provides tools for accessing GitHub API's
+ */
+.service('gh', function gh($http, $rootScope, $q) {
+
    var gh_api = "https://api.github.com/",
 
        token_storage_key = 'gh-token',
        token;
 
+   /**
+    @ngdoc function
+    @name  getAccessToken
+    @methodOf github.api.gh
+
+    @description
+    Helper which will read the token from storage if they token is not
+    currently set.
+
+    @private
+
+    @returns {string} The token or falsy if not found.
+    */
    function getAccessToken() {
       // If the token is not set then try local storage
       if (!token && window.localStorage) {
@@ -20,6 +49,11 @@ angular.module('github.api', [])
       return token;
    }
 
+   /**
+    Helper which will raise an error if the GitHub token is not set.
+
+    @private
+    */
    function assert_ready() {
       // Try to get the access token
       getAccessToken();
@@ -153,6 +187,10 @@ angular.module('github.api', [])
 
    /**
     Downloads a file from Github and returns the file contents as a string.
+
+    @method getFile
+    @param owner {String} The owner of the repository to download the file from
+    @param repo  {String} The name of the repository to download the file from
     */
    this.getFile = function(owner, repo, path) {
       assert_ready();
@@ -170,4 +208,4 @@ angular.module('github.api', [])
       return d.promise;
    };
 
-}]);
+});
