@@ -7,6 +7,7 @@ module.exports = function ( grunt ) {
    grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-contrib-compass');
    grunt.loadNpmTasks('grunt-contrib-copy');
+   grunt.loadNpmTasks('grunt-contrib-connect');
    grunt.loadNpmTasks('grunt-contrib-jshint');
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-watch');
@@ -57,6 +58,17 @@ module.exports = function ( grunt ) {
          options: {
             dest: 'CHANGELOG.md',
             template: 'changelog.tpl'
+         }
+      },
+      /**
+       * Allow running the app via http:// instead file://
+       */
+      connect: {
+         app_server: {
+            options: {
+               port: 9000,
+               base: 'build'
+            }
          }
       },
 
@@ -465,7 +477,7 @@ module.exports = function ( grunt ) {
    /**
     * The default task is to build and compile.
     */
-   grunt.registerTask( 'default', [ 'build', 'compile' ] );
+   grunt.registerTask( 'default', [ 'build', 'compile', 'connect' ] );
 
    /**
     * The `build` task gets your app ready to run for development and testing.
