@@ -1,14 +1,13 @@
-<div ng-controller="UsersListCtrl">
-  <ul>
+<div class="board">
+
+  <ul ng-controller="UsersListCtrl" class="user-list" >
     <li ng-repeat="user in users" class="user" ng-draggable="getDragData()" >
       <img class="avatar" src="{{user.avatar_url}}?s=30" ></img>
       {{user.login}}
     </li>
   </ul>
-</div>
 
-<div ng-controller="ColumnsCtrl" >
-  <ul class="columns" >
+  <ul class="issue-columns" ng-controller="ColumnsCtrl">
     <li ng-repeat="col in columns" class="column"
         ng-dropzone="canHandleDrop($event)"
         handledrop="onDrop($event)" >
@@ -17,7 +16,7 @@
       <ul class="column-body" >
         <li class="card"
 
-            ng-draggable="getDragData(issue)"
+            ng-draggable="onIssueDragStart(issue, $event)"
 
             ng-repeat="issue in allIssues | filter:hasLabel(col);" \>
           <div class="header">
@@ -46,4 +45,5 @@
       </ul>
     </li>
   </ul>
+
 </div>

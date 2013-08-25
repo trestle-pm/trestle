@@ -1,6 +1,23 @@
 // Bring in the local stuff
 @import "variables";
 
+// Make sure DnD works for all elements in all supported browsers
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.card.drag-image {
+    max-width:  200px;
+    max-height: 100px;
+    overflow:   hidden;
+}
+
 // Bring in the various app tools
 @import "app/login/login";
 @import "app/board/board";

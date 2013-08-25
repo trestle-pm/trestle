@@ -35,13 +35,19 @@ angular.module('GitKan.board')
     can interoperate with as many other systems as possible.
     */
    $scope.onIssueDragStart = function(issue, $event) {
-      // Return three of the common ways to pass urls
+      // The three common ways to passing urls
       // Ideally, this will allow us to interoperate with other systems.
-      return {
+      var mime_data = {
          'URL':           issue.html_url,
          'text/uri-list': issue.html_url,
          'text/plain':    issue.html_url
       };
+
+      // Add the types to the event so that they follow through the
+      // dragenter and drop events.
+      _.map(mime_data, function(value, type) {
+         $event.dataTransfer.setData(type, value);
+      });
    };
 
    /**

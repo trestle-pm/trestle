@@ -5,7 +5,7 @@
  @description
  Module which provides an interface for the GitHub Api.
  */
-angular.module('github-api', [])
+angular.module('github.api', [])
 
 
 /**
@@ -15,12 +15,21 @@ angular.module('github-api', [])
  @description
  Angular service `gh` which provides tools for accessing GitHub API's
  */
-.service('gh', function gh($http, $rootScope, $q) {
+.service('gh', function gh($http, $interpolate, $rootScope, $q) {
 
-   var gh_api = "https://api.github.com/",
+   var
+   /**
+    @ngdoc      property
+    @name       github_url_root
+    @propertyOf github.api.gh
 
-       token_storage_key = 'gh-token',
-       token;
+    @description
+    Key to use when storing the API token in local storage.
+
+    @private
+    */
+   token_storage_key = 'gh-token',
+   token;
 
    /**
     @ngdoc function
@@ -76,26 +85,33 @@ angular.module('github-api', [])
       return lines.join('');
    }
 
-   function ghGet(apiPath, queryArgs, overrides) {
+   this._get = function(apiPath, queryArgs, options) {
       var d = $q.defer();
 
       var query_args = _.defaults({'access_token': token}, queryArgs);
 
-      var default_options = {
-         method: "GET",
-         url:    gh_api + apiPath + '?' + _.map(query_args, function(val, key) {
-            return key+'='+val;
-         }).join('&')
-      };
-
-      var p = $http(_.defaults(default_options, overrides || {}));
+      var p = $http.get(this.buildAPIUrl(apiPath, queryArgs), options);
 
       p.then(function(res) {
          d.resolve(res.data);
       }, d.reject);
 
       return d.promise;
-   }
+   };
+
+   this.buildAPIUrl = function(route, queryArgs) {
+      var query = _.defaults({}, queryArgs, {access_token: token}),
+          query_str = _.map(query, function(val, key) {
+             return key + '=' + val;
+          }).join('&');
+
+      // Allow passing the route as a list since that makes things
+      // cleaner in usage.
+      route = angular.isArray(route) ? route.join('/') : route;
+
+      // Build the actual URL and send it out
+      return 'https://api.github.com/' + route + '?' + query_str;
+   };
 
    this.setAccessToken = function(newToken, storageRule) {
       // Update our internal reference to the token
@@ -112,28 +128,28 @@ angular.module('github-api', [])
 
    this.listRepoUsers = function(owner, repo) {
       assert_ready();
-      return ghGet("repos/"+owner+'/'+repo+"/collaborators");
+      return this._get(['repos', owner, repo, 'collaborators']);
    };
 
    this.listRepoIssues = function(owner, repo) {
       assert_ready();
       // XXX look at how to get more then 100 issues for users that might hit that
-      return ghGet("repos/"+owner+'/'+repo+"/issues", {'page': 1, 'per_page': 100});
+      return this._get(['repos', owner, repo, 'issues']);
    };
 
    this.listRepos = function() {
       assert_ready();
-      return ghGet("user/repos");
+      return this._get(['user', 'repos']);
    };
 
    this.listOrgs = function() {
       assert_ready();
-      return ghGet('user/orgs');
+      return this._get(['user', 'orgs']);
    };
 
    this.listOrgRepos = function(org) {
       assert_ready();
-      return ghGet('orgs/'+org+'/repos');
+      return this._get(['orgs', org, 'repos']);
    };
 
    this.listAllOrgRepos = function() {
@@ -196,7 +212,7 @@ angular.module('github-api', [])
       assert_ready();
       var d = $q.defer();
 
-      var p = ghGet("repos/"+owner+'/'+repo+"/contents/"+path);
+      var p = this._get(["repos", owner, repo, 'contents', path]);
 
       p.then(function(file) {
          var text = ghB64Decode(file.content);

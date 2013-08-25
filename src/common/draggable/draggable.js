@@ -1,8 +1,9 @@
 /**
- Provides the basics for drag and dropping of items in an angular application.
-
- @ngdoc module
+ @ngdoc overview
  @name draggable
+
+ @description
+ Provides the basics for drag and dropping of items in an angular application.
  */
 angular.module('draggable', [])
 
@@ -18,23 +19,35 @@ angular.module('draggable', [])
          // Mark the item as draggable
          element.prop('draggable', true);
 
-         // When the drag starts fill in the drag data
-         // evt.dataTransfer.setData('text/', 'blah');
+         // When the drag starts fill in the drag data on the event
          var func = $parse(attrs['ngDraggable']);
          element.bind('dragstart', function(event) {
             // Run the function inside a $scope.apply block so that if the
             // scope changes the scope will be reevaluated.
+            var handled;
             scope.$apply(function() {
-               // See what types of data the drag should support
-               var types = func(scope, {$event: event});
-
-
-               // Add the types to the event so that they follow through the
-               // dragenter and drop events.
-               _.map(types, function(value, type) {
-                  event.dataTransfer.setData(type, value);
-               });
+               var res = func(scope, {$event: event});
+               handled = res !== false;
             });
+
+            if (handled) {
+               var clone = event.srcElement.cloneNode(true),
+                   elm = angular.element(clone),
+                   wrapper = angular.element('<div class="drag-image-wrapper"></div>');
+
+               elm.addClass('drag-image');
+
+               wrapper.append(elm);
+
+               angular.element(document.body).append(wrapper);
+               event.dataTransfer.setDragImage(wrapper[0], 0, 0);
+            }
+
+            return handled === false;
+         });
+
+         element.bind('dragend', function() {
+            element.removeClass('dragging');
          });
       }
    };
