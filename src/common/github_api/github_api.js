@@ -85,21 +85,10 @@ angular.module('github.api', [])
       return lines.join('');
    }
 
-   this._get = function(apiPath, queryArgs, options) {
-      var d = $q.defer();
-
-      var query_args = _.defaults({'access_token': token}, queryArgs);
-
-      var p = $http.get(this.buildAPIUrl(apiPath, queryArgs), options);
-
-      p.then(function(res) {
-         d.resolve(res.data);
-      }, d.reject);
-
-      return d.promise;
-   };
-
    this.buildAPIUrl = function(route, queryArgs) {
+      // In order to build the URL we need the api token.
+      assert_ready();
+
       var query = _.defaults({}, queryArgs, {access_token: token}),
           query_str = _.map(query, function(val, key) {
              return key + '=' + val;
@@ -113,47 +102,103 @@ angular.module('github.api', [])
       return 'https://api.github.com/' + route + '?' + query_str;
    };
 
+   /**
+    @ngdoc    function
+    @name     hasAccessToken
+    @methodOf github.api.gh
+
+    @description
+    Predicate determining if the service has token to use when accessing
+    resources on GitHub.
+    */
+   this.hasAccessToken = function() {
+      return !! getAccessToken();
+   };
+
+   /**
+    @ngdoc    function
+    @name     setAccessToken
+    @methodOf github.api.gh
+
+    @description
+    Allows setting the API token to use when communicating with the GitHub API.
+
+    @param {string} newToken The new token to use for the service.  Pass a falsy
+           value to clear the token.
+    @param {string} storageRule Indicates if/where the token can be stored.  By
+           passing 'local' or 'storage' the token we be stored for later retrival
+           if, for example, the page is reloaded.
+    */
    this.setAccessToken = function(newToken, storageRule) {
       // Update our internal reference to the token
       token = newToken;
 
       // Set the value into storage if asked to
+      var action = !!token ? 'setItem' : 'removeItem';
       if (storageRule == 'local' && window.localStorage) {
-         window.localStorage.setItem(token_storage_key, newToken);
+         window.localStorage[action](token_storage_key, newToken);
       }
       else if (storageRule == 'session' && window.sessionStorage) {
-         window.localStorage.setItem(token_storage_key, newToken);
+            window.sessionStorage[action](token_storage_key, newToken);
       }
    };
 
+   /**
+    @ngdoc    function
+    @name     listRepoUsers
+    @methodOf github.api.gh
+
+    @description
+    Returns the list if users which have access to the supplied repository
+
+    @see http://developer.github.com/v3/repos/#list-contributors
+
+    @param {string} owner The owner of the repository
+    @param {string} repo  The name of the repository
+
+    @returns {Promise} When resolved the list of all collaborators.
+    */
    this.listRepoUsers = function(owner, repo) {
-      assert_ready();
       return this._get(['repos', owner, repo, 'collaborators']);
    };
 
-   this.listRepoIssues = function(owner, repo) {
-      assert_ready();
-      // XXX look at how to get more then 100 issues for users that might hit that
-      return this._get(['repos', owner, repo, 'issues']);
+   /**
+    @ngdoc    function
+    @name     listRepoIssues
+    @methodOf github.api.gh
+
+    @description
+    Returns the list if issues for a repository.
+
+    - [ ] handle the case where there are more then one page of issues.
+
+    @see http://developer.github.com/v3/issues/#list-issues-for-a-repository
+
+    @param {string} owner             The owner of the repository
+    @param {string} repo              The name of the repository
+    @param {array.string} args.labels If set then the list of labels to return
+           issues for.
+
+    @returns {Promise} When resolved the list of all issues.
+    */
+   this.listRepoIssues = function(owner, repo, args) {
+      // XXX look at how to get more then 100 uses
+      return this._get(['repos', owner, repo, 'issues'], args);
    };
 
    this.listRepos = function() {
-      assert_ready();
       return this._get(['user', 'repos']);
    };
 
    this.listOrgs = function() {
-      assert_ready();
       return this._get(['user', 'orgs']);
    };
 
    this.listOrgRepos = function(org) {
-      assert_ready();
       return this._get(['orgs', org, 'repos']);
    };
 
    this.listAllOrgRepos = function() {
-      assert_ready();
       var me = this;
 
       var d = $q.defer();
@@ -185,7 +230,6 @@ angular.module('github.api', [])
    };
 
    this.listAllRepos = function() {
-      assert_ready();
       var me = this;
 
       return $q.all([
@@ -202,26 +246,35 @@ angular.module('github.api', [])
    };
 
    /**
+    @ngdoc function
+    @name  getFile
+    @descrption
     Downloads a file from Github and returns the file contents as a string.
 
-    @method getFile
-    @param owner {String} The owner of the repository to download the file from
-    @param repo  {String} The name of the repository to download the file from
+    @method   getFile
+    @methodOf github.api.gh
+
+    @param {string} owner The owner of the repository to download the file from
+    @param {string} repo The name of the repository to download the file from
     */
    this.getFile = function(owner, repo, path) {
-      assert_ready();
-      var d = $q.defer();
+      return this._get(["repos", owner, repo, 'contents', path])
+         .then(function(file) {
+            return ghB64Decode(file.content);
+         });
+   };
 
-      var p = this._get(["repos", owner, repo, 'contents', path]);
+   this._get = function(apiPath, queryArgs, options) {
+      // Build up the set of query args to use.
+      var query_args = _.defaults({'access_token': token}, queryArgs),
+          url        = this.buildAPIUrl(apiPath, queryArgs);
 
-      p.then(function(file) {
-         var text = ghB64Decode(file.content);
-         d.resolve(text);
-      }, function() {
-         d.reject.apply(d, arguments);
-      });
-
-      return d.promise;
+      // Make the call and proxy the result by pulling the result data out of
+      // the request.
+      return $http.get(url, options)
+         .then(function(res) {
+            return res.data;
+         });
    };
 
 });
