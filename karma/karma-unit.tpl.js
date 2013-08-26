@@ -15,12 +15,16 @@ module.exports = function ( karma ) {
     ],
 
     frameworks: [ 'jasmine' ],
-    plugins: [ 'karma-jasmine', 'karma-phantomjs-launcher' ],
+    plugins: [ 'karma-jasmine', 'karma-phantomjs-launcher', 'karma-coverage' ],
+
+    preprocessors: {
+       'src/**/*.js': ['coverage']
+    },
 
     /**
      * How to report, by default.
      */
-    reporters: 'dots',
+    reporters: ['dots', 'coverage'],
 
     /**
      * On which port should the browser connect, on which port is the test runner
@@ -29,6 +33,12 @@ module.exports = function ( karma ) {
     port: 9018,
     runnerPort: 9100,
     urlRoot: '/',
+
+    // optionally, configure the reporter
+    coverageReporter: {
+      type : 'html',
+      dir : 'build/coverage/'
+    },
 
     /**
      * Disable file watching by default.
