@@ -94,5 +94,7 @@ TODO
 
  * logout
  * Only store creds in local storage if checkbox is ticked (otherwise use session storage)
+ * extend doc tool to show `@see`
+ * extend doc tool to show `@private` flag
 
  * Add styling
