@@ -1,17 +1,17 @@
 angular.module( 'GitKan', [
-  'templates-app',
-  'templates-common',
-  'GitKan.board',
-  'GitKan.login',
-  'GitKan.repo_list',
-  'github.api',
-  'draggable',
-  'ui.state',
-  'ui.route'
+   'templates-app',
+   'templates-common',
+   'GitKan.board',
+   'GitKan.login',
+   'GitKan.repo_list',
+   'github.api',
+   'draggable',
+   'ui.state',
+   'ui.route'
 ])
 
 .config( function ( $stateProvider, $urlRouterProvider ) {
-  $urlRouterProvider.otherwise('/about');
+   $urlRouterProvider.otherwise('/login');
 })
 
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
