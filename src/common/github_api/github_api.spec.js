@@ -57,7 +57,7 @@ describe( 'GitHub API (gh)', function() {
          gh.setAccessToken('sometoken');
       }));
 
-      it('should allow getting the list of repositories', inject(function(gh, $httpBackend) {
+      it('should allow getting the list of repositories', inject(function(gh, $httpBackend, $rootScope) {
          // Given the GitHub API returns no issues
          $httpBackend.expectGET('https://api.github.com/repos/dude/where/issues?access_token=sometoken').
             respond([]);
@@ -66,10 +66,12 @@ describe( 'GitHub API (gh)', function() {
          var res = gh.listRepoIssues('dude', 'where').then(function(issues) {
             expect( issues.length ).toEqual( 0 );
          });
+
+         $rootScope.$digest();
          $httpBackend.flush();
       }));
 
-      it('should allow getting a file', inject(function(gh, $httpBackend) {
+      it('should allow getting a file', inject(function(gh, $httpBackend, $rootScope) {
          // Given the GitHub API returns the file
          $httpBackend.expectGET('https://api.github.com/repos/dude/where/contents/file.txt?access_token=sometoken').
             respond({content: 'aGVsbG8gd29ybGQ='});
@@ -78,6 +80,8 @@ describe( 'GitHub API (gh)', function() {
          var res = gh.getFile('dude', 'where', 'file.txt').then(function(content) {
             expect( content ).toEqual( 'hello world' );
          });
+
+         $rootScope.$digest();
          $httpBackend.flush();
       }));
    });
