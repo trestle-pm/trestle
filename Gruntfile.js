@@ -214,7 +214,7 @@ module.exports = function ( grunt ) {
                // XXX move to build files
                sassDir:    'src/scss',
                cssDir:     'build/assets/css',
-               importPath: 'src'
+               importPath: ['src', 'vendor']
             }
          }
       },

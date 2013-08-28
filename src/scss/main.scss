@@ -1,6 +1,9 @@
 // Bring in the local stuff
 @import "variables";
 
+// Load bootstrap
+@import "bootstrap/docs/assets/css/bootstrap";
+
 // Make sure DnD works for all elements in all supported browsers
 [draggable] {
   -moz-user-select: none;
