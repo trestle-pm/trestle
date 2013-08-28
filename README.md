@@ -9,12 +9,14 @@ Build It
 gem install compass jsduck
 
 # Get the development deps
+#  (these will be placed in ./node_modules)
 npm install
 
 # Get the client side deps
+#  (these are loaded into /vendor)
 ./node_modules/.bin/bower install
 
-# Build the how thing
+# Build the whole thing
 ./node_modules/.bin/grunt
 ```
 
@@ -22,6 +24,7 @@ Run It
 ------
 ```bash
 # Open the index page in your browser
+# TODO: This doesn't work anymore...
 chromium-browser build/index.hmtl
 ```
 
@@ -98,3 +101,9 @@ TODO
  * extend doc tool to show `@private` flag
 
  * Add styling
+
+References
+==========
+ * The project layout and structure is based upon 
+   https://github.com/joshdmiller/ng-boilerplate . 
+   See that project for more description on the *why* of the layout.
