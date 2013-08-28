@@ -501,6 +501,12 @@ module.exports = function ( grunt ) {
    ]);
 
    /**
+    * Register a task for Travis CI to run.  This task MUST never have
+    `connect` or `watch` in it.
+    */
+   grunt.registerTask( 'travis', ['build', 'compile']);
+
+   /**
     * A utility function to get all app JavaScript sources.
     */
    function filterForJS ( files ) {

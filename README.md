@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/my8bird/octoboard.png?branch=master)](https://travis-ci.org/my8bird/octoboard)
+
 Getting Started
 ===============
 
