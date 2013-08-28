@@ -5,7 +5,13 @@
  @description
  Module which provides an interface for the GitHub Api.
  */
-angular.module('github.api', [])
+angular.module('github.api', ['restangular'])
+
+.factory('GitHubRestangular',  function(Restangular) {
+   return Restangular.withConfig(function(RestangularConfigurer) {
+      RestangularConfigurer.setBaseUrl('https://api.github.com');
+   });
+})
 
 
 /**
@@ -15,7 +21,7 @@ angular.module('github.api', [])
  @description
  Angular service `gh` which provides tools for accessing GitHub API's
  */
-.service('gh', function gh($http, $interpolate, $rootScope, $q) {
+.service('gh', function gh(GitHubRestangular, $http, $interpolate, $rootScope, $q) {
 
    var
    /**
@@ -29,7 +35,19 @@ angular.module('github.api', [])
     @private
     */
    token_storage_key = 'gh-token',
-   token;
+   token
+
+   ;
+
+   // Extend the API set the access token when we have one
+   GitHubRestangular.setFullRequestInterceptor(function(element, operation, what, url, headers, params) {
+      return {
+         element: element,
+         headers: headers,
+         // - Add the access_token (only if not set by the caller
+         params: angular.extend(params, {access_token: getAccessToken()})
+      };
+   });
 
    /**
     @ngdoc function
@@ -159,7 +177,8 @@ angular.module('github.api', [])
     @returns {Promise} When resolved the list of all collaborators.
     */
    this.listRepoUsers = function(owner, repo) {
-      return this._get(['repos', owner, repo, 'collaborators']);
+      var url = ['repos', owner, repo, 'collaborators'].join('/');
+      return GitHubRestangular.one(url).get();
    };
 
    /**
@@ -183,19 +202,20 @@ angular.module('github.api', [])
     */
    this.listRepoIssues = function(owner, repo, args) {
       // XXX look at how to get more then 100 uses
-      return this._get(['repos', owner, repo, 'issues'], args);
+      // - paging
+      return GitHubRestangular.one(['repos', owner, repo, 'issues'].join('/')).get();
    };
 
    this.listRepos = function() {
-      return this._get(['user', 'repos']);
+      return GitHubRestangular.one(['user', 'repos'].join('/')).get();
    };
 
    this.listOrgs = function() {
-      return this._get(['user', 'orgs']);
+      return GitHubRestangular.one(['user', 'orgs'].join('/')).get();
    };
 
    this.listOrgRepos = function(org) {
-      return this._get(['orgs', org, 'repos']);
+      return GitHubRestangular.one(['orgs', org, 'repos'].join('/')).get();
    };
 
    this.listAllOrgRepos = function() {
@@ -258,22 +278,9 @@ angular.module('github.api', [])
     @param {string} repo The name of the repository to download the file from
     */
    this.getFile = function(owner, repo, path) {
-      return this._get(["repos", owner, repo, 'contents', path])
+      return GitHubRestangular.one(['repos', owner, repo, 'contents', path].join('/')).get()
          .then(function(file) {
             return ghB64Decode(file.content);
-         });
-   };
-
-   this._get = function(apiPath, queryArgs, options) {
-      // Build up the set of query args to use.
-      var query_args = _.defaults({'access_token': token}, queryArgs),
-          url        = this.buildAPIUrl(apiPath, queryArgs);
-
-      // Make the call and proxy the result by pulling the result data out of
-      // the request.
-      return $http.get(url, options)
-         .then(function(res) {
-            return res.data;
          });
    };
 

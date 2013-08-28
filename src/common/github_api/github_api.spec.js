@@ -64,7 +64,7 @@ describe( 'GitHub API (gh)', function() {
 
          // When the list is requested
          var res = gh.listRepoIssues('dude', 'where').then(function(issues) {
-            expect( issues ).toEqual( [] );
+            expect( issues.length ).toEqual( 0 );
          });
          $httpBackend.flush();
       }));
