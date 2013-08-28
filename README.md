@@ -76,29 +76,18 @@ Adding a new module
 TODO
 ====
 
- * Complete switch to SASS (use login for example)
- * Remove my api key from the code and repo
- * change github api methods for the repo to take the repo names
-   intead of being hard coded.
- * Delete LESS files
  * all dragging items around
  * Moving user through routes
    * After login straight to repo list or board depending on how you got there
    * Bouncing the user to the login or home page if their creds are bad
- * Create and store auth token if it does not exist
- * What repo/issue events for updates
+ * Watch repo/issue events for updates
  * issue details panel
- * reorder issues
  * Think about mobile (how to move things around
  * Handle GitHub API errors (at least log them)
- * Add a lot of docs
  * Add ability to store attributes on a pull
  * +2 in list
  * build status in list
- * create pull from issue (hot link to GH?)
-
  * logout
- * Only store creds in local storage if checkbox is ticked (otherwise use session storage)
  * extend doc tool to show `@see`
  * extend doc tool to show `@private` flag
 
@@ -106,6 +95,6 @@ TODO
 
 References
 ==========
- * The project layout and structure is based upon 
-   https://github.com/joshdmiller/ng-boilerplate . 
+ * The project layout and structure is based upon
+   https://github.com/joshdmiller/ng-boilerplate.
    See that project for more description on the *why* of the layout.
