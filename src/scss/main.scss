@@ -2,7 +2,8 @@
 @import "variables";
 
 // Load bootstrap
-@import "bootstrap/docs/assets/css/bootstrap";
+// - brought in through build.
+// @import "bootstrap/docs/assets/css/bootstrap";
 
 // Make sure DnD works for all elements in all supported browsers
 [draggable] {
