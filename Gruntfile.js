@@ -477,9 +477,9 @@ module.exports = function ( grunt ) {
    /**
     * The default task is to build and compile.
     */
-   grunt.registerTask( 'default', [ 'build', 'compile', 'connect' ] );
+   grunt.registerTask( 'default', [ 'build', 'compile'] );
 
-   /** Add target to use for regular development. */   
+   /** Add target to use for regular development. */
    grunt.registerTask( 'dev', ['build', 'connect', 'watch'] );
 
    /**
