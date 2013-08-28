@@ -1,7 +1,7 @@
-<div class="board">
+<div class="board" ng-controller="BoardCtrl as main" >
 
-  <ng-include src="'board/controllers/users_list.tpl.html'"></ng-include>
-
-  <ng-include src="'board/controllers/issue_columns.tpl.html'"></ng-include>
+  <div ui-view="toolbar"></div>
+  <div ui-view="columns"></div>
+  <div ui-view="filter"></div>
 
 </div>

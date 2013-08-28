@@ -14,9 +14,13 @@ angular.module( 'GitKan.login', [
 // Add our routes so that we can get into the section of the app
 .config(function config( $stateProvider ) {
   $stateProvider.state( 'login', {
-    url: '/login',
-     controller:  'LoginCtrl',
-     templateUrl: 'login/login.tpl.html'
+     url: '/login',
+     views: {
+        body: {
+           controller:  'LoginCtrl',
+           templateUrl: 'login/login.tpl.html'
+        }
+     }
   });
 })
 
