@@ -6,7 +6,7 @@ Build It
 
 ```bash
 # Install helpers
-gem install compass jsduck
+gem install compass
 
 # Get the development deps
 #  (these will be placed in ./node_modules)
