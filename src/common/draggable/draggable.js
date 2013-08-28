@@ -9,13 +9,17 @@ angular.module('draggable', [])
 
 .directive('ngDraggable', function($parse) {
    /**
-    Directive for stuff
-
     @ngdoc directive
-    @name ngDraggable
+    @name draggable.ngDraggable
+
+    @description
+    Directive which allows an item to be draggable in the interface using HTML5's
+    draggable property.
     */
    return {
       link: function(scope, element, attrs, controller) {
+         var drag_image_elm;
+
          // Mark the item as draggable
          element.prop('draggable', true);
 
@@ -27,27 +31,29 @@ angular.module('draggable', [])
             var handled;
             scope.$apply(function() {
                var res = func(scope, {$event: event});
-               handled = res !== false;
+               handled = (res !== false);
             });
 
             if (handled) {
                var clone = event.srcElement.cloneNode(true),
-                   elm = angular.element(clone),
-                   wrapper = angular.element('<div class="drag-image-wrapper"></div>');
+                   elm = angular.element(clone);
 
                elm.addClass('drag-image');
 
-               wrapper.append(elm);
+               drag_image_elm = angular.element('<div class="drag-image-wrapper"></div>');
+               drag_image_elm.append(elm);
 
-               angular.element(document.body).append(wrapper);
-               event.dataTransfer.setDragImage(wrapper[0], 0, 0);
+               angular.element(document.body).append(drag_image_elm);
+               event.dataTransfer.setDragImage(drag_image_elm[0], 0, 0);
             }
-
-            return handled === false;
          });
 
          element.bind('dragend', function() {
             element.removeClass('dragging');
+            if (drag_image_elm) {
+               drag_image_elm.remove();
+            }
+            drag_image_elm = null;
          });
       }
    };
@@ -59,7 +65,7 @@ angular.module('draggable', [])
          var drag_type = 'move'; // Hardcoded for now since that is all I need
 
          var func = $parse(attrs['ngDropzone']);
-         element.bind('dragenter', function(event) {
+         element.bind('dragover', function(event) {
             // Defualt to drop not allowed
             var allow_drop = true;
 
@@ -67,9 +73,7 @@ angular.module('draggable', [])
                allow_drop = func(scope, {$event: event});
             });
 
-            if (allow_drop) {
-               event.dataTransfer.dropEffect = drag_type;
-
+            if (!allow_drop) {
                // The event will continue propogating since we do not care
                // about the drop
                event.preventDefault();
@@ -78,27 +82,15 @@ angular.module('draggable', [])
             return !allow_drop;
          });
 
-         element.bind('dragover', function(event) {
-            // Defualt to drop not allowed
-            var allow_drop = false;
-
-            scope.$apply(function() {
-               allow_drop = func(scope, {$event: event});
-            });
-
-            if (allow_drop) {
-               event.dataTransfer.dropEffect = drag_type;
-
-
-               // The event will continue propogating since we do not care
-               // about the drop
-               if (allow_drop) {
-                  event.preventDefault();
-               }
-            }
-
-            return !allow_drop;
+         // { Style the element when the drag is over it
+         element.bind('dragenter', function(event) {
+            element.addClass('dragging-over');
          });
+
+         element.bind('dragleave', function(event) {
+            element.removeClass('dragging-over');
+         });
+         // }
 
          var doDropfunc = $parse(attrs['handledrop']);
          element.bind('drop', function(event) {
@@ -111,7 +103,6 @@ angular.module('draggable', [])
                // This is OK since the drop would not happen if the
                // dragenter/over methods had not succeeded.
                handled = (handled !== false);
-               console.log('drop', handled);
             });
 
             if (handled) {

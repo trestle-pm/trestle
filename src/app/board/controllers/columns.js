@@ -37,7 +37,6 @@ angular.module('GitKan.board')
       };
 
       var selected_issue = issue;
-      console.log(angular.copy(selected_issue));
       var d = $dialog.dialog(angular.extend(opts, {resolve: {
          issue: function() {return angular.copy(selected_issue);}
       }}));
@@ -90,7 +89,6 @@ angular.module('GitKan.board')
 
          var matches = grabber.exec(data);
          if (matches) {
-            console.log('is_gh');
             var owner  = matches[1],
                 repo   = matches[2];
 
