@@ -1,6 +1,6 @@
 angular.module('GitKan.board')
 
-.controller('ColumnsCtrl', function($scope, $stateParams, gh) {
+.controller('ColumnsCtrl', function($scope, $rootScope, $stateParams, $dialog, gh) {
    // Grab the configuration file for this repo so that we know
    // the column names
    gh.getFile($stateParams.owner, $stateParams.repo, '.huboard')
@@ -24,6 +24,24 @@ angular.module('GitKan.board')
          });
          return _.contains(labels, column);
       };
+   };
+
+   $scope.showIssueDetails = function(issue) {
+      var opts = {
+         backdrop: true,
+         keyboard: true,
+         backdropClick: true,
+         templateUrl: "board/controllers/issue_details/issue_details.tpl.html",
+
+         controller: 'IssueDetailsCtrl'
+      };
+
+      var selected_issue = issue;
+      console.log(angular.copy(selected_issue));
+      var d = $dialog.dialog(angular.extend(opts, {resolve: {
+         issue: function() {return angular.copy(selected_issue);}
+      }}));
+      d.open();
    };
 
    /**

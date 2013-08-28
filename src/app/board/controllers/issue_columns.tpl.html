@@ -1,0 +1,41 @@
+<div ng-controller="ColumnsCtrl" >
+
+  <ul class="issue-columns" >
+    <li ng-repeat="col in columns" class="column"
+        ng-dropzone="canHandleDrop($event)"
+        handledrop="onDrop($event)" >
+
+      <h1 >{{col}}</h1>
+      <ul class="column-body" >
+        <li class="card"
+
+            ng-draggable="onIssueDragStart(issue, $event)"
+
+            ng-repeat="issue in allIssues | filter:hasLabel(col);" \>
+          <div class="header">
+            <img class="avatar"
+                 title="Assigned to {{issue.user.login}}"
+                 src="{{issue.user.avatar_url}}?s=30"></img>
+            <span class="title" ng-click="showIssueDetails(issue)" >
+              {{issue.title}}
+            </span>
+          </div>
+
+          <div class="milestone" ng-show="issue.milestone">
+            {{issue.milestone.title}}
+          </div>
+
+          <ul class="labels">
+            <!-- XXX Look at hiding any column heading labels. -->
+            <li ng-repeat="label in issue.labels"
+                style="background-color: #{{label.color}}">
+              {{label.name}}
+            </li>
+          </ul>
+
+        </li>
+
+      </ul>
+    </li>
+  </ul>
+</div>
