@@ -479,6 +479,9 @@ module.exports = function ( grunt ) {
     */
    grunt.registerTask( 'default', [ 'build', 'compile', 'connect' ] );
 
+   /** Add target to use for regular development. */   
+   grunt.registerTask( 'dev', ['build', 'connect', 'watch'] );
+
    /**
     * The `build` task gets your app ready to run for development and testing.
     */
