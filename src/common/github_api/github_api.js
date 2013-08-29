@@ -274,6 +274,33 @@ angular.module('github.api', ['restangular'])
    };
 
    /**
+    @ngdoc    function
+    @name     searchIssues
+    @method   searchIssues
+    @methodOf github.api.gh
+
+    @description
+    Allows for searching the issues the user has access based on certain fields.
+
+    This API is in flux and as such the method may break in the furture.
+
+    http://developer.github.com/v3/search/#search-issues
+
+    @param {string} options.title When set only issues containing this string
+           are returned.
+    */
+   this.searchIssues = function(options) {
+      // Build up the search string by looking at the supplied options
+      var query = '';
+      if (options.title) {
+         query = query +options.title+'+in:title';
+      }
+      return GitHubRestangular.one('search/issues').get(
+                                   {q: query},
+                                   {'Accept': 'application/vnd.github.preview'});
+   };
+
+   /**
     @ngdoc function
     @name  getFile
     @descrption
