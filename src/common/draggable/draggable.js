@@ -17,6 +17,9 @@ angular.module('draggable', [])
     draggable property.
     */
    return {
+      // Only allow attributes to cause this directive to be picked up
+      restrict: 'A',
+
       link: function(scope, element, attrs, controller) {
          var drag_image_elm;
 
@@ -61,6 +64,9 @@ angular.module('draggable', [])
 
 .directive('ngDropzone', function($parse) {
    return {
+      // Only allow attributes to cause this directive to be picked up
+      restrict: 'A',
+
       link: function(scope, element, attrs, controller) {
          var drag_type = 'move'; // Hardcoded for now since that is all I need
 
