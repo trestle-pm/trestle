@@ -24,7 +24,7 @@ angular.module('GitKan.board')
          backdrop: true,
          keyboard: true,
          backdropClick: true,
-         templateUrl: "board/controllers/issue_details/issue_details.tpl.html",
+         templateUrl: "board/issue_details/issue_details.tpl.html",
 
          controller: 'IssueDetailsCtrl'
       };
