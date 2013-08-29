@@ -1,0 +1,20 @@
+.board-toolbar {
+    .dropdown-menu {
+        width: 400px;
+
+        .filter {
+            margin: 5px;
+
+            .search-query {
+                width:      100%;
+                padding:    13px;
+                box-sizing: border-box;
+            }
+        }
+
+        .repo-list {
+            height:   300px;
+            overflow: auto;
+        }
+    }
+}

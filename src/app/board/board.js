@@ -11,13 +11,19 @@ angular.module( 'GitKan.board', [
             body: {
                templateUrl: 'board/board.tpl.html'
             }
+         },
+         resolve: {
+            allRepos: function(gh, $stateParams) {
+               return gh.listAllRepos($stateParams.owner, $stateParams.repo);
+            }
          }
       })
       .state('board.noRepo', {
          url: '',
          views: {
             toolbar: {
-               template: 'board/columns/issue_columns.tpl.html'
+               templateUrl: 'board/toolbar/toolbar.tpl.html',
+               controller:  'ToolbarCtrl'
             }
          }
       })
@@ -25,7 +31,8 @@ angular.module( 'GitKan.board', [
          url: '/:owner/:repo',
          views: {
             toolbar: {
-               template: 'board/columns/issue_columns.tpl.html'
+               templateUrl: 'board/toolbar/toolbar.tpl.html',
+               controller:  'ToolbarCtrl'
             },
             columns: {
                templateUrl: 'board/columns/issue_columns.tpl.html'
