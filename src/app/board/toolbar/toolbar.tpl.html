@@ -19,7 +19,7 @@
           {{owner}}
           <ol>
             <li ng-repeat="repo in repos | filter:repoSearchText"
-                ng-click="onSwitchToRep(repo)">
+                ng-click="onSwitchToRepo(repo)">
               {{repo.full_name}}
             </li>
           </ol>

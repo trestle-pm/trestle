@@ -1,7 +1,7 @@
 <div ng-controller="ColumnsCtrl" >
 
   <ul class="issue-columns" >
-    <li ng-repeat="col in columns" class="column"
+    <li ng-repeat="col in config.columns" class="column"
         ng-dropzone="canHandleDrop($event)"
         handledrop="onDrop($event)" ng-style="getColumnWidth()">
 

@@ -18,7 +18,7 @@ angular.module('GitKan.board')
       });
    });
 
-   $scope.onSwitchToRep = function onSwitchToRep(repo) {
+   $scope.onSwitchToRepo = function (repo) {
       $location.path('/board/'+repo.full_name);
    };
 
