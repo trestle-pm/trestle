@@ -178,7 +178,7 @@ angular.module('github.api', ['restangular'])
     */
    this.listRepoUsers = function(owner, repo) {
       var url = ['repos', owner, repo, 'collaborators'].join('/');
-      return GitHubRestangular.one(url).get();
+      return GitHubRestangular.one(url).get({per_page: 100});
    };
 
    /**
@@ -203,19 +203,27 @@ angular.module('github.api', ['restangular'])
    this.listRepoIssues = function(owner, repo, args) {
       // XXX look at how to get more then 100 uses
       // - paging
-      return GitHubRestangular.one(['repos', owner, repo, 'issues'].join('/')).get();
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'issues'].join('/'))
+         .get({per_page: 100});
    };
 
    this.listRepos = function() {
-      return GitHubRestangular.one(['user', 'repos'].join('/')).get();
+      return GitHubRestangular
+         .one(['user', 'repos'].join('/'))
+         .get({per_page: 100});
    };
 
    this.listOrgs = function() {
-      return GitHubRestangular.one(['user', 'orgs'].join('/')).get();
+      return GitHubRestangular
+         .one(['user', 'orgs'].join('/'))
+         .get({per_page: 100});
    };
 
    this.listOrgRepos = function(org) {
-      return GitHubRestangular.one(['orgs', org, 'repos'].join('/')).get();
+      return GitHubRestangular
+         .one(['orgs', org, 'repos'].join('/'))
+         .get({per_page: 100});
    };
 
    this.listAllOrgRepos = function() {

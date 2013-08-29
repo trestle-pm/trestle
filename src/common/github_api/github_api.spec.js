@@ -59,7 +59,7 @@ describe( 'GitHub API (gh)', function() {
 
       it('should allow getting the list of repositories', inject(function(gh, $httpBackend, $rootScope) {
          // Given the GitHub API returns no issues
-         $httpBackend.expectGET('https://api.github.com/repos/dude/where/issues?access_token=sometoken').
+         $httpBackend.expectGET('https://api.github.com/repos/dude/where/issues?access_token=sometoken&per_page=100').
             respond([]);
 
          // When the list is requested
