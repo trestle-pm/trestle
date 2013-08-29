@@ -3,7 +3,7 @@
   <ul class="issue-columns" >
     <li ng-repeat="col in columns" class="column"
         ng-dropzone="canHandleDrop($event)"
-        handledrop="onDrop($event)" >
+        handledrop="onDrop($event)" ng-style="getColumnWidth()">
 
       <h1 >{{col}}</h1>
       <ul class="column-body" >

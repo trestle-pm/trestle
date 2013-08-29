@@ -3,10 +3,19 @@ angular.module('GitKan.board')
 .controller('ColumnsCtrl', function($scope, $rootScope, $stateParams, $dialog, gh) {
    // Grab the configuration file for this repo so that we know
    // the column names
-   gh.getFile($stateParams.owner, $stateParams.repo, '.huboard')
-      .then(function(contents) {
-         var config = JSON.parse(contents);
-         $scope.columns = config.columns;
+   gh.searchIssues({title: 'OCTOBOARD_CONFIG'})
+      .then(function(configIssues) {
+         // Filter the search results to only only this repo since the API does
+         // not allow that.
+         var config_issue = _.findWhere(configIssues.items, function(issue) {
+            console.log(new RegExp($stateParams.owner + '\/' + $stateParams.repo).test(issue.url), $stateParams.owner + '\/' + $stateParams.repo, issue.url);
+            return new RegExp($stateParams.owner + '\/' + $stateParams.repo).test(issue.url);
+         });
+
+         if (config_issue) {
+            $scope.config = JSON.parse(config_issue.body);
+            $scope.columns = $scope.config.columns;
+         }
       }, function() {
          console.warn('This repository does not have a configuration file.');
          $scope.columns = ['Backlog', 'Review', 'CI', 'Ship'];
@@ -24,6 +33,10 @@ angular.module('GitKan.board')
          });
          return _.contains(labels, column);
       };
+   };
+
+   $scope.getColumnWidth = function() {
+      return {width: (100.0 / $scope.columns.length) + '%'};
    };
 
    $scope.showIssueDetails = function(issue) {
