@@ -1,8 +1,10 @@
 <div class="board-toolbar">
-  <a ng-href="http://github.com/{{repoFullName}}"><img src="assets/image/GitHub-Mark-64px.png"></img></a>
+  <a ng-href="http://github.com/{{repoFullName}}" target="_blank" >
+    <img src="assets/image/GitHub-Mark-64px.png"></img>
+  </a>
 
   <span class="dropdown" >
-    <a class="dropdown-toggle-no-close">
+    <a class="dropdown-toggle-no-close" >
       <span ng-if="!repo" >yourname/repo</span>
       <span ng-if="repo" >{{repoFullName}}</span>
     </a>
