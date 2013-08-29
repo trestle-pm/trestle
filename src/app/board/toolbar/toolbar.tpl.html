@@ -1,9 +1,9 @@
 <div class="board-toolbar">
-  <a ng-href="http://github.com/{{repoFullName}}" target="_blank" >
+  <a id="github-link" ng-href="http://github.com/{{repoFullName}}" target="_blank" >
     <img src="assets/image/GitHub-Mark-64px.png"></img>
   </a>
 
-  <span class="dropdown" >
+  <span id="repo-selector" class="dropdown" >
     <a class="dropdown-toggle-no-close" >
       <span ng-if="!repo" >yourname/repo</span>
       <span ng-if="repo" >{{repoFullName}}</span>
@@ -11,14 +11,14 @@
 
     <div class="dropdown-menu " >
       <div class="filter" >
-        <input type="text" placeholder="Search" ng-model="filterText" class="search-query" ></input>
+        <input type="text" placeholder="Search" ng-model="repoSearchText" class="search-query" ></input>
       </div>
 
       <ol class="repo-list">
         <li ng-repeat="(owner, repos) in allRepos">
           {{owner}}
           <ol>
-            <li ng-repeat="repo in repos | filter:filterText"
+            <li ng-repeat="repo in repos | filter:repoSearchText"
                 ng-click="onSwitchToRep(repo)">
               {{repo.full_name}}
             </li>
@@ -26,7 +26,9 @@
 
         </li>
       </ol>
-
     </div>
   </span>
+
+  <input type="text" placeholder="Search" class="search-query"
+         ng-model="main.cardSearchText" ></input>
 </div>

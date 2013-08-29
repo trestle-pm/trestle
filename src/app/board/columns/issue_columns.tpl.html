@@ -11,7 +11,7 @@
 
             ng-draggable="onIssueDragStart(issue, $event)"
 
-            ng-repeat="issue in allIssues | filter:hasLabel(col);" \>
+            ng-repeat="issue in allIssues | filter:hasLabel(col) | filter:main.cardSearchText" \>
           <div class="header">
             <img class="avatar"
                  title="Assigned to {{issue.user.login}}"

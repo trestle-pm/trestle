@@ -1,6 +1,6 @@
 angular.module('GitKan.board')
 
-.controller('ToolbarCtrl', function($scope, $location, $stateParams, $dialog, allRepos) {
+.controller('ToolbarCtrl', function($scope, $location, $stateParams, $dialog, gh) {
    // Expose the routing params
    $scope.owner = $stateParams.owner;
    $scope.repo  = $stateParams.repo;
@@ -11,12 +11,15 @@ angular.module('GitKan.board')
       $scope.repoFullName = [$scope.owner, $scope.repo].join('/');
    }
 
-   // Build up a tree of the issues to make things easier to search through
-   $scope.allRepos = _.groupBy(allRepos, function(repo) {
-      return repo.owner.login;
+   gh.listAllRepos($stateParams.owner, $stateParams.repo).then(function(allRepos) {
+      // Build up a tree of the issues to make things easier to search through
+      $scope.allRepos = _.groupBy(allRepos, function(repo) {
+         return repo.owner.login;
+      });
    });
 
    $scope.onSwitchToRep = function onSwitchToRep(repo) {
       $location.path('/board/'+repo.full_name);
    };
+
 });

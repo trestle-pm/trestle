@@ -11,11 +11,6 @@ angular.module( 'GitKan.board', [
             body: {
                templateUrl: 'board/board.tpl.html'
             }
-         },
-         resolve: {
-            allRepos: function(gh, $stateParams) {
-               return gh.listAllRepos($stateParams.owner, $stateParams.repo);
-            }
          }
       })
       .state('board.noRepo', {
