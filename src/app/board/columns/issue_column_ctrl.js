@@ -1,6 +1,8 @@
 angular.module('GitKan.board')
 
 .controller('IssueColumnCtrl', function($scope, $stateParams, gh) {
+   // XXX: Would it make sense to make a true class/object for this controller?
+
    // Make sure the issues array exists all the time so that we can drag items
    // from one column into this even if there are not issues for the column.
    $scope.issues = [];
@@ -19,7 +21,7 @@ angular.module('GitKan.board')
    };
 
    $scope.$watch('issues', function(newIssues, oldIssues) {
-      console.log(newIssues, oldIssues);
+      console.log("ISSUES: Column: " + $scope.labelName , newIssues, oldIssues);
    }, true);
 
    $scope.sortableOptions = {
@@ -32,6 +34,38 @@ angular.module('GitKan.board')
 
       helper: 'clone',
       opacity: 0.8
+   };
+
+})
+
+.controller('IssueCtrl', function($scope) {
+   console.log('blah');
+
+   $scope.$id = "IssueCtrl_" + $scope.$id;
+
+   // We already have it
+   // - Could convert to an init parameter or something
+   $scope.issue = $scope.issue;
+
+   $scope.isPullRequest = function() {
+      return true;
+   };
+
+   $scope.showIssueDetails = function(issue) {
+      var opts = {
+         backdrop: true,
+         keyboard: true,
+         backdropClick: true,
+         templateUrl: "board/issue_details/issue_details.tpl.html",
+
+         controller: 'IssueDetailsCtrl'
+      };
+
+      var selected_issue = issue;
+      var d = $dialog.dialog(angular.extend(opts, {resolve: {
+         issue: function() {return angular.copy(selected_issue);}
+      }}));
+      d.open();
    };
 
 });

@@ -8,12 +8,16 @@
         ng-controller="IssueColumnCtrl"
         ng-init="init(col_label)" >
 
-      <h1 class="column-header">{{col_label}}</h1>
+      <h1 class="column-header">{{labelName}}</h1>
 
       <ul class="column-body" ui-sortable="sortableOptions" ng-model="issues" >
+
+        <!-- Is ng-model needed here? -->
         <li class="card"
-            ng-model="issue"
-            ng-repeat="issue in issues | filter:main.cardSearchText" >
+
+            ng-repeat="issue in issues | filter:main.cardSearchText"
+
+            ng-controller="IssueCtrl">
 
           <div class="header">
             <img class="avatar"
@@ -29,13 +33,12 @@
           </div>
 
           <ul class="labels">
-            <!-- XXX Look at hiding any column heading labels. -->
+            <li ng-if="isPullRequest()" class="pull">pull</li>
             <li ng-repeat="label in issue.labels | filter:excludeColLabel"
                 style="background-color: #{{label.color}}">
               {{label.name}}
             </li>
           </ul>
-
         </li>
 
       </ul>
