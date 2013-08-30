@@ -54,7 +54,9 @@ module.exports = {
          'vendor/restangular/dist/restangular.js'
       ],
       css: [
-         'vendor/bootstrap/docs/assets/css/bootstrap.css'
+         'vendor/bootstrap/docs/assets/css/bootstrap.css',
+         'vendor/bootstrap/docs/assets/css/bootstrap-responsive.css'
       ]
    }
 };
+
