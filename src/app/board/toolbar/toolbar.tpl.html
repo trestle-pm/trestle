@@ -1,34 +1,51 @@
-<div class="board-toolbar">
-  <a id="github-link" ng-href="http://github.com/{{repoFullName}}" target="_blank" >
-    <img src="assets/image/GitHub-Mark-64px.png"></img>
-  </a>
-
-  <span id="repo-selector" class="dropdown" >
-    <a class="dropdown-toggle-no-close" >
-      <span ng-if="!repo" >yourname/repo</span>
-      <span ng-if="repo" >{{repoFullName}}</span>
+<div class="board-toolbar navbar">
+  <div class="navbar-inner">
+    <a class="brand" id="github-link" ng-href="http://github.com/{{repoFullName}}" target="_blank" >
+      <img src="assets/image/GitHub-Mark-64px.png"></img>
     </a>
 
-    <div class="dropdown-menu " >
-      <div class="filter" >
-        <input type="text" placeholder="Search" ng-model="repoSearchText" class="search-query" ></input>
-      </div>
+    <ul class="nav">
+      <li id="repo-selector" class="dropdown" >
+        <a class="dropdown-toggle-no-close" >
+          <span ng-if="!repo" >yourname/repo</span>
+          <span ng-if="repo" >{{repoFullName}}</span>
+        </a>
 
-      <ol class="repo-list">
-        <li ng-repeat="(owner, repos) in allRepos">
-          {{owner}}
-          <ol>
-            <li ng-repeat="repo in repos | filter:repoSearchText"
-                ng-click="onSwitchToRepo(repo)">
-              {{repo.full_name}}
+        <div class="dropdown-menu">
+          <div class="filter" >
+            <input type="text" placeholder="Search" ng-model="repoSearchText"
+                   class="search-query" ></input>
+          </div>
+
+          <ol class="repo-list">
+            <li ng-repeat="(owner, repos) in allRepos">
+              {{owner}}
+              <ol>
+                <li ng-repeat="repo in repos | filter:repoSearchText"
+                    ng-click="onSwitchToRepo(repo)">
+                  {{repo.full_name}}
+                </li>
+              </ol>
+
             </li>
           </ol>
+        </div>
+      </li>
 
-        </li>
-      </ol>
-    </div>
-  </span>
+      <li>
+        <input id="issue-search" type="text" placeholder="Search" class="navbar-search"
+               ng-model="main.cardSearchText" ></input>
+      </li>
 
-  <input type="text" placeholder="Search" class="search-query"
-         ng-model="main.cardSearchText" ></input>
+      <li class="pull-right">
+        <a ng-href="#milestone/{{owner}}/{{repo}}">Planning</a>
+      </li>
+
+       <li class="pull-right">
+        <a ng-href="#board/{{owner}}/{{repo}}">Board</a>
+      </li>
+
+    </ul>
+
+
 </div>

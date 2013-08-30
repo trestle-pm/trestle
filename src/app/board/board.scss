@@ -1,3 +1,9 @@
+.board.container {
+    // bootstrap container is required so that we can use the navbar
+    // however the container defaults to a 960 width which does not work for us.
+    width: 100%;
+}
+
 ul.user-list, ul.issue-columns, ul.column-body {
     margin:  0;
     padding: 0;
@@ -17,6 +23,9 @@ ul.user-list, ul.issue-columns, ul.column-body {
     vertical-align: top;
 }
 
+.column-header {
+    text-align: center;
+}
 
 .card {
     border: 1px solid red;
