@@ -18,7 +18,25 @@ angular.module('GitKan.board')
       this.repoFullName = [this.owner, this.repo].join('/');
    }
 
+   // Expose repo details so we can use them in the markup
+   $scope.repoDetails = {
+      owner : $stateParams.owner,
+      repo  : $stateParams.repo
+   };
+
+   function setConfiguration(conf) {
+      this.config = conf;
+   }
+
+   // XXX: Should config live somewhere else like in a service that we can get access
+   //      to through DI or something?
+
    if ($stateParams.repo) {
+      // xxx: timing bug required this for now.
+      setConfiguration({
+         "columns": ["In Progress", "Review", "CI", "Ship"]
+      });
+
       // Grab the configuration file for this repo so that we know
       // the column names
       gh.searchIssues({title: 'OCTOBOARD_CONFIG'})

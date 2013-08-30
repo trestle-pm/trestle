@@ -2,6 +2,7 @@ angular.module('GitKan.board')
 
 .controller('ColumnsCtrl', function($stateParams, $dialog, gh) {
    this.hasLabel = function(column) {
+   this.showBacklog = false;
       return function(issue) {
          var labels = _.map(issue.labels, function(lbl) {
             return _.last(lbl.name.split('-')).trim();
@@ -11,25 +12,11 @@ angular.module('GitKan.board')
    };
 
    this.getColumnWidth = function() {
-      return {width: (100.0 / this.config.columns.length) + '%'};
-   };
-
-   this.showIssueDetails = function(issue) {
-      var opts = {
-         backdrop: true,
-         keyboard: true,
-         backdropClick: true,
-         templateUrl: "board/issue_details/issue_details.tpl.html"
-      };
-
-      var selected_issue = issue;
-      /* XXX Due to not storing the issue in the scope it is not longer available
-             to the dialog
-      var d = $dialog.dialog(angular.extend(opts, {resolve: {
-         issue: function() {return angular.copy(selected_issue);}
-      }}));
-      d.open();
-      */
+      var num_columns = $scope.config.columns.length;
+      if($scope.showBacklog) {
+         num_columns += 1;
+      }
+      return { width: (90.0 / num_columns) + '%'};
    };
 
    /**
