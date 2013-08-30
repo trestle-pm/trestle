@@ -18,7 +18,7 @@
           <div class="header">
             <img class="avatar"
                  title="Assigned to {{issue.user.login}}"
-                 src="{{issue.user.avatar_url}}?s=30" />
+                 ng-src="{{issue.user.avatar_url}}?s=30" />
             <span class="title" ng-click="showIssueDetails(issue)" >
               {{issue.title}}
             </span>
