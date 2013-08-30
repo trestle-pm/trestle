@@ -1,6 +1,6 @@
 <ul ng-controller="UsersListCtrl" class="user-list" >
   <li ng-repeat="user in users" class="user" ng-draggable="getDragData()" >
-    <img class="avatar" src="{{user.avatar_url}}?s=30" ></img>
+    <img class="avatar" ng-src="{{user.avatar_url}}?s=30" ></img>
     {{user.login}}
   </li>
 </ul>
