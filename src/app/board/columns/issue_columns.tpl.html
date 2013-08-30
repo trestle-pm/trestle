@@ -20,9 +20,14 @@
             ng-controller="IssueCtrl">
 
           <div class="header">
-            <img class="avatar"
-                 title="Assigned to {{issue.user.login}}"
-                 src="{{issue.user.avatar_url}}?s=30" />
+            <img ng-if="getAssignedUser()"
+                 class="avatar"
+                 title="Assigned to {{getAssignedUser().login}}"
+                 ng-src="{{getAssignedUser().avatar_url}}?s=30" />
+            <img ng-if="!getAssignedUser()"
+                 class="avatar empty"
+                 title="Assigned to no one."
+                 src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
             <span class="title" ng-click="showIssueDetails(issue)" >
               {{issue.title}}
             </span>
