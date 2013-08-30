@@ -1,0 +1,35 @@
+
+.column-header {
+    text-align: center;
+}
+
+.card {
+    border:     1px solid #e5e5e5;
+    box-shadow: 2px 2px 7px #888;
+
+    width: 100%;
+    position: relative;
+    margin: 5px 0;
+
+    background: white;
+
+    &.dragging {
+        background: blue;
+    }
+
+    .header {
+        margin: 5px;
+    }
+}
+
+
+.column {
+    width: 16%;
+    margin: 0;
+    padding: 0 10px;
+    margin-before: 0;
+
+    vertical-align: top;
+
+    box-sizing: border-box;
+}

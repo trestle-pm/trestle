@@ -21,8 +21,6 @@ angular.module('draggable', [])
       restrict: 'A',
 
       link: function(scope, element, attrs, controller) {
-         var drag_image_elm;
-
          // Mark the item as draggable
          element.prop('draggable', true);
 
@@ -38,25 +36,8 @@ angular.module('draggable', [])
             });
 
             if (handled) {
-               var clone = event.srcElement.cloneNode(true),
-                   elm = angular.element(clone);
-
-               elm.addClass('drag-image');
-
-               drag_image_elm = angular.element('<div class="drag-image-wrapper"></div>');
-               drag_image_elm.append(elm);
-
-               angular.element(document.body).append(drag_image_elm);
-               event.dataTransfer.setDragImage(drag_image_elm[0], 0, 0);
+               event.dataTransfer.setDragImage(event.srcElement, 0, 0);
             }
-         });
-
-         element.bind('dragend', function() {
-            element.removeClass('dragging');
-            if (drag_image_elm) {
-               drag_image_elm.remove();
-            }
-            drag_image_elm = null;
          });
       }
    };

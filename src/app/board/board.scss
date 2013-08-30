@@ -1,3 +1,6 @@
+@import "app/board/toolbar/toolbar";
+@import "app/board/columns/issues";
+
 .board.container {
     // bootstrap container is required so that we can use the navbar
     // however the container defaults to a 960 width which does not work for us.
@@ -11,30 +14,6 @@ ul.user-list, ul.issue-columns, ul.column-body {
     > li {
         display: inline-block;
         list-style-type: none;
-    }
-}
-
-.column {
-    width: 16%;
-    margin: 0;
-    padding: 0;
-    margin-before: 0;
-
-    vertical-align: top;
-}
-
-.column-header {
-    text-align: center;
-}
-
-.card {
-    border: 1px solid red;
-    width: 100%;
-    position: relative;
-    margin: 5px;
-
-    &.dragging {
-        background: blue;
     }
 }
 

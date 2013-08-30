@@ -205,7 +205,7 @@ angular.module('github.api', ['restangular'])
       // - paging
       return GitHubRestangular
          .one(['repos', owner, repo, 'issues'].join('/'))
-         .get({per_page: 100});
+         .get(angular.extend(args || {}, {per_page: 100}));
    };
 
    this.listRepos = function() {

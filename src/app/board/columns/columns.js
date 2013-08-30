@@ -1,11 +1,6 @@
 angular.module('GitKan.board')
 
-.controller('ColumnsCtrl', function($scope, $rootScope, $stateParams, $dialog, gh) {
-   gh.listRepoIssues($stateParams.owner, $stateParams.repo)
-      .then(function(issues) {
-         $scope.allIssues = issues;
-      });
-
+.controller('ColumnsCtrl', function($scope, $stateParams, $dialog, gh) {
    $scope.hasLabel = function(column) {
       return function(issue) {
          var labels = _.map(issue.labels, function(lbl) {

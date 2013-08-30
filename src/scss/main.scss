@@ -12,13 +12,6 @@
   -webkit-user-drag: element;
 }
 
-.card.drag-image {
-    max-width:  200px;
-    max-height: 100px;
-    overflow:   hidden;
-}
-
 // Bring in the various app tools
 @import "app/login/login";
 @import "app/board/board";
-@import "app/board/toolbar/toolbar";
