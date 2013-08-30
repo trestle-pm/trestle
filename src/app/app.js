@@ -5,7 +5,7 @@ angular.module( 'GitKan', [
    'GitKan.login',
    'GitKan.repo_list',
    'github.api',
-   'draggable',
+   'ui.sortable',
    'ui.bootstrap',
    'ui.state',
    'ui.route'

@@ -10,10 +10,15 @@
 ul.user-list, ul.issue-columns, ul.column-body {
     margin:  0;
     padding: 0;
+}
+
+ul.issue-columns {
+    @include inline-block-list-container();
 
     > li {
-        display: inline-block;
-        list-style-type: none;
+        @include inline-block-list-item();
+
+        vertical-align: top;
     }
 }
 

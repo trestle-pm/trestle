@@ -91,9 +91,6 @@ angular.module('GitKan.board')
       return url ? true : false;
    };
 
-   $scope.onDrop = function() {
-      console.log('drop');
-   };
 })
 
 ;
