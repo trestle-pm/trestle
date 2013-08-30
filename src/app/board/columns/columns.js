@@ -14,23 +14,6 @@ angular.module('GitKan.board')
       return {width: (100.0 / $scope.config.columns.length) + '%'};
    };
 
-   $scope.showIssueDetails = function(issue) {
-      var opts = {
-         backdrop: true,
-         keyboard: true,
-         backdropClick: true,
-         templateUrl: "board/issue_details/issue_details.tpl.html",
-
-         controller: 'IssueDetailsCtrl'
-      };
-
-      var selected_issue = issue;
-      var d = $dialog.dialog(angular.extend(opts, {resolve: {
-         issue: function() {return angular.copy(selected_issue);}
-      }}));
-      d.open();
-   };
-
    /**
     Called when an issue starts being dragged so to set the mime-type/data for
     the drag event.  This data is used by other systems to determine if
