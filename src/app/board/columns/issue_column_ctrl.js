@@ -45,10 +45,15 @@ angular.module('GitKan.board')
 
    // We already have it
    // - Could convert to an init parameter or something
-   $scope.issue = $scope.issue;
+   //$scope.issue = $scope.issue;
 
    $scope.isPullRequest = function() {
-      return true;
+      var issue = $scope.issue;
+      return issue.pull_request && _.isString(issue.pull_request.html_url);
+   };
+
+   $scope.getAssignedUser = function() {
+      return $scope.issue.assignee;
    };
 
    $scope.showIssueDetails = function(issue) {
