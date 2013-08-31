@@ -71,7 +71,7 @@ angular.module( 'GitKan.login', [
             // Yeah, for successful auth so bounce the user to next page
             // - If the next page was supplied then use that otherwise
             //   bounce the user to the repo list by default
-            $location.path('/repos');
+            $location.path('/board');
          }
       });
 
