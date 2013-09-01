@@ -10,43 +10,42 @@
 
       <h1 class="column-header">{{labelName}}</h1>
 
+      <!-- CARDS List -->
       <ul class="column-body" ui-sortable="sortableOptions" ng-model="issues" >
 
-        <!-- Is ng-model needed here? -->
         <li class="card"
-
             ng-repeat="issue in issues | filter:main.cardSearchText"
 
-            ng-controller="IssueCtrl">
+            ng-controller="IssueCtrl as issueCtrl">
 
           <div class="header">
             <img ng-if="getAssignedUser()"
                  class="avatar"
-                 title="Assigned to {{getAssignedUser().login}}"
-                 ng-src="{{getAssignedUser().avatar_url}}?s=30" />
+                 title="Assigned to {{issueCtrl.getAssignedUser().login}}"
+                 ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
             <img ng-if="!getAssignedUser()"
                  class="avatar empty"
                  title="Assigned to no one."
                  src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
             <span class="title" ng-click="showIssueDetails(issue)" >
-              {{issue.title}}
+              {{issueCtrl.issue.title}}
             </span>
           </div>
 
           <div class="milestone" ng-show="issue.milestone">
-            {{issue.milestone.title}}
+            {{issueCtrl.issue.milestone.title}}
           </div>
 
           <ul class="labels">
-            <li ng-if="isPullRequest()" class="pull">pull</li>
-            <li ng-repeat="label in issue.labels | filter:excludeColLabel"
+            <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
+            <li ng-repeat="label in issueCtrl.issue.labels | filter:excludeColLabel"
                 style="background-color: #{{label.color}}">
               {{label.name}}
             </li>
           </ul>
         </li>
 
-      </ul>
+      </ul> <!-- end of card list -->
 
     </li>
   </ul>

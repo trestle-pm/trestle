@@ -1,6 +1,6 @@
-angular.module('GitKan.board')
+mod = angular.module('GitKan.board');
 
-.controller('IssueColumnCtrl', function($scope, $stateParams, gh) {
+mod.controller('IssueColumnCtrl', function($scope, $stateParams, gh) {
    // XXX: Would it make sense to make a true class/object for this controller?
 
    // Make sure the issues array exists all the time so that we can drag items
@@ -36,16 +36,13 @@ angular.module('GitKan.board')
       opacity: 0.8
    };
 
-})
+});
 
-.controller('IssueCtrl', function($scope) {
+/*
+mod.controller('IssueCtrl', function($scope) {
    console.log('blah');
 
    $scope.$id = "IssueCtrl_" + $scope.$id;
-
-   // We already have it
-   // - Could convert to an init parameter or something
-   //$scope.issue = $scope.issue;
 
    $scope.isPullRequest = function() {
       var issue = $scope.issue;
@@ -72,5 +69,79 @@ angular.module('GitKan.board')
       }}));
       d.open();
    };
-
 });
+*/
+
+/** Option 2: Construct local object each time */
+/*
+mod.controller('IssueCtrl', function($scope) {
+
+   // I would kind of like to get rid of the scope altogether, maybe...
+   this.issue = $scope.issue;
+
+   // Define methods on the object.
+   angular.extend(this, {
+      isPullRequest: function() {
+         return this.issue.pull_request && this.issue.pull_request.html_url;
+      },
+
+      getAssignedUser: function() {
+         return this.issue.assignee;
+      },
+
+      showIssueDetails: function() {
+         var opts = {
+            backdrop: true,
+            keyboard: true,
+            backdropClick: true,
+            templateUrl: "board/issue_details/issue_details.tpl.html",
+
+            controller: 'IssueDetailsCtrl'
+         };
+
+         var selected_issue = issue;
+         var d = $dialog.dialog(angular.extend(opts, {resolve: {
+            issue: function() {return angular.copy(selected_issue);}
+         }}));
+         d.open();
+      }
+   });
+});
+*/
+
+/** Option 3: Separate prototype based class */
+
+function IssueCtrl($scope) {
+   this.issue = $scope.issue;
+}
+
+IssueCtrl.prototype = {
+   isPullRequest: function() {
+      return this.issue.pull_request && this.issue.pull_request.html_url;
+   },
+
+   getAssignedUser: function() {
+      return this.issue.assignee;
+   },
+
+   showIssueDetails: function() {
+      var opts = {
+         backdrop: true,
+         keyboard: true,
+         backdropClick: true,
+         templateUrl: "board/issue_details/issue_details.tpl.html",
+
+         controller: 'IssueDetailsCtrl'
+      };
+
+      var selected_issue = issue;
+      var d = $dialog.dialog(angular.extend(opts, {resolve: {
+         issue: function() {return angular.copy(selected_issue);}
+      }}));
+      d.open();
+   }
+};
+
+mod.controller('IssueCtrl', IssueCtrl);
+
+
