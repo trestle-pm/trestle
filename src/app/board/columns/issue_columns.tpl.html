@@ -1,52 +1,48 @@
 <div ng-controller="ColumnsCtrl" >
 
+  <button class="btn btn-primary backlog"
+          ng-click="showBacklog = !showBacklog">
+    {{showBacklog ? 'Hide Backlog' : 'Show Backlog'}}
+  </button>
+
   <ul class="issue-columns" >
+    <!-- Backlog Column -->
+    <li ng-show="showBacklog"
+        ng-style="getColumnWidth()"
+        ng-controller="IssueColumnCtrl as colCtrl"
+        ng-init="colCtrl.init({isBacklog:true})" >
+
+      <h1 class="column-header">{{colCtrl.columnName}}</h1>
+
+      <!-- CARDS List -->
+      <ul class="column-body" ui-sortable="colCtrl.sortableOptions"
+                              ng-model="colCtrl.issues" >
+        <div class="card_wrapper"
+            ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText">
+          <div ng-include="'board/columns/issue.tpl.html'"></div>
+        </div>
+      </ul> <!-- end of card list -->
+    </li>
+
+    <!-- Kanban Columns -->
     <li ng-repeat="col_label in config.columns" class="column"
 
         ng-style="getColumnWidth()"
 
-        ng-controller="IssueColumnCtrl"
-        ng-init="init(col_label)" >
+        ng-controller="IssueColumnCtrl as colCtrl"
+        ng-init="colCtrl.init({labelName:col_label})" >
 
-      <h1 class="column-header">{{labelName}}</h1>
+      <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="sortableOptions" ng-model="issues" >
-
-        <li class="card"
-            ng-repeat="issue in issues | filter:main.cardSearchText"
-
-            ng-controller="IssueCtrl as issueCtrl">
-
-          <div class="header">
-            <img ng-if="getAssignedUser()"
-                 class="avatar"
-                 title="Assigned to {{issueCtrl.getAssignedUser().login}}"
-                 ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
-            <img ng-if="!getAssignedUser()"
-                 class="avatar empty"
-                 title="Assigned to no one."
-                 src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
-            <span class="title" ng-click="showIssueDetails(issue)" >
-              {{issueCtrl.issue.title}}
-            </span>
-          </div>
-
-          <div class="milestone" ng-show="issue.milestone">
-            {{issueCtrl.issue.milestone.title}}
-          </div>
-
-          <ul class="labels">
-            <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
-            <li ng-repeat="label in issueCtrl.issue.labels | filter:excludeColLabel"
-                style="background-color: #{{label.color}}">
-              {{label.name}}
-            </li>
-          </ul>
-        </li>
-
+      <ul class="column-body" ui-sortable="colCtrl.sortableOptions"
+                              ng-model="colCtrl.issues" >
+        <div class="card_wrapper"
+            ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText">
+          <div ng-include="'board/columns/issue.tpl.html'"></div>
+        </div>
       </ul> <!-- end of card list -->
-
     </li>
+
   </ul>
 </div>

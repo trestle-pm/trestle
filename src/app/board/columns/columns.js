@@ -1,6 +1,8 @@
 angular.module('GitKan.board')
 
 .controller('ColumnsCtrl', function($scope, $stateParams, $dialog, gh) {
+   $scope.showBacklog = false;
+
    $scope.hasLabel = function(column) {
       return function(issue) {
          var labels = _.map(issue.labels, function(lbl) {
@@ -11,7 +13,11 @@ angular.module('GitKan.board')
    };
 
    $scope.getColumnWidth = function() {
-      return {width: (100.0 / $scope.config.columns.length) + '%'};
+      var num_columns = $scope.config.columns.length;
+      if($scope.showBacklog) {
+         num_columns += 1;
+      }
+      return { width: (90.0 / num_columns) + '%'};
    };
 
    /**
