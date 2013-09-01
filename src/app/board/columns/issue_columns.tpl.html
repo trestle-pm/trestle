@@ -1,14 +1,12 @@
 <div ng-controller="ColumnsCtrl" >
 
   <ul class="issue-columns" >
-    <li ng-repeat="col_label in config.columns" class="column"
-
-        ng-style="getColumnWidth()"
-
+    <!-- Backlog Column -->
+    <li ng-style="getColumnWidth()"
         ng-controller="IssueColumnCtrl"
-        ng-init="init(col_label)" >
+        ng-init="init({isBacklog:true})" >
 
-      <h1 class="column-header">{{labelName}}</h1>
+      <h1 class="column-header">{{columnName}}</h1>
 
       <!-- CARDS List -->
       <ul class="column-body" ui-sortable="sortableOptions" ng-model="issues" >
@@ -16,9 +14,27 @@
             ng-repeat="issue in issues | filter:main.cardSearchText">
           <div ng-include="'board/columns/issue.tpl.html'"></div>
         </div>
-
       </ul> <!-- end of card list -->
-
     </li>
+
+    <!-- Primary Columns -->
+    <li ng-repeat="col_label in config.columns" class="column"
+
+        ng-style="getColumnWidth()"
+
+        ng-controller="IssueColumnCtrl"
+        ng-init="init({labelName:col_label})" >
+
+      <h1 class="column-header">{{columnName}}</h1>
+
+      <!-- CARDS List -->
+      <ul class="column-body" ui-sortable="sortableOptions" ng-model="issues" >
+        <div class="card_wrapper"
+            ng-repeat="issue in issues | filter:main.cardSearchText">
+          <div ng-include="'board/columns/issue.tpl.html'"></div>
+        </div>
+      </ul> <!-- end of card list -->
+    </li>
+
   </ul>
 </div>

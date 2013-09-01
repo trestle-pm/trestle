@@ -6,31 +6,31 @@ angular.module('GitKan.board')
    $scope.issues = [];
 
    /**
-   * labelName: The string for the label for this column or undefined.
-   * isBacklog: If true, this this should get all items that are not labeled
+   * options:
+   *    labelName: The string for the label for this column or undefined.
+   *    isBacklog: If true, this this should get all items that are not labeled
    *                with a column.
    */
-   $scope.init = function(labelName, isBacklog) {
-      $scope.labelName = labelName;
-      $scope.isBacklog = !!isBacklog;
+   $scope.init = function(options) {
+      $scope.labelName = options.labelName;
+      $scope.isBacklog = !!options.isBacklog;
+      $scope.columnName = ($scope.isBacklog ? 'Backlog' : $scope.labelName);
 
-      /*
+      $scope.$id = "ColumnCtrl_" + $scope.columnName + $scope.$id;
+
       gh.listRepoIssues($stateParams.owner, $stateParams.repo,
-                        ($scope.isBacklog ? {} : {labels: labelName}))
+                        ($scope.isBacklog ? {} : {labels: $scope.labelName}))
          .then(function(issues) {
+            // If backlog:
+            // - filter out all issues that have labels in a column
+            var column_tags = $scope.config.columns;   // all the tags used for kanban columns
             if($scope.isBacklog) {
-               // filter out all issues that have labels in a column
-               var column_tags = $scope.config.columns;
                issues = _.reject(issues, function(issue) {
-                                    return _.intersection(column_tags, issue.labels).length() > 0;
-                                 });
+                  var issue_labels = _.pluck(issue.labels, 'name');
+                  return _.intersection(column_tags, issue_labels).length > 0;
+               });
             }
 
-            $scope.issues = issues;
-         });
-      */
-      gh.listRepoIssues($stateParams.owner, $stateParams.repo, {labels: labelName})
-         .then(function(issues) {
             $scope.issues = issues;
          });
    };
@@ -40,13 +40,13 @@ angular.module('GitKan.board')
    };
 
    $scope.$watch('issues', function(newIssues, oldIssues) {
-      console.log("ISSUES: Column: " + $scope.labelName , newIssues, oldIssues);
+      console.log("ISSUES: Column: " + $scope.columnName , newIssues, oldIssues);
    }, true);
 
    $scope.sortableOptions = {
       // Handle reorders
       update: function() {
-         console.log($scope.labelName, $scope.issues);
+         console.log($scope.columnName, $scope.issues);
       },
       // Allow dragging between the columns
       connectWith: '.column-body',
