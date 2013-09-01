@@ -1,8 +1,14 @@
 <div ng-controller="ColumnsCtrl" >
 
+  <button class="btn btn-primary backlog"
+          ng-click="showBacklog = !showBacklog">
+    {{showBacklog ? 'Hide Backlog' : 'Show Backlog'}}
+  </button>
+
   <ul class="issue-columns" >
     <!-- Backlog Column -->
-    <li ng-style="getColumnWidth()"
+    <li ng-show="showBacklog"
+        ng-style="getColumnWidth()"
         ng-controller="IssueColumnCtrl as colCtrl"
         ng-init="colCtrl.init({isBacklog:true})" >
 
