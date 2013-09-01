@@ -5,6 +5,12 @@ angular.module('GitKan.board')
 
    var ctrl = this;
 
+   // Expose repo details so we can use them in the markup
+   $scope.repoDetails = {
+      owner : $stateParams.owner,
+      repo  : $stateParams.repo
+   };
+
    function setConfiguration(conf) {
       $scope.config = conf;
    }
