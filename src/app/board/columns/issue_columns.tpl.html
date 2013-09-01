@@ -14,6 +14,10 @@
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
+      <a class="btn btn-success"
+         ng-href="https://github.com/{{repoDetails.owner}}/{{repoDetails.repo}}/issues/new"
+         target="_blank">Create Issue</a>
+
       <!-- CARDS List -->
       <ul class="column-body" ui-sortable="colCtrl.sortableOptions"
                               ng-model="colCtrl.issues" >
