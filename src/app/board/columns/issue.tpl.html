@@ -1,0 +1,32 @@
+
+<!-- Note: this relies upon 'issue' being in the parent scope -->
+<li class="card"
+    ng-controller="IssueCtrl as issueCtrl">
+
+  <div class="header">
+    <img ng-if="getAssignedUser()"
+         class="avatar"
+         title="Assigned to {{issueCtrl.getAssignedUser().login}}"
+         ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
+    <img ng-if="!getAssignedUser()"
+         class="avatar empty"
+         title="Assigned to no one."
+         src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
+    <span class="title" ng-click="showIssueDetails(issue)" >
+      {{issueCtrl.issue.title}}
+    </span>
+  </div>
+
+  <div class="milestone" ng-show="issue.milestone">
+    {{issueCtrl.issue.milestone.title}}
+  </div>
+
+  <ul class="labels">
+    <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
+    <li ng-repeat="label in issueCtrl.issue.labels | filter:excludeColLabel"
+        style="background-color: #{{label.color}}">
+      {{label.name}}
+    </li>
+  </ul>
+</li>
+

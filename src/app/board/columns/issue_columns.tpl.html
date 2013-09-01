@@ -12,38 +12,10 @@
 
       <!-- CARDS List -->
       <ul class="column-body" ui-sortable="sortableOptions" ng-model="issues" >
-
-        <li class="card"
-            ng-repeat="issue in issues | filter:main.cardSearchText"
-
-            ng-controller="IssueCtrl as issueCtrl">
-
-          <div class="header">
-            <img ng-if="getAssignedUser()"
-                 class="avatar"
-                 title="Assigned to {{issueCtrl.getAssignedUser().login}}"
-                 ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
-            <img ng-if="!getAssignedUser()"
-                 class="avatar empty"
-                 title="Assigned to no one."
-                 src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
-            <span class="title" ng-click="showIssueDetails(issue)" >
-              {{issueCtrl.issue.title}}
-            </span>
-          </div>
-
-          <div class="milestone" ng-show="issue.milestone">
-            {{issueCtrl.issue.milestone.title}}
-          </div>
-
-          <ul class="labels">
-            <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
-            <li ng-repeat="label in issueCtrl.issue.labels | filter:excludeColLabel"
-                style="background-color: #{{label.color}}">
-              {{label.name}}
-            </li>
-          </ul>
-        </li>
+        <div class="card_wrapper"
+            ng-repeat="issue in issues | filter:main.cardSearchText">
+          <div ng-include="'board/columns/issue.tpl.html'"></div>
+        </div>
 
       </ul> <!-- end of card list -->
 
