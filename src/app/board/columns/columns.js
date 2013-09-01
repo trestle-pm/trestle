@@ -10,8 +10,9 @@ angular.module('GitKan.board')
       };
    };
 
+   // XXX: Need to update this to take into account if backlog is up or not
    $scope.getColumnWidth = function() {
-      return {width: (100.0 / $scope.config.columns.length) + '%'};
+      return { width: (90.0 / ($scope.config.columns.length + 1)) + '%'};
    };
 
    /**
