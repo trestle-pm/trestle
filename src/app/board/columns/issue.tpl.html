@@ -23,7 +23,8 @@
 
   <ul class="labels">
     <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
-    <li ng-repeat="label in issueCtrl.issue.labels | filter:excludeColLabel"
+    <!-- Note the use of filter from parent controller in scope -->
+    <li ng-repeat="label in issueCtrl.issue.labels | filter:colCtrl.excludeColLabel"
         style="background-color: #{{label.color}}">
       {{label.name}}
     </li>
