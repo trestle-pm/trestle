@@ -1,31 +1,29 @@
 angular.module('GitKan.board')
 
-.controller('IssueColumnCtrl', function($scope, $stateParams, gh) {
+.controller('IssueColumnCtrl', function(gh) {
+   var me = this;
+
    // Make sure the issues array exists all the time so that we can drag items
    // from one column into this even if there are not issues for the column.
-   $scope.issues = [];
+   this.issues = [];
 
-   $scope.init = function(labelName) {
-      $scope.labelName = labelName;
+   this.init = function(labelName, owner, repo) {
+      this.labelName = labelName;
 
-      gh.listRepoIssues($stateParams.owner, $stateParams.repo, {labels: labelName})
+      gh.listRepoIssues(owner, repo, {labels: labelName})
          .then(function(issues) {
-            $scope.issues = issues;
+            me.issues = issues;
          });
    };
 
-   $scope.excludeColLabel = function(ghLabel) {
-      return ghLabel.name != $scope.labelName;
+   this.excludeColLabel = function(ghLabel) {
+      return ghLabel.name != this.labelName;
    };
 
-   $scope.$watch('issues', function(newIssues, oldIssues) {
-      console.log(newIssues, oldIssues);
-   }, true);
-
-   $scope.sortableOptions = {
+   this.sortableOptions = {
       // Handle reorders
       update: function() {
-         console.log($scope.labelName, $scope.issues);
+         console.log(me.labelName, me.issues);
       },
       // Allow dragging between the columns
       connectWith: '.column-body',

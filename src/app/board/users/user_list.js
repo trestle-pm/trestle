@@ -1,9 +1,13 @@
 angular.module('GitKan.board')
 
-.controller('UsersListCtrl', function($scope, $stateParams, gh) {
+.controller('UsersListCtrl', function($stateParams, gh) {
+   var me = this;
+
+   me = [];
+
    gh.listRepoUsers($stateParams.owner, $stateParams.repo)
       .then(function(users) {
-         $scope.users = users;
+         me.users = users;
       });
 })
 

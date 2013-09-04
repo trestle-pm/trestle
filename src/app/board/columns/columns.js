@@ -1,7 +1,7 @@
 angular.module('GitKan.board')
 
-.controller('ColumnsCtrl', function($scope, $stateParams, $dialog, gh) {
-   $scope.hasLabel = function(column) {
+.controller('ColumnsCtrl', function($stateParams, $dialog, gh) {
+   this.hasLabel = function(column) {
       return function(issue) {
          var labels = _.map(issue.labels, function(lbl) {
             return _.last(lbl.name.split('-')).trim();
@@ -10,25 +10,26 @@ angular.module('GitKan.board')
       };
    };
 
-   $scope.getColumnWidth = function() {
-      return {width: (100.0 / $scope.config.columns.length) + '%'};
+   this.getColumnWidth = function() {
+      return {width: (100.0 / this.config.columns.length) + '%'};
    };
 
-   $scope.showIssueDetails = function(issue) {
+   this.showIssueDetails = function(issue) {
       var opts = {
          backdrop: true,
          keyboard: true,
          backdropClick: true,
-         templateUrl: "board/issue_details/issue_details.tpl.html",
-
-         controller: 'IssueDetailsCtrl'
+         templateUrl: "board/issue_details/issue_details.tpl.html"
       };
 
       var selected_issue = issue;
+      /* XXX Due to not storing the issue in the scope it is not longer available
+             to the dialog
       var d = $dialog.dialog(angular.extend(opts, {resolve: {
          issue: function() {return angular.copy(selected_issue);}
       }}));
       d.open();
+      */
    };
 
    /**
@@ -39,7 +40,7 @@ angular.module('GitKan.board')
     It is good to pass as many versions of the data as possible so that we
     can interoperate with as many other systems as possible.
     */
-   $scope.onIssueDragStart = function(issue, $event) {
+   this.onIssueDragStart = function(issue, $event) {
       // The three common ways to passing urls
       // Ideally, this will allow us to interoperate with other systems.
       var mime_data = {
@@ -69,7 +70,7 @@ angular.module('GitKan.board')
      * text/uri-list
      * text/plain
     */
-   $scope.canHandleDrop = function($event) {
+   this.canHandleDrop = function($event) {
       // See if there is a github URL
       var url = _.find(['URL', 'text/uri-list', 'text/plain'], function(mimeType) {
          var data = $event.dataTransfer.getData(mimeType);

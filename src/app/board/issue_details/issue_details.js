@@ -1,7 +1,10 @@
 angular.module('GitKan.board')
 
-.controller( 'IssueDetailsCtrl', function($scope, $rootScope, issue, dialog) {
-   $scope.issue = issue;
+.controller( 'IssueDetailsCtrl', function() {
+   this.init = function(issue) {
+      console.log('init', issue);
+      this.issue = issue;
+   };
 })
 
 ;

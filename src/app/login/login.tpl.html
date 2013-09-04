@@ -1,8 +1,8 @@
-<form id="login-form" >
-  <input id="username" placeholder="Username" ng-model="username"></input>
-  <input id="password" placeholder="Password" ng-model="password" type="password"></input>
+<form id="login-form" ng-controller="LoginCtrl as loginCtrl">
+  <input id="username" placeholder="Username" ng-model="loginCtrl.username"></input>
+  <input id="password" placeholder="Password" ng-model="loginCtrl.password" type="password"></input>
 
-  <input type="checkbox" ng-model="rememberMe"> Remember Me
+  <input type="checkbox" ng-model="loginCtrl.rememberMe"> Remember Me
 
-  <button id="submit" ng-click="attemptLogin()" >Login</button>
+  <button id="submit" ng-click="loginCtrl.attemptLogin()" >Login</button>
 </form>
