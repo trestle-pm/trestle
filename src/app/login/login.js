@@ -17,21 +17,23 @@ angular.module( 'GitKan.login', [
      url: '/login',
      views: {
         body: {
-           controller:  'LoginCtrl',
            templateUrl: 'login/login.tpl.html'
         }
      }
   });
 })
 
-.controller( 'LoginCtrl', function HomeController($scope, $http, $location, gh) {
-   // Always start with a blonk username/password and remember turned off
-   $scope.username   = '';
-   $scope.passsword  = '';
-   $scope.rememberMe = false;
+.controller( 'LoginCtrl', function HomeController($http, $location, gh) {
+   var me = this;
 
-   $scope.attemptLogin = function() {
-      var user = $scope.username, pass = $scope.password;
+   // Always start with a blonk username/password and remember turned off
+   this.username   = '';
+   this.passsword  = '';
+   this.rememberMe = false;
+
+   this.attemptLogin = function() {
+      var user = this.username,
+          pass = this.password;
 
       // Make sure the user entered something
       if (!user || !pass) {
@@ -66,7 +68,7 @@ angular.module( 'GitKan.login', [
             // Pass the token off to the `gh` service
             // - Tell the github service how long to hold the authentication
             gh.setAccessToken(auth.token,
-                              $scope.rememberMe ? 'local' : 'session');
+                              me.rememberMe ? 'local' : 'session');
 
             // Yeah, for successful auth so bounce the user to next page
             // - If the next page was supplied then use that otherwise

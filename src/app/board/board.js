@@ -17,8 +17,7 @@ angular.module( 'GitKan.board', [
          url: '',
          views: {
             toolbar: {
-               templateUrl: 'board/toolbar/toolbar.tpl.html',
-               controller:  'ToolbarCtrl'
+               templateUrl: 'board/toolbar/toolbar.tpl.html'
             }
          }
       })
@@ -26,8 +25,7 @@ angular.module( 'GitKan.board', [
          url: '/:owner/:repo',
          views: {
             toolbar: {
-               templateUrl: 'board/toolbar/toolbar.tpl.html',
-               controller:  'ToolbarCtrl'
+               templateUrl: 'board/toolbar/toolbar.tpl.html'
             },
             columns: {
                templateUrl: 'board/columns/issue_columns.tpl.html'

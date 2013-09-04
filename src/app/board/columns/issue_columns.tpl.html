@@ -1,25 +1,24 @@
-<div ng-controller="ColumnsCtrl" >
+<div ng-controller="ColumnsCtrl as columnsCtrl" >
 
   <ul class="issue-columns" >
-    <li ng-repeat="col_label in config.columns" class="column"
+    <li ng-repeat="col_label in boardCtrl.config.columns" class="column"
 
-        ng-style="getColumnWidth()"
+        ng-style="columnCtrl.getColumnWidth()"
 
-        ng-controller="IssueColumnCtrl"
-        ng-init="init(col_label)" >
+        ng-controller="IssueColumnCtrl as colCtrl"
+        ng-init="colCtrl.init(col_label, boardCtrl.owner, boardCtrl.repo)" >
 
       <h1 class="column-header">{{col_label}}</h1>
 
-      <ul class="column-body" ui-sortable="sortableOptions" ng-model="issues" >
+      <ul class="column-body" ui-sortable="sortableOptions" ng-model="colCtrl.issues" >
         <li class="card"
-            ng-model="issue"
-            ng-repeat="issue in issues | filter:main.cardSearchText" >
+            ng-repeat="issue in colCtrl.issues | filter:boardCtrl.cardSearchText" >
 
           <div class="header">
             <img class="avatar"
                  title="Assigned to {{issue.user.login}}"
                  ng-src="{{issue.user.avatar_url}}?s=30" />
-            <span class="title" ng-click="showIssueDetails(issue)" >
+            <span class="title" ng-click="columnsCtrl.showIssueDetails(issue)" >
               {{issue.title}}
             </span>
           </div>
@@ -30,7 +29,7 @@
 
           <ul class="labels">
             <!-- XXX Look at hiding any column heading labels. -->
-            <li ng-repeat="label in issue.labels | filter:excludeColLabel"
+            <li ng-repeat="label in issue.labels | filter:colCtrl.excludeColLabel"
                 style="background-color: #{{label.color}}">
               {{label.name}}
             </li>

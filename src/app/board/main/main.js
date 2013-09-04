@@ -1,12 +1,21 @@
 angular.module('GitKan.board')
 
-.controller( 'BoardCtrl', function($scope, $stateParams, $location, gh) {
+.controller( 'BoardCtrl', function($stateParams, $location, gh) {
+   var me = this;
+
    console.log('Showing details for:', $stateParams.owner, $stateParams.repo);
 
-   var ctrl = this;
+   this.repo = $stateParams.repo;
+   this.owner = $stateParams.owner;
 
-   function setConfiguration(conf) {
-      $scope.config = conf;
+   this.setConfiguration = function(conf) {
+      this.config = conf;
+   };
+
+   // Precompute the composite repo name
+   this.repoFullName = null;
+   if (this.repo) {
+      this.repoFullName = [this.owner, this.repo].join('/');
    }
 
    if ($stateParams.repo) {
@@ -30,11 +39,11 @@ angular.module('GitKan.board')
             }
 
             // Update the view with the configuration
-            setConfiguration(conf);
+            me.setConfiguration(conf);
 
          }, function() {
             console.warn('This repository does not have a configuration file.');
-            setConfiguration({});
+            me.setConfiguration({});
          });
    }
 })
