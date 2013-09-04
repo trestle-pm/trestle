@@ -1,14 +1,14 @@
-<div class="board-toolbar navbar">
+<div class="board-toolbar navbar" ng-controller="ToolbarCtrl as toolbarCtrl" >
   <div class="navbar-inner">
-    <a class="brand" id="github-link" ng-href="http://github.com/{{repoFullName}}" target="_blank" >
+    <a class="brand" id="github-link" ng-href="http://github.com/{{boardCtrl.repoFullName}}" target="_blank" >
       <img src="assets/image/GitHub-Mark-64px.png"></img>
     </a>
 
     <ul class="nav">
       <li id="repo-selector" class="dropdown" >
         <a class="dropdown-toggle-no-close" >
-          <span ng-if="!repo" >yourname/repo</span>
-          <span ng-if="repo" >{{repoFullName}}</span>
+          <span ng-if="!boardCtrl.repo" >yourname/repo</span>
+          <span ng-if="boardCtrl.repo" >{{boardCtrl.repoFullName}}</span>
         </a>
 
         <div class="dropdown-menu">
@@ -18,7 +18,7 @@
           </div>
 
           <ol class="repo-list">
-            <li ng-repeat="(owner, repos) in allRepos">
+            <li ng-repeat="(owner, repos) in toolbarCtrl.allRepos">
               {{owner}}
               <ol>
                 <li ng-repeat="repo in repos | filter:repoSearchText"
@@ -34,18 +34,17 @@
 
       <li>
         <input id="issue-search" type="text" placeholder="Search" class="navbar-search"
-               ng-model="main.cardSearchText" ></input>
+               ng-model="boardCtrl.cardSearchText" ></input>
       </li>
 
       <li class="pull-right">
-        <a ng-href="#milestone/{{owner}}/{{repo}}">Planning</a>
+        <a ng-href="#milestone/{{toolbarCtrl.owner}}/{{toolbarCtrl.repo}}">Planning</a>
       </li>
 
        <li class="pull-right">
-        <a ng-href="#board/{{owner}}/{{repo}}">Board</a>
+        <a ng-href="#board/{{toolbarCtrl.owner}}/{{toolbarCtrl.repo}}">Board</a>
       </li>
 
     </ul>
-
 
 </div>

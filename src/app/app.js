@@ -15,7 +15,7 @@ angular.module( 'GitKan', [
    $urlRouterProvider.otherwise('/login');
 })
 
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
+.controller( 'AppCtrl', function AppCtrl ( ) {
    // Controls everything outside of the ui-view
 })
 

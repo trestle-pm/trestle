@@ -1,12 +1,12 @@
-<div >
+<div ng-controller="IssueDetailsCtrl as detailsCtrl" ng-init="detailsCtrl.init(issue)" >
   <h1 class="modal-header" >
-    {{issue.title}}
+    {{detailsCtrl.issue.title}}
   </h1>
 
   <div class="modal-body">
-    {{issue.body}}
+    {{detailsCtrl.issue.body}}
 
-    {{issue.html_url}}
+    {{detailsCtrl.issue.html_url}}
   </div>
 
 </div>
