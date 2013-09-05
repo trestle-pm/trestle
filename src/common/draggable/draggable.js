@@ -25,7 +25,7 @@ angular.module('draggable', [])
          element.prop('draggable', true);
 
          // When the drag starts fill in the drag data on the event
-         var func = $parse(attrs['ngDraggable']);
+         var func = $parse(attrs.ngDraggable);
          element.bind('dragstart', function(event) {
             // Run the function inside a $scope.apply block so that if the
             // scope changes the scope will be reevaluated.
@@ -49,9 +49,9 @@ angular.module('draggable', [])
       restrict: 'A',
 
       link: function(scope, element, attrs, controller) {
-         var drag_type = 'move'; // Hardcoded for now since that is all I need
+         //var drag_type = 'move'; // Hardcoded for now since that is all I need
 
-         var func = $parse(attrs['ngDropzone']);
+         var func = $parse(attrs.ngDropzone);
          element.bind('dragover', function(event) {
             // Defualt to drop not allowed
             var allow_drop = true;
@@ -79,7 +79,7 @@ angular.module('draggable', [])
          });
          // }
 
-         var doDropfunc = $parse(attrs['handledrop']);
+         var doDropfunc = $parse(attrs.handledrop);
          element.bind('drop', function(event) {
             var handled = false;
 

@@ -57,7 +57,7 @@ angular.module( 'GitKan.login', [
       p.success(function(auths) {
          // See if any of the authorizations are for our app
          var auth = _.find(auths, function(auth) {
-            return auth.note == "gitkan";
+            return auth.note === "gitkan";
          });
 
          // If none of the authorizations are for gitkan then add one for the user

@@ -1,3 +1,4 @@
+/*jshint maxlen:999 */
 module.exports = function ( grunt ) {
 
    /**
@@ -43,7 +44,8 @@ module.exports = function ( grunt ) {
       meta: {
          banner:
          '/**\n' +
-            ' * <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+            ' * <%= pkg.name %> - v<%= pkg.version %> - ' +
+            '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
             ' * <%= pkg.homepage %>\n' +
             ' *\n' +
             ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
@@ -248,15 +250,9 @@ module.exports = function ( grunt ) {
             'Gruntfile.js'
          ],
          options: {
-            curly: true,
-            immed: true,
-            newcap: true,
-            noarg: true,
-            sub: true,
-            boss: true,
-            eqnull: true
-         },
-         globals: {}
+            jshintrc: '.jshintrc',
+            reporter: './node_modules/jshint-path-reporter'
+         }
       },
 
       /**

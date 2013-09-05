@@ -58,13 +58,16 @@ describe( 'GitHub API (gh)', function() {
       describe('Repo Listing', function() {
          // XXX these tests are weak but since we just dump the API results back
          // to the caller all that we care about is that the URL is built correctly.
-         it('should allow getting the list of repositories', inject(function(gh, $httpBackend, $rootScope) {
+         it('should allow getting the list of repositories', inject(function(gh, $httpBackend,
+                                                                                 $rootScope) {
             // Given the GitHub API returns no issues
-            $httpBackend.expectGET('https://api.github.com/repos/dude/where/issues?access_token=sometoken&per_page=100').
+            $httpBackend.expectGET(
+               'https://api.github.com/repos/dude/where/issues?' +
+                  'access_token=sometoken&per_page=100').
                respond([]);
 
             // When the list is requested
-            var res = gh.listRepoIssues('dude', 'where').then(function(issues) {
+            /*var res =*/ gh.listRepoIssues('dude', 'where').then(function(issues) {
                expect( issues.length ).toEqual( 0 );
             });
 
@@ -74,11 +77,12 @@ describe( 'GitHub API (gh)', function() {
 
          it('should allow getting a file', inject(function(gh, $httpBackend, $rootScope) {
             // Given the GitHub API returns the file
-            $httpBackend.expectGET('https://api.github.com/repos/dude/where/contents/file.txt?access_token=sometoken').
+            $httpBackend.expectGET('https://api.github.com/repos/dude/where/contents/file.txt?' +
+                                   'access_token=sometoken').
                respond({content: 'aGVsbG8gd29ybGQ='});
 
             // When the list is requested
-            var res = gh.getFile('dude', 'where', 'file.txt').then(function(content) {
+            /*var res =*/ gh.getFile('dude', 'where', 'file.txt').then(function(content) {
                expect( content ).toEqual( 'hello world' );
             });
 
@@ -88,13 +92,15 @@ describe( 'GitHub API (gh)', function() {
       });
 
       describe('Issue Search', function() {
-         it('should allow finding an issue by its title', inject(function(gh, $httpBackend, $rootScope) {
+         it('should allow finding an issue by its title', inject(function(gh, $httpBackend,
+                                                                              $rootScope) {
             // Given there is no issue
-            $httpBackend.expectGET('https://api.github.com/search/issues?access_token=sometoken&q=issuetitle%2Bin:title').
+            $httpBackend.expectGET('https://api.github.com/search/issues?' +
+                                   'access_token=sometoken&q=issuetitle%2Bin:title').
                respond([]);
 
             // When the list is requested
-            var res = gh.searchIssues({title: 'issuetitle'}).then(function(issues) {
+            /*var res =*/ gh.searchIssues({title: 'issuetitle'}).then(function(issues) {
                // nothing to assert just care that the URL was created correctly.
             });
 

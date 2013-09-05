@@ -1,0 +1,33 @@
+{
+   "bitwise": true,
+   "curly": true,
+   "eqeqeq": true,
+   "forin": true,
+   "immed": true,
+   "latedef": true,
+   "newcap": true,
+   "strict": false,
+   "noarg": true,
+   "noempty": true,
+   "nonew": true,
+   "plusplus": true,
+   "regexp": true,
+   //"undef": true,
+   "proto": true,
+   "unused": "vars",
+   "maxlen": 100,
+
+   "maxparams": 8,
+   "maxdepth": 4,
+   "maxstatements": 100,
+
+   "browser": true,
+   "devel": true,
+
+   "globals": {
+      "_": false,
+      "jasmine": true,
+      "angular": true,
+      "$scope": true
+   }
+}

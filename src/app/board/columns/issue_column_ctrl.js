@@ -3,10 +3,6 @@ angular.module('GitKan.board')
 .controller('IssueColumnCtrl', function(gh) {
    var me = this;
 
-   // Make sure the issues array exists all the time so that we can drag items
-   // from one column into this even if there are not issues for the column.
-   var me = this;
-
    /* XXX: Q: Should we initialize everything to defaults here or just wait for init?
    this.labelName  = "";
    this.isBacklog  = false;
@@ -55,7 +51,7 @@ angular.module('GitKan.board')
       },
 
       excludeColLabel: function(ghLabel) {
-         return ghLabel.name != this.labelName;
+         return ghLabel.name !== this.labelName;
       },
 
       sortableOptions: {

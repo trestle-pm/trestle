@@ -40,7 +40,8 @@ angular.module('github.api', ['restangular'])
    ;
 
    // Extend the API set the access token when we have one
-   GitHubRestangular.setFullRequestInterceptor(function(element, operation, what, url, headers, params) {
+   GitHubRestangular.setFullRequestInterceptor(function(element, operation, what,
+                                                        url, headers, params) {
       return {
          element: element,
          headers: headers,
@@ -153,10 +154,10 @@ angular.module('github.api', ['restangular'])
 
       // Set the value into storage if asked to
       var action = !!token ? 'setItem' : 'removeItem';
-      if (storageRule == 'local' && window.localStorage) {
+      if (storageRule === 'local' && window.localStorage) {
          window.localStorage[action](token_storage_key, newToken);
       }
-      else if (storageRule == 'session' && window.sessionStorage) {
+      else if (storageRule === 'session' && window.sessionStorage) {
             window.sessionStorage[action](token_storage_key, newToken);
       }
    };
@@ -262,9 +263,9 @@ angular.module('github.api', ['restangular'])
 
       return $q.all([
          // We want all of the users repos
-         this.listRepos(),
+         me.listRepos(),
          // And all of the repos their orgs have also
-         this.listAllOrgRepos()
+         me.listAllOrgRepos()
       ]).then(function(repos) {
          // Merge all of the repos together
          return _.flatten(repos);
