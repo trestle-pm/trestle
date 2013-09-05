@@ -1,38 +1,42 @@
+/* Obviously, this would need a new home but the idea is we can expose the
+   controller like the controller as syntax but have our creation be much for
+   straight forward.
+ */
+function exposeIt(scope, Cls) {
+   scope.init = function(name, options) {
+      // Put the controller into the scope
+      scope[name] = new Cls(options);
+
+      // Remove the init method so that it cannot be used agian.
+      delete scope.init;
+   };
+}
+
+
 angular.module('GitKan.board')
 
-.controller('IssueColumnCtrl', function($scope, gh) {
-   var me = this;
+.controller('IssueColumnCtrl', ['$scope', '$stateParams', 'gh', function($scope, $stateParams, gh) {
+   /**
+    * options:
+    *    labelName: The string for the label for this column or undefined.
+    *    isBacklog: If true, this this should get all items that are not labeled
+    *               with a column.
+    */
+   function IssueColumnCtrl(options) {
+      this.issues     = [];
+      this.owner      = $stateParams.owner;
+      this.repo       = $stateParams.repo;
+      this.labelName  = options.labelName;
+      this.isBacklog  = !!options.isBacklog;
 
-   /* XXX: Q: Should we initialize everything to defaults here or just wait for init?
-   this.labelName  = "";
-   this.isBacklog  = false;
-   this.columnName = "";
-   this.issues = [];
-   */
+      $scope.$id = "ColumnCtrl_" + this.labelName + $scope.$id;
 
-   $scope.$watch('colCtrl.issues', function(newIssues, oldIssues) {
-      console.log("ISSUES: Column: " + me.columnName, newIssues, oldIssues);
-   }, true);
+      this._getIssues();
+   }
 
-   _.extend(this, {
-      /**
-      * options:
-      *    labelName: The string for the label for this column or undefined.
-      *    isBacklog: If true, this this should get all items that are not labeled
-      *                with a column.
-      */
-      init: function(options) {
+   _.extend(IssueColumnCtrl.prototype, {
+      _getIssues: function() {
          var me = this;
-
-         this.issues     = [];
-         this.labelName  = options.labelName;
-         this.isBacklog  = !!options.isBacklog;
-         this.columnName = (this.isBacklog ? 'Backlog' : this.labelName);
-         this.owner      = options.owner;
-         this.repo       = options.repo;
-
-         $scope.$id = "ColumnCtrl_" + this.columnName + $scope.$id;
-
          gh.listRepoIssues(this.owner, this.repo,
                            (this.isBacklog ? {} : {labels: this.labelName}))
             .then(function(issues) {
@@ -54,19 +58,24 @@ angular.module('GitKan.board')
          return ghLabel.name !== this.labelName;
       },
 
-      sortableOptions: {
-         // Handle reorders
-         update: function() {
-            console.log(me.columnName, me.issues);
-         },
-         // Allow dragging between the columns
-         connectWith: '.column-body',
+      sortableOptions: function() {
+         var me = this;
+         return {
 
-         helper: 'clone',
-         opacity: 0.8
+            // Handle reorders
+            update: function() {
+               console.log(me.labelName, me.issues);
+            },
+            // Allow dragging between the columns
+            connectWith: '.column-body',
+
+            helper: 'clone',
+            opacity: 0.8
+         };
       }
 
    });
 
-
-});
+   // Allow the issue column controller to be constructed.
+   exposeIt($scope, IssueColumnCtrl);
+}]);
