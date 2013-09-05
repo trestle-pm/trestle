@@ -22,10 +22,11 @@
          target="_blank">Create Issue</a>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.sortableOptions"
+      <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()"
                               ng-model="colCtrl.issues" >
         <div class="card_wrapper"
-            ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText">
+             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText"
+             data-issue-id="{{issue.id}}" >
           <div tr-issue-card issue="issue"></div>
         </div>
       </ul> <!-- end of card list -->
@@ -33,7 +34,6 @@
 
     <!-- Kanban Columns -->
     <li ng-repeat="col_label in boardCtrl.config.columns" class="column"
-
         ng-style="getColumnWidth()"
 
         ng-controller="IssueColumnCtrl as colCtrl"
@@ -45,10 +45,11 @@
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.sortableOptions"
+      <ul class="column-body" ui-sortable="colCtrl.getSortableOptions()"
                               ng-model="colCtrl.issues" >
         <div class="card_wrapper"
-            ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText">
+             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText"
+             data-issue-id="{{issue.id}}" >
           <div tr-issue-card issue="issue"></div>
         </div>
       </ul>

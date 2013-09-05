@@ -13,7 +13,6 @@ angular.module('github.api', ['restangular'])
    });
 })
 
-
 /**
  @ngdoc service
  @name  github.api.gh
@@ -24,20 +23,8 @@ angular.module('github.api', ['restangular'])
 .service('gh', function gh(GitHubRestangular, $http, $interpolate, $rootScope, $q) {
 
    var
-   /**
-    @ngdoc      property
-    @name       github_url_root
-    @propertyOf github.api.gh
-
-    @description
-    Key to use when storing the API token in local storage.
-
-    @private
-    */
    token_storage_key = 'gh-token',
-   token
-
-   ;
+   token;
 
    // Extend the API set the access token when we have one
    GitHubRestangular.setFullRequestInterceptor(function(element, operation, what,
@@ -46,7 +33,8 @@ angular.module('github.api', ['restangular'])
          element: element,
          headers: headers,
          // - Add the access_token (only if not set by the caller
-         params: angular.extend(params, {access_token: getAccessToken()})
+         params: angular.extend(params, {access_token: getAccessToken(),
+                                        '_cache_bust': new Date().getTime()})
       };
    });
 
@@ -78,21 +66,6 @@ angular.module('github.api', ['restangular'])
    }
 
    /**
-    Helper which will raise an error if the GitHub token is not set.
-
-    @private
-    */
-   function assert_ready() {
-      // Try to get the access token
-      getAccessToken();
-
-      // Raise an error if the token could not be found
-      if (!token) {
-         throw new Error('Unable to find GitHub API access token');
-      }
-   }
-
-   /**
     Helper function to convert GitHub's multiple string base 64 encoding into
     the actual string it represents.
     */
@@ -103,23 +76,6 @@ angular.module('github.api', ['restangular'])
       });
       return lines.join('');
    }
-
-   this.buildAPIUrl = function(route, queryArgs) {
-      // In order to build the URL we need the api token.
-      assert_ready();
-
-      var query = _.defaults({}, queryArgs, {access_token: token}),
-          query_str = _.map(query, function(val, key) {
-             return key + '=' + val;
-          }).join('&');
-
-      // Allow passing the route as a list since that makes things
-      // cleaner in usage.
-      route = angular.isArray(route) ? route.join('/') : route;
-
-      // Build the actual URL and send it out
-      return 'https://api.github.com/' + route + '?' + query_str;
-   };
 
    /**
     @ngdoc    function
@@ -272,6 +228,25 @@ angular.module('github.api', ['restangular'])
       }, function onError() {
          console.error(arguments);
       });
+   };
+
+   this.extractRepoInfo = function(url) {
+      var matches = /https:\/\/github\.com\/([^/]*)\/([^/]*)/.exec(url);
+      if (!matches) {throw new Error('Url did match GitHub syntax');}
+      return {owner: matches[1], repo: matches[2]};
+   };
+
+   this.getIssue = function(owner, repo, issueNumber) {
+      console.log('get issue');
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'issues', issueNumber].join('/'))
+         .get();
+   };
+
+   this.updateIssue = function(owner, repo, issueNumber, settings) {
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'issues', issueNumber].join('/'))
+         .patch(settings);
    };
 
    /**
