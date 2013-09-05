@@ -10,12 +10,15 @@
     <li ng-show="showBacklog"
         ng-style="getColumnWidth()"
         ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({isBacklog:true})" >
+        ng-init="colCtrl.init({isBacklog:true,
+            owner: boardCtrl.owner,
+            repo: boardCtrl.repo
+        })" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <a class="btn btn-success"
-         ng-href="https://github.com/{{repoDetails.owner}}/{{repoDetails.repo}}/issues/new"
+         ng-href="https://github.com/{{boardCtrl.owner}}/{{boardCtrl.repo}}/issues/new"
          target="_blank">Create Issue</a>
 
       <!-- CARDS List -->
@@ -29,12 +32,15 @@
     </li>
 
     <!-- Kanban Columns -->
-    <li ng-repeat="col_label in config.columns" class="column"
+    <li ng-repeat="col_label in boardCtrl.config.columns" class="column"
 
         ng-style="getColumnWidth()"
 
         ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({labelName:col_label})" >
+        ng-init="colCtrl.init({labelName:col_label,
+            owner: boardCtrl.owner,
+            repo: boardCtrl.repo
+        })" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 

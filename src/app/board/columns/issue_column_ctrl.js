@@ -1,6 +1,6 @@
 angular.module('GitKan.board')
 
-.controller('IssueColumnCtrl', function(gh) {
+.controller('IssueColumnCtrl', function($scope, gh) {
    var me = this;
 
    /* XXX: Q: Should we initialize everything to defaults here or just wait for init?
@@ -33,12 +33,12 @@ angular.module('GitKan.board')
 
          $scope.$id = "ColumnCtrl_" + this.columnName + $scope.$id;
 
-         gh.listRepoIssues($stateParams.owner, $stateParams.repo,
+         gh.listRepoIssues(this.owner, this.repo,
                            (this.isBacklog ? {} : {labels: this.labelName}))
             .then(function(issues) {
                // If backlog:
                // - filter out all issues that have labels in a column
-               var column_tags = $scope.config.columns;
+               var column_tags = $scope.boardCtrl.config.columns;
                if(me.isBacklog) {
                   issues = _.reject(issues, function(issue) {
                      var issue_labels = _.pluck(issue.labels, 'name');

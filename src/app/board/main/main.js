@@ -19,21 +19,17 @@ angular.module('GitKan.board')
    }
 
    // Expose repo details so we can use them in the markup
-   $scope.repoDetails = {
+   this.repoDetails = {
       owner : $stateParams.owner,
       repo  : $stateParams.repo
    };
-
-   function setConfiguration(conf) {
-      this.config = conf;
-   }
 
    // XXX: Should config live somewhere else like in a service that we can get access
    //      to through DI or something?
 
    if ($stateParams.repo) {
       // xxx: timing bug required this for now.
-      setConfiguration({
+      me.setConfiguration({
          "columns": ["In Progress", "Review", "CI", "Ship"]
       });
 
@@ -57,6 +53,7 @@ angular.module('GitKan.board')
             }
 
             // Update the view with the configuration
+            console.log('Found config: setting:', conf);
             me.setConfiguration(conf);
 
          }, function() {
