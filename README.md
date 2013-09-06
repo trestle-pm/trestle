@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/trestle-pm/trestle.png?branch=master)](https://travis-ci.org/my8bird/octoboard)
+[![Build Status](https://travis-ci.org/trestle-pm/trestle.png?branch=master)](https://travis-ci.org/trestle-pm/trestle)
 
 Getting Started
 ===============
