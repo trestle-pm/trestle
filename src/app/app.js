@@ -3,7 +3,7 @@ angular.module( 'GitKan', [
    'templates-common',
    'GitKan.board',
    'GitKan.login',
-   'GitKan.repo_list',
+   'GitKan.issue',
    'github.api',
    'ui.sortable',
    'ui.bootstrap',

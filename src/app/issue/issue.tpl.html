@@ -1,14 +1,13 @@
 
-<!-- Note: this relies upon 'issue' being in the parent scope -->
 <li class="card"
     ng-controller="IssueCtrl as issueCtrl">
 
   <div class="header">
-    <img ng-if="getAssignedUser()"
+    <img ng-if="issueCtrl.getAssignedUser()"
          class="avatar"
          title="Assigned to {{issueCtrl.getAssignedUser().login}}"
          ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
-    <img ng-if="!getAssignedUser()"
+    <img ng-if="!issueCtrl.getAssignedUser()"
          class="avatar empty"
          title="Assigned to no one."
          src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
@@ -24,7 +23,8 @@
   <ul class="labels">
     <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
     <!-- Note the use of filter from parent controller in scope -->
-    <li ng-repeat="label in issueCtrl.issue.labels | filter:colCtrl.excludeColLabel"
+    <!-- <li ng-repeat="label in issueCtrl.issue.labels | filter:colCtrl.excludeColLabel" -->
+    <li ng-repeat="label in issueCtrl.issue.labels"
         style="background-color: #{{label.color}}">
       {{label.name}}
     </li>
