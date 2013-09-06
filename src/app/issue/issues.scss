@@ -1,21 +1,4 @@
 
-.column-header {
-    text-align: center;
-
-    position: relative;
-    box-sizing: border-box;
-    margin-top: 0;
-    color: #555;
-
-    line-height: 20px;
-    margin-bottom: 10px;
-    padding: 3px;
-    padding-left: 10px;
-    border: 1px solid #e5e5e5;
-    background: #f3f3f3;
-    font-size: 100%;
-}
-
 .card {
     border:     1px solid #e5e5e5;
     box-shadow: 2px 2px 7px #888;
@@ -56,24 +39,4 @@
         // Undo horizontal list setting
         white-space: normal;
     }
-}
-
-
-.column {
-    width: 16%;
-    margin: 0;
-    padding: 0 10px;
-    margin-before: 0;
-
-    vertical-align: top;
-
-    box-sizing: border-box;
-
-    // hack: make sure the columns are large enough for the dropzone
-    min-height: 1000px;
-}
-
-.column-body {
-    // Make sure there is some place to put drag issues to
-    min-height: 1000px;
 }
