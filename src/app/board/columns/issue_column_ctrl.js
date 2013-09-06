@@ -121,7 +121,8 @@ angular.module('Trestle.board')
          .then(function(issue) {
             // - Remove any of the old columns
             var labels = _.filter(_.pluck(issue.labels, 'name'), function(label) {
-               return !_.contains($scope.boardCtrl.config.columns, label);
+               return !_.contains($scope.trReposSrv.config.columns, label);
+
             });
             // - Add our column
             labels.push(me.labelName);

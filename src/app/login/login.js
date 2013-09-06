@@ -11,17 +11,6 @@ angular.module( 'Trestle.login', [
   'ui.state'
 ])
 
-// Add our routes so that we can get into the section of the app
-.config(function config( $stateProvider ) {
-  $stateProvider.state( 'login', {
-     url: '/login',
-     views: {
-        body: {
-           templateUrl: 'login/login.tpl.html'
-        }
-     }
-  });
-})
 
 .controller( 'LoginCtrl', function HomeController($http, $location, gh) {
    var me = this;
@@ -73,7 +62,7 @@ angular.module( 'Trestle.login', [
             // Yeah, for successful auth so bounce the user to next page
             // - If the next page was supplied then use that otherwise
             //   bounce the user to the repo list by default
-            $location.path('/board');
+            $location.path('/repo');
          }
       });
 

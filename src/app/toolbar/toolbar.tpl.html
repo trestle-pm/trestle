@@ -1,14 +1,14 @@
 <div class="board-toolbar navbar" ng-controller="ToolbarCtrl as toolbarCtrl" >
   <div class="navbar-inner">
-    <a class="brand" id="github-link" ng-href="http://github.com/{{boardCtrl.repoFullName}}" target="_blank" >
+    <a class="brand" id="github-link" ng-href="http://github.com/{{trReposSrv.repoFullName}}" target="_blank" >
       <img src="assets/image/GitHub-Mark-64px.png"></img>
     </a>
 
     <ul class="nav">
       <li id="repo-selector" class="dropdown" >
         <a class="dropdown-toggle-no-close" >
-          <span ng-if="!boardCtrl.repo" >yourname/repo</span>
-          <span ng-if="boardCtrl.repo" >{{boardCtrl.repoFullName}}</span>
+          <span ng-if="!trReposSrv.repo" >yourname/repo</span>
+          <span ng-if="trReposSrv.repo" >{{trReposSrv.repoFullName}}</span>
         </a>
 
         <div class="dropdown-menu">
@@ -34,15 +34,15 @@
 
       <li>
         <input id="issue-search" type="text" placeholder="Search" class="navbar-search"
-               ng-model="boardCtrl.cardSearchText" ></input>
+               ng-model="trReposSrv.cardSearchText" ></input>
       </li>
 
       <li class="pull-right">
-        <a ng-href="#milestone/{{toolbarCtrl.owner}}/{{toolbarCtrl.repo}}">Planning</a>
+        <a ng-href="#repo/{{trReposSrv.owner}}/{{trReposSrv.repo}}/milestones">Planning</a>
       </li>
 
        <li class="pull-right">
-        <a ng-href="#board/{{toolbarCtrl.owner}}/{{toolbarCtrl.repo}}">Board</a>
+        <a ng-href="#repo/{{trReposSrv.owner}}/{{trReposSrv.repo}}/board">Board</a>
       </li>
 
     </ul>

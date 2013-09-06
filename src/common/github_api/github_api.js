@@ -266,6 +266,10 @@ angular.module('github.api', ['restangular'])
            are returned.
     */
    this.searchIssues = function(options) {
+      // XXX: Would this be faster since it is a single repos?
+      //  - /legacy/issues/search/:owner/:repository/:state/:keyword
+      //  http://developer.github.com/v3/search/legacy/#search-issues
+      //
       // Build up the search string by looking at the supplied options
       var query = '';
       if (options.title) {
