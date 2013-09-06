@@ -9,10 +9,9 @@
     <!-- Backlog Column -->
     <li ng-show="showBacklog"
         ng-style="getColumnWidth()"
-        ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({isBacklog:true,
-            owner: boardCtrl.owner,
-            repo: boardCtrl.repo
+        ng-controller="IssueColumn"
+        ng-init="init('colCtrl', {isBacklog:true,
+                                  boardCtrl: boardCtrl
         })" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
@@ -22,7 +21,7 @@
          target="_blank">Create Issue</a>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.sortableOptions"
+      <ul class="column-body" ui-sortable="colCtrl.sortableOptions()"
                               ng-model="colCtrl.issues" >
         <div class="card_wrapper"
             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText">
@@ -36,16 +35,15 @@
 
         ng-style="getColumnWidth()"
 
-        ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({labelName:col_label,
-            owner: boardCtrl.owner,
-            repo: boardCtrl.repo
+        ng-controller="IssueColumn"
+        ng-init="init('colCtrl', {labelName:col_label,
+                                  boardCtrl: boardCtrl
         })" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.sortableOptions"
+      <ul class="column-body" ui-sortable="colCtrl.sortableOptions()"
                               ng-model="colCtrl.issues" >
         <div class="card_wrapper"
             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText">
