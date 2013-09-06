@@ -1,4 +1,4 @@
-mod = angular.module('GitKan.issue', []);
+var mod = angular.module('GitKan.issue', []);
 
 mod.controller('IssueCtrl', function($scope) {
    // init
@@ -44,7 +44,9 @@ mod.directive('trIssueCard', function() {
       replace: true,
       templateUrl: "issue/issue.tpl.html",
       scope: {
-         issue: '=issue'   // XXX: should allow object but seems to fail
+         // XXX: This should allow access in the template but is not for some reason
+         //      need to figure this out and make better.
+         issue: '=issue'
       }
    };
 });
