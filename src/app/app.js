@@ -1,9 +1,9 @@
-angular.module( 'GitKan', [
+angular.module( 'Trestle', [
    'templates-app',
    'templates-common',
-   'GitKan.board',
-   'GitKan.login',
-   'GitKan.issue',
+   'Trestle.board',
+   'Trestle.login',
+   'Trestle.issue',
    'github.api',
    'ui.sortable',
    'ui.bootstrap',

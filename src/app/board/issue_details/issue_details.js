@@ -1,4 +1,4 @@
-angular.module('GitKan.board')
+angular.module('Trestle.board')
 
 .controller( 'IssueDetailsCtrl', function() {
    this.init = function(issue) {
