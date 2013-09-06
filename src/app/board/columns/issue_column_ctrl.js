@@ -1,4 +1,4 @@
-angular.module('GitKan.board')
+angular.module('Trestle.board')
 
 .controller('IssueColumnCtrl', function($scope, gh) {
    var me = this;

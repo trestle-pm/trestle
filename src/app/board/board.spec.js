@@ -5,7 +5,7 @@
  * automatically.
  */
 describe( 'home section', function() {
-  beforeEach( module( 'GitKan.board' ) );
+  beforeEach( module( 'Trestle.board' ) );
 
   it( 'should have a dummy test', inject( function() {
     expect( true ).toBeTruthy();

@@ -1,4 +1,4 @@
-angular.module('GitKan.board')
+angular.module('Trestle.board')
 
 .controller('ColumnsCtrl', function($stateParams, $dialog, gh) {
    this.hasLabel = function(column) {

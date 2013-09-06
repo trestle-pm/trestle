@@ -1,4 +1,4 @@
-angular.module('GitKan.board')
+angular.module('Trestle.board')
 
 .controller('ToolbarCtrl', function($location, $stateParams, $dialog, gh) {
    var me = this;

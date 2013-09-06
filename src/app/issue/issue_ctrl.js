@@ -1,4 +1,4 @@
-var mod = angular.module('GitKan.issue', []);
+var mod = angular.module('Trestle.issue', []);
 
 mod.controller('IssueCtrl', function($scope) {
    // init

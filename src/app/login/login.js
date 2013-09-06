@@ -7,7 +7,7 @@
  */
 
 // Add our module to the namespace
-angular.module( 'GitKan.login', [
+angular.module( 'Trestle.login', [
   'ui.state'
 ])
 
@@ -57,10 +57,10 @@ angular.module( 'GitKan.login', [
       p.success(function(auths) {
          // See if any of the authorizations are for our app
          var auth = _.find(auths, function(auth) {
-            return auth.note === "gitkan";
+            return auth.note === "trestle";
          });
 
-         // If none of the authorizations are for gitkan then add one for the user
+         // If none of the authorizations are for trestle then add one for the user
          // XXX
 
          // Cache the token so that we can use it later
