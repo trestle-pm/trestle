@@ -1,0 +1,170 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Trestle</title>
+  <meta name="description" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Trestle</h1>
+    </header>
+    <div id="container">
+      <p class="tagline"></p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/trestle-pm/trestle/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/trestle-pm/trestle/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/trestle-pm/trestle" class="code">View Trestle on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <p><a href="https://travis-ci.org/my8bird/octoboard"><img src="https://travis-ci.org/my8bird/octoboard.png?branch=master" alt="Build Status"></a></p>
+
+<h1>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h1>
+
+<h2>
+<a name="build-it" class="anchor" href="#build-it"><span class="octicon octicon-link"></span></a>Build It</h2>
+
+<div class="highlight"><pre><span class="c"># Install helpers</span>
+gem install compass
+
+<span class="c"># Get the development deps</span>
+<span class="c">#  (these will be placed in ./node_modules)</span>
+npm install
+
+<span class="c"># Get the client side deps</span>
+<span class="c">#  (these are loaded into /vendor)</span>
+./node_modules/.bin/bower install
+
+<span class="c"># Build the whole thing</span>
+./node_modules/.bin/grunt
+</pre></div>
+
+<h2>
+<a name="run-it" class="anchor" href="#run-it"><span class="octicon octicon-link"></span></a>Run It</h2>
+
+<div class="highlight"><pre><span class="c"># Open the index page in your browser</span>
+<span class="c"># TODO: This doesn't work anymore...</span>
+chromium-browser build/index.hmtl
+</pre></div>
+
+<h2>
+<a name="use-it" class="anchor" href="#use-it"><span class="octicon octicon-link"></span></a>Use It</h2>
+
+<p>XXX</p>
+
+<h2>
+<a name="host-it" class="anchor" href="#host-it"><span class="octicon octicon-link"></span></a>Host It</h2>
+
+<p>The entire project is static so to host it on a server all you need to do is place the contents of <code>/build</code> on a websever.</p>
+
+<h1>
+<a name="dev" class="anchor" href="#dev"><span class="octicon octicon-link"></span></a>Dev</h1>
+
+<p>Get your environment setup by following the <code>Build It</code> steps.  Then "Run It" to verify that eveything good to go.  All of the source is stored in the <code>src</code> directory.  Javascript code is split into two locations.</p>
+
+<pre><code># App Specific Code
+/src/app/**/*.js
+
+# Reusable Components (must not depend on app code)
+/src/common/**/*.js
+</code></pre>
+
+<p>Each module of code is responsible for it own styling, testing, templates, and javascript.  For example the login app has the following layout.</p>
+
+<pre><code>/src/app/login
+├── login.js
+├── login.spec.js
+├── login.scss
+└── login.tpl.html
+</code></pre>
+
+<p>As you can see there is a Javascript file, a stylesheet file, and a template file.  Everything in one nice little spot.  If a module</p>
+
+<h2>
+<a name="adding-a-new-module" class="anchor" href="#adding-a-new-module"><span class="octicon octicon-link"></span></a>Adding a new module</h2>
+
+<ol>
+<li>Determine if it is an application specific function or does not depend on any pieces of the application.  Store in the <code>app</code> dir for former and <code>common</code> for the later.</li>
+<li>Create the modules directory (name is not important but be sensible)</li>
+<li>Add the Javascript, Spec, SASS, and template file as needed.
+
+<ul>
+<li>If you are adding a new SASS file you must update <code>src/sass/main.scss</code> so that it can find it.  (examples in that file should make it obvious)</li>
+</ul>
+</li>
+<li>Go To Town (you might need to restart grunt)</li>
+</ol><h1>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h1>
+
+<ul>
+<li>all dragging items around</li>
+<li>Moving user through routes
+
+<ul>
+<li>After login straight to repo list or board depending on how you got there</li>
+<li>Bouncing the user to the login or home page if their creds are bad</li>
+</ul>
+</li>
+<li>Watch repo/issue events for updates</li>
+<li>issue details panel</li>
+<li>Think about mobile (how to move things around</li>
+<li>Handle GitHub API errors (at least log them)</li>
+<li>Add ability to store attributes on a pull</li>
+<li>+2 in list</li>
+<li>build status in list</li>
+<li>logout</li>
+<li>extend doc tool to show <code>@see</code>
+</li>
+<li><p>extend doc tool to show <code>@private</code> flag</p></li>
+<li><p>Add styling</p></li>
+</ul><h1>
+<a name="references" class="anchor" href="#references"><span class="octicon octicon-link"></span></a>References</h1>
+
+<ul>
+<li>The project layout and structure is based upon
+<a href="https://github.com/joshdmiller/ng-boilerplate">https://github.com/joshdmiller/ng-boilerplate</a>.
+See that project for more description on the <em>why</em> of the layout.</li>
+</ul>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/trestle-pm" class="avatar"><img src="https://identicons.github.com/5228dc1334b8f08625427ae42c50334a.png" width="48" height="48"/></a> <a href="https://github.com/trestle-pm">trestle-pm</a> maintains <a href="https://github.com/trestle-pm/trestle">Trestle</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/trestle-pm/trestle/tarball/master" class="tar">tar</a><a href="https://github.com/trestle-pm/trestle/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
