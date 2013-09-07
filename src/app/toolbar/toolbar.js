@@ -13,7 +13,7 @@ angular.module('Trestle.board')
 
    this.onSwitchToRepo = function (repo) {
       console.log('switch to repo: ' + repo.full_name);
-      $location.path('/board/' + repo.full_name);
+      $location.path('/repo/' + repo.full_name + '/board');
    };
 
 });
