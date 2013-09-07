@@ -1,72 +1,160 @@
 angular.module('Trestle.board')
 
-.controller('IssueColumnCtrl', function($scope, gh) {
-   var me = this;
+.controller('IssueColumnCtrl', function($scope, $stateParams, gh, GithubHelpers) {
+   /**
+    * options:
+    *    labelName: The string for the label for this column or undefined.
+    *    isBacklog: If true, this this should get all items that are not labeled
+    *                with a column.
+    */
+   this.init = function(options) {
+      this.issues     = [];
+      this.labelName  = options.labelName;
+      this.isBacklog  = !!options.isBacklog;
+      this.columnName = (this.isBacklog ? 'Backlog' : this.labelName);
+      this.owner      = options.owner;
+      this.repo       = options.repo;
 
-   /* XXX: Q: Should we initialize everything to defaults here or just wait for init?
-   this.labelName  = "";
-   this.isBacklog  = false;
-   this.columnName = "";
-   this.issues = [];
-   */
+      $scope.$id = "ColumnCtrl_" + this.columnName + $scope.$id;
 
-   $scope.$watch('colCtrl.issues', function(newIssues, oldIssues) {
-      console.log("ISSUES: Column: " + me.columnName, newIssues, oldIssues);
-   }, true);
+      var me = this;
+      gh.listRepoIssues(this.owner, this.repo, {labels: this.labelName})
+         .then(function(issues) {
+            me.issues = issues;
 
-   _.extend(this, {
-      /**
-      * options:
-      *    labelName: The string for the label for this column or undefined.
-      *    isBacklog: If true, this this should get all items that are not labeled
-      *                with a column.
-      */
-      init: function(options) {
-         var me = this;
-
-         this.issues     = [];
-         this.labelName  = options.labelName;
-         this.isBacklog  = !!options.isBacklog;
-         this.columnName = (this.isBacklog ? 'Backlog' : this.labelName);
-         this.owner      = options.owner;
-         this.repo       = options.repo;
-
-         $scope.$id = "ColumnCtrl_" + this.columnName + $scope.$id;
-
-         gh.listRepoIssues(this.owner, this.repo,
-                           (this.isBacklog ? {} : {labels: this.labelName}))
-            .then(function(issues) {
-               // If backlog:
-               // - filter out all issues that have labels in a column
-               var column_tags = $scope.boardCtrl.config.columns;
-               if(me.isBacklog) {
-                  issues = _.reject(issues, function(issue) {
-                     var issue_labels = _.pluck(issue.labels, 'name');
-                     return _.intersection(column_tags, issue_labels).length > 0;
-                  });
-               }
-
-               me.issues = issues;
+            // Parse the issues description for the configuration block
+            issues = _.map(issues, function(issue) {
+               GithubHelpers.parseIssueConf(issue);
+               return issue;
             });
-      },
 
-      excludeColLabel: function(ghLabel) {
-         return ghLabel.name !== this.labelName;
-      },
+            // Pre sort the issues so that we do not need order by in the
+            // template as this messes the jquery ui sortable plugin up.
+            issues = _.sortBy(issues, function(issue) {
+               return issue.extraData.weight;
+            });
 
-      sortableOptions: {
-         // Handle reorders
-         update: function() {
-            console.log(me.columnName, me.issues);
-         },
-         // Allow dragging between the columns
-         connectWith: '.column-body',
+            // Expose the issues to the template
+            me.issues = issues;
+         });
+      };
 
-         helper: 'clone',
-         opacity: 0.8
+   this.excludeColLabel = function(ghLabel) {
+      return ghLabel.name !== this.labelName;
+   };
+
+   this._findIssueIdx = function(selectableObj) {
+      var issue_id = $(selectableObj.item).data('issue-id');
+
+      // Loop over the issues and find the one with the dragged issues id.
+      var issue_idx = _.findIndex(this.issues, function(issue) {
+         return issue.id === issue_id;
+      });
+
+      return issue_idx;
+   };
+
+   /**
+    * Called after the user has successfully moved an issue to a new location
+    * in the columns.
+    *
+    * @precondition  The scope issue list is already updated
+    * @postcondition The issue ordering in GitHub has been updated
+    */
+   this._onIssueMoved = function(evt, obj) {
+      var issue_idx = this._findIssueIdx(obj);
+      console.log(issue_idx);
+
+      // If the issue is not found that our column was updated due to the issue
+      // being moved elsewhere.
+      if (issue_idx === -1) {
+         return;
       }
 
-   });
+      var weight,
+          above = Number.MIN_VALUE,
+          below = Number.MAX_VALUE;
 
+      if (issue_idx === 0) {
+         weight = 0;
+         if (this.issues.length > 1) {
+            weight = this.issues[1].extraData.weight - 1;
+         }
+      }
+      else if (issue_idx === this.issues.length - 1) {
+         weight = 0;
+         if (this.issues.length > 1) {
+            weight = this.issues[this.issues.length - 2].extraData.weight + 1;
+         }
+      }
+      else {
+         above = this.issues[issue_idx - 1].extraData.weight;
+         below = this.issues[issue_idx + 1].extraData.weight;
+         if (above === 0) {
+            weight = below / 2.0;
+         }
+         else if (below === 0) {
+            weight = above / 2.0;
+         }
+         else {
+            weight = (above + below) / 2.0;
+         }
+      }
+
+      // Determine if any data needs to be updated.
+      var moved_issue = this.issues[issue_idx],
+          cur_weight = moved_issue.extraData.weight;
+
+      if ( (below <= cur_weight) || (above >= cur_weight) ) {
+         GithubHelpers.updateIssueConf(moved_issue, function(config) {
+            config.weight = weight;
+         });
+      }
+   };
+
+   this._onIssueReceived = function(evt, obj) {
+      var issue = this.issues[this._findIssueIdx(obj)],
+          me = this;
+
+      // Update the issues labels to only have our columns label
+      gh.getIssue($stateParams.owner, $stateParams.repo, issue.number)
+         .then(function(issue) {
+            // - Remove any of the old columns
+            var labels = _.filter(_.pluck(issue.labels, 'name'), function(label) {
+               return !_.contains($scope.boardCtrl.config.columns, label);
+            });
+            // - Add our column
+            labels.push(me.labelName);
+            console.log(labels);
+            gh.updateIssue($stateParams.owner, $stateParams.repo,
+                            issue.number, {labels: labels})
+            .then(function(updatedIssue) {
+               console.log('move between columns done');
+            });
+         });
+   };
+
+   this.getSortableOptions = function() {
+      var me = this;
+
+      return {
+         // Handle reorders
+         // Note: Since jquery is triggering this we need to wrap it in a scope
+         //       in order to $http and other angular services to know what to do.
+         // Note: Using `stop` is `update` does not have the list updated yet
+         stop: function(evt, obj) {
+            $scope.$apply(me._onIssueMoved.call(me, evt, obj));
+         },
+
+         receive: function(evt, obj) {
+            $scope.$apply(me._onIssueReceived.call(me, evt, obj));
+         },
+
+         // Allow dragging between the columns
+         connectWith: '.column-body',
+         helper: 'clone',
+         opacity: 0.8
+      };
+   };
 
 });
