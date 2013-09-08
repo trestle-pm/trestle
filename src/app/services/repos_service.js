@@ -34,7 +34,7 @@ angular.module('Trestle')
 .service('trReposSrv', function(gh, $dialog, $q, trRepoModel) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
-         "columns": ["In Progress", "Review", "CI", "Ship"]
+          "columns": ["In Progress", "Review", "CI", "Ship"]
        };
 
    this.refreshSettings = function(stateParams) {
@@ -45,9 +45,26 @@ angular.module('Trestle')
       trRepoModel.config = angular.copy(DEFAULT_CONFIG);
 
       // Spawn off the configuration loading
-      if(trRepoModel.owner && trRepoModel.repo) {
-         this.loadConfig();
+      var has_repo = trRepoModel.owner && trRepoModel.repo;
+      if( has_repo ) {
+         return $q.all([
+            this._loadConfig(),
+            this._loadIssues()
+         ]);
       }
+      else {
+         // Return an empty deferred so that callers can connect to the methods
+         // result no matter what.
+         return $q().resolve();
+      }
+   };
+
+   this._loadIssues = function() {
+      gh.listRepoIssues(trRepoModel.owner, trRepoModel.repo)
+         .then(function(issues) {
+            // Parse the issue config and add the weightings
+            trRepoModel.issues = issues;
+         });
    };
 
    /**
@@ -55,7 +72,7 @@ angular.module('Trestle')
    *
    * Q: How should we handle case where we don't end up with a config?
    */
-   this.loadConfig = function() {
+   this._loadConfig = function() {
       var me = this;
 
       // Attempt to lookup the configuration issue for this repository
