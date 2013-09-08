@@ -9,10 +9,10 @@
     <!-- Backlog Column -->
     <li ng-show="showBacklog"
 
-        ng-style="columnsCtrl.getColumnWidth()" >
+        ng-style="columnsCtrl.getColumnWidth()"
 
         ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({isBacklog:true})"
+        ng-init="colCtrl.init({isBacklog:true})" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
