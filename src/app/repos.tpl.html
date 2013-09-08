@@ -1,4 +1,6 @@
-<div class="repos_base container" ng-controller="ReposCtrl as reposCtrl" >
+<div class="repos_base container"
+     ng-controller="ReposCtrl as reposCtrl"
+     ng-init="reposCtrl.init()">
 
   <div ng-include="'toolbar/toolbar.tpl.html'"></div>
   <div ui-view="columns" class="columns"></div>
