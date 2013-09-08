@@ -1,6 +1,6 @@
 angular.module('Trestle.board')
 
-.controller('IssueColumnCtrl', function($scope, gh, GithubHelpers, trReposSrv) {
+.controller('IssueColumnCtrl', function($scope, gh, GithubHelpers, trRepoModel) {
    /**
     * options:
     *    labelName: The string for the label for this column or undefined.
@@ -16,7 +16,7 @@ angular.module('Trestle.board')
       $scope.$id = "ColumnCtrl_" + this.columnName + $scope.$id;
 
       var me = this;
-      gh.listRepoIssues(trReposSrv.$scope.owner, trReposSrv.$scope.repo, {labels: this.labelName})
+      gh.listRepoIssues(trRepoModel.owner, trRepoModel.repo, {labels: this.labelName})
          .then(function(issues) {
             me.issues = issues;
 
@@ -115,17 +115,17 @@ angular.module('Trestle.board')
           me = this;
 
       // Update the issues labels to only have our columns label
-      gh.getIssue(trReposSrv.$scope.owner, trReposSrv.$scope.repo, issue.number)
+      gh.getIssue(trRepoModel.owner, trRepoModel.repo, issue.number)
          .then(function(issue) {
             // - Remove any of the old columns
             var labels = _.filter(_.pluck(issue.labels, 'name'), function(label) {
-               return !_.contains(trReposSrv.$scope.config.columns, label);
+               return !_.contains(trRepoModel.config.columns, label);
 
             });
             // - Add our column
             labels.push(me.labelName);
             console.log(labels);
-            gh.updateIssue(trReposSrv.$scope.owner, trReposSrv.$scope.repo,
+            gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
                            issue.number, {labels: labels})
             .then(function(updatedIssue) {
                console.log('move between columns done');

@@ -1,30 +1,22 @@
 angular.module('Trestle')
 
-/**
- * Service to hold information about the repository that we are
- * connected to and using.
- *
- * The service exposes some things through $scope so that they can be watched
- * by others or easily used in templates.
-*/
-.service('trReposSrv', function($rootScope, gh, $dialog, $q) {
-   var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
-       DEFAULT_CONFIG = {
-         "columns": ["In Progress", "Review", "CI", "Ship"]
-       };
+.service('trRepoModel', function($rootScope) {
+   var scope = $rootScope.$new();
 
-   // Set the exposed interface
-   this.$scope = $rootScope.$new();
-   this.$scope.owner  = null;
-   this.$scope.repo   = null;
-   this.$scope.config = null;
+   // Set some defaults for the application
+   scope = $rootScope.$new();
+   scope.owner  = null;
+   scope.repo   = null;
+   scope.config = null;
+
+   // XXX upcoming
+   scope.issues = [];
 
    // TODO: Move this to a filter helper of some type
-   this.$scope.cardSearchText = null;
+   scope.cardSearchText = null;
 
    // Helper to use when you want a pretty name for the repository
-   this.$scope.getFullRepoName = angular.bind(this, function() {
-      var scope = this.$scope;
+   scope.getFullRepoName = angular.bind(this, function() {
       if (scope.repo && scope.owner) {
          return [scope.owner, scope.repo].join('/');
       }
@@ -32,15 +24,28 @@ angular.module('Trestle')
       return null;
    });
 
+   return scope;
+})
+
+/**
+ * Service to hold information about the repository that we are
+ * connected to and using.
+*/
+.service('trReposSrv', function(gh, $dialog, $q, trRepoModel) {
+   var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
+       DEFAULT_CONFIG = {
+         "columns": ["In Progress", "Review", "CI", "Ship"]
+       };
+
    this.refreshSettings = function(stateParams) {
-      this.$scope.owner = stateParams.owner;
-      this.$scope.repo  = stateParams.repo;
+      trRepoModel.owner = stateParams.owner;
+      trRepoModel.repo  = stateParams.repo;
 
       // XXX: Hack, remove this
-      this.$scope.config = angular.copy(DEFAULT_CONFIG);
+      trRepoModel.config = angular.copy(DEFAULT_CONFIG);
 
       // Spawn off the configuration loading
-      if(this.$scope.repo) {
+      if(trRepoModel.owner && trRepoModel.repo) {
          this.loadConfig();
       }
    };
@@ -51,8 +56,7 @@ angular.module('Trestle')
    * Q: How should we handle case where we don't end up with a config?
    */
    this.loadConfig = function() {
-      var me = this,
-          scope = this.$scope;
+      var me = this;
 
       // Attempt to lookup the configuration issue for this repository
       // - If found, then set it and continue
@@ -61,7 +65,7 @@ angular.module('Trestle')
          function(configResult) {
             if(null !== configResult) {
                console.log('config loaded');
-               scope.config = configResult;
+               trRepoModel.config = configResult;
             }
             // No config, so prompt to create one
             else {
@@ -104,7 +108,7 @@ angular.module('Trestle')
          });
 
          function create_config() {
-            gh.createIssue(scope.owner, scope.repo,
+            gh.createIssue(trRepoModel.owner, trRepoModel.repo,
                            TRESTLE_CONFIG_TITLE, JSON.stringify(DEFAULT_CONFIG))
                .then(function(result_issue) {
                   console.log('issue created');
@@ -139,7 +143,7 @@ angular.module('Trestle')
       gh.searchIssues({title: TRESTLE_CONFIG_TITLE}).then(function(configIssues) {
          // Filter the search results to only this repo since the API does
          // not allow that.
-         var matcher = new RegExp(scope.owner + '\/' + scope.repo);
+         var matcher = new RegExp(trRepoModel.owner + '\/' + trRepoModel.repo);
          var config_issue = _.findWhere(configIssues.items, function(issue) {
             return matcher.test(issue.url);
          });

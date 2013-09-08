@@ -1,6 +1,6 @@
 angular.module('Trestle.board')
 
-.controller('ColumnsCtrl', function($scope, trReposSrv) {
+.controller('ColumnsCtrl', function($scope, trRepoModel) {
    this.hasLabel = function(column) {
    this.showBacklog = false;
       return function(issue) {
@@ -12,7 +12,7 @@ angular.module('Trestle.board')
    };
 
    this.getColumnWidth = function() {
-      var config      = trReposSrv.$scope.config,
+      var config      = trRepoModel.config,
           num_columns = config ? config.columns.length : 0;
 
       if($scope.showBacklog) {

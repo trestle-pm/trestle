@@ -1,12 +1,14 @@
 angular.module('Trestle')
 
-.controller( 'ReposCtrl', function($scope, $stateParams, $location, trReposSrv) {
+.controller( 'ReposCtrl', function($scope, $stateParams, $location, trRepoModel) {
    $scope.$id = "ResposCtrl_" + $scope.$id;
 
-   // Expose the repo services shared data
-   $scope.trReposSrv = trReposSrv.$scope;
+   this.init = function(options) {
+      options = options || {};
 
-   this.init = function() {
+      // Put the repo model into the scope so that templates can access it
+      $scope[options.repoModelName || 'repoModel'] = trRepoModel;
+
       // Update configuration for repository service
       // Reload repository service (if needed)
    };

@@ -1,5 +1,4 @@
 <div ng-controller="ColumnsCtrl as columnsCtrl" >
-
   <button class="btn btn-primary backlog"
           ng-click="showBacklog = !showBacklog">
     {{showBacklog ? 'Hide Backlog' : 'Show Backlog'}}
@@ -17,7 +16,7 @@
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <a class="btn btn-success"
-         ng-href="https://github.com/{{trReposSrv.owner}}/{{trReposSrv.repo}}/issues/new"
+         ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
          target="_blank">Create Issue</a>
 
       <!-- CARDS List -->
@@ -33,7 +32,7 @@
 
     <!-- Kanban Columns -->
 
-    <li ng-repeat="col_label in trReposSrv.config.columns" class="column"
+    <li ng-repeat="col_label in repoModel.config.columns" class="column"
         ng-style="columnsCtrl.getColumnWidth()"
 
         ng-controller="IssueColumnCtrl as colCtrl"
