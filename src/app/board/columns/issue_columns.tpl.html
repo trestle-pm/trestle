@@ -22,7 +22,7 @@
       <!-- CARDS List -->
       <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()" >
         <div class="card_wrapper"
-             ng-repeat="issue in repoModel.issues | issuesInBacklog| filter:main.cardSearchText"
+             ng-repeat="issue in repoModel.issues | issuesInBacklog| filter:repoModel.cardSearchText"
              data-issue-id="{{issue.id}}" >
           <div tr-issue-card issue="issue"></div>
         </div>
@@ -42,7 +42,7 @@
       <!-- CARDS List -->
       <ul class="column-body" ui-sortable="colCtrl.getSortableOptions()" >
         <div class="card_wrapper"
-             ng-repeat="issue in repoModel.issues | issuesWithLabel:colCtrl.labelName | filter:main.cardSearchText"
+             ng-repeat="issue in repoModel.issues | issuesWithLabel:colCtrl.labelName | filter:repoModel.cardSearchText"
              data-issue-id="{{issue.id}}" >
           <div tr-issue-card issue="issue"></div>
         </div>
