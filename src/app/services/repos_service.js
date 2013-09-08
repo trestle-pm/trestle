@@ -1,38 +1,42 @@
 angular.module('Trestle')
 
 /**
-* Service to hold information about the repository that we are
-* connected to and using.
+ * Service to hold information about the repository that we are
+ * connected to and using.
+ *
+ * The service exposes some things through $scope so that they can be watched
+ * by others or easily used in templates.
 */
-.service('trReposSrv', function(gh) {
+.service('trReposSrv', function($rootScope, gh) {
+   // Set the exposed interface
+   this.$scope = $rootScope.$new();
+   this.$scope.owner  = null;
+   this.$scope.repo   = null;
+   this.$scope.config = null;
 
-   this.init = function() {
-      this.owner  = null;
-      this.repo   = null;
-      this.config = null;
+   // TODO: Move this to a filter helper of some type
+   this.$scope.cardSearchText = null;
 
-      this.repoFullName = null;
+   // Helper to use when you want a pretty name for the repository
+   this.$scope.getFullRepoName = angular.bind(this, function() {
+      var scope = this.$scope;
+      if (scope.repo && scope.owner) {
+         return [scope.owner, scope.repo].join('/');
+      }
 
-      // TODO: Move this to a filter helper of some type
-      this.cardSearchText = null;
-   };
+      return null;
+   });
 
    this.refreshSettings = function(stateParams) {
-      this.owner  = stateParams.owner;
-      this.repo   = stateParams.repo;
+      this.$scope.owner = stateParams.owner;
+      this.$scope.repo  = stateParams.repo;
 
-      this.config = {   // XXX: Hack, remove this
+      this.$scope.config = {   // XXX: Hack, remove this
          "columns": ["In Progress", "Review", "CI", "Ship"]
       };
 
-      // Precompute the composite repo name
-      this.repoFullName = null;
-      if (this.repo) {
-         this.repoFullName = [this.owner, this.repo].join('/');
-      }
-
       // Spawn off the configuration loading
-      if(this.repo) {
+      if(this.$scope.repo) {
          this.loadConfig();
       }
    };
@@ -41,7 +45,7 @@ angular.module('Trestle')
    * Load the configuration from the Trestle issue ticket.
    */
    this.loadConfig = function() {
-      var me = this;
+      var scope = this.$scope;
 
       // Grab the configuration file for this repo so that we know
       // the column names
@@ -49,7 +53,7 @@ angular.module('Trestle')
          .then(function(configIssues) {
             // Filter the search results to only this repo since the API does
             // not allow that.
-            var matcher = new RegExp(me.owner + '\/' + me.repo);
+            var matcher = new RegExp(scope.owner + '\/' + scope.repo);
             var config_issue = _.findWhere(configIssues.items, function(issue) {
                return matcher.test(issue.url);
             });
@@ -66,14 +70,11 @@ angular.module('Trestle')
 
             // Update the view with the configuration
             console.log('Found config: setting:', conf);
-            me.config = conf;
+            scope.config = conf;
 
          }, function() {
             console.warn('This repository does not have a configuration file.');
-            me.config = {};
+            scope.config = {};
          });
    };
-
-   // Initialize service
-   this.init();
 });

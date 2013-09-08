@@ -12,10 +12,7 @@
         ng-style="columnsCtrl.getColumnWidth()" >
 
         ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({isBacklog:true,
-            owner: trReposSrv.owner,
-            repo: trReposSrv.repo
-        })" >
+        ng-init="colCtrl.init({isBacklog:true})"
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
@@ -40,10 +37,7 @@
         ng-style="columnsCtrl.getColumnWidth()"
 
         ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({labelName:col_label,
-            owner: trReposSrv.owner,
-            repo: trReposSrv.repo
-        })" >
+        ng-init="colCtrl.init({labelName:col_label})" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
