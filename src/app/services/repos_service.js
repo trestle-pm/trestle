@@ -58,7 +58,7 @@ angular.module('Trestle')
                return matcher.test(issue.url);
             });
 
-            // XXX: Need to handle case where we don't find the card.
+            // XXX: Need to handle case where we don't find the issue.
 
             // Try and parse the issues body as the configuration blob
             var conf = {};
