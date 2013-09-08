@@ -8,7 +8,9 @@
   <ul class="issue-columns" >
     <!-- Backlog Column -->
     <li ng-show="showBacklog"
-        ng-style="getColumnWidth()"
+
+        ng-style="columnsCtrl.getColumnWidth()" >
+
         ng-controller="IssueColumnCtrl as colCtrl"
         ng-init="colCtrl.init({isBacklog:true,
             owner: trReposSrv.owner,
@@ -35,7 +37,7 @@
     <!-- Kanban Columns -->
 
     <li ng-repeat="col_label in trReposSrv.config.columns" class="column"
-        ng-style="getColumnWidth()"
+        ng-style="columnsCtrl.getColumnWidth()"
 
         ng-controller="IssueColumnCtrl as colCtrl"
         ng-init="colCtrl.init({labelName:col_label,
