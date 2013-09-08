@@ -250,6 +250,17 @@ angular.module('github.api', ['restangular'])
    };
 
    /**
+   * Create an issue.
+   * owner, repo, and title are required.
+   */
+   this.createIssue = function(owner, repo, title, body) {
+      return GitHubRestangular
+         .all(['repos', owner, repo, 'issues'].join('/'))
+         .post({title: title, body: body});
+   };
+
+
+   /**
     @ngdoc    function
     @name     searchIssues
     @method   searchIssues
