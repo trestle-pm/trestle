@@ -90,8 +90,9 @@ angular.module('Trestle')
       };
 
       // Go get all comments for the issue
-      gh.getIssueComments(trRepoModel.owner, trRepoModel.repo, issue.number).then(
-         function(commentResults) {
+      // - Get the comments as HTML so to simplify the +1 counting
+      gh.getIssueComments(trRepoModel.owner, trRepoModel.repo, issue.number, {asHtml: true})
+         .then(function(commentResults) {
             // Store on the issue
             issue.tr_comments = commentResults;
             _calculateCommentVoting(issue);
@@ -103,27 +104,53 @@ angular.module('Trestle')
    * Helper to calculate the voting details for the current issue given
    * the comments.
    */
-   function _calculateCommentVoting(issue) {
-      var voting = {
-         users: { },
-         total: 0
-      };
+   function _getCleanComment(commentText) {
+      return commentText
+         // - strip code blocks so that things like `i = i+1` do not trigger
+         //   the plus one counting.
+         .replace(/<code.*<\/code>/, '')
 
+         // - Attempt to strip links since they can contain text we don't care about
+         .replace(/https?.*\s?/, '');
+   }
+
+   function _calculateCommentVoting(issue) {
       // Calculate the counting
-      _.each(issue.comments, function(comment) {
+      //console.log(issue);
+
+      var votes = _.reduce(issue.tr_comments, function(votes, comment) {
          var login = comment.user.login;
 
-         if(undefined === voting.users[login]) {
-            voting.users[login] = {
+         if(!votes[login]) {
+            votes[login] = {
                avatar_url : comment.user.avatar_url,
                count      : 0
             };
          }
 
-         // XXX: Update the voting
-      });
+         // Extract any math out of the comment
+         var counts = _getCleanComment(comment.body_html).match(/([-+][0-9]+)/g);
+         // - convert the string counts into numbers
+         counts = _.map(counts, function(numStr) {return parseInt(numStr, 10);});
+         // - Run the math for the comment (this is silly but allows people to
+         //   have various pluses in their comment).
+         var total = _.reduce(counts, function(memo, cur) {
+            return memo + cur;
+         }, 0);
 
-      issue.tr_comment_voting = voting;
+         // Update the users total count with the new information
+         votes[login].count = votes[login].count + total;
+         console.log(login, votes[login].count);
+
+         return votes;
+      }, {});
+
+      issue.tr_comment_voting = {
+         users: votes,
+         total: _.reduce(votes, function(count, voteDetails) {
+            return count + voteDetails.count;
+         }, 0)
+      };
    }
 
    function resolveIssueConf(issue) {
