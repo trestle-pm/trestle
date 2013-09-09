@@ -4,6 +4,7 @@ angular.module( 'Trestle', [
    'Trestle.board',
    'Trestle.login',
    'Trestle.issue',
+   'Trestle.authentication',
    'github.api',
    'ui.sortable',
    'ui.bootstrap',
