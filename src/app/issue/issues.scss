@@ -1,17 +1,35 @@
 
 .card {
-    border:     1px solid #e5e5e5;
-    box-shadow: 2px 2px 7px #888;
+    border     : 1px solid #e5e5e5;
+    box-shadow : 2px 2px 7px #888;
 
-    width: 100%;
-    position: relative;
-    margin: 5px 0;
+    width    : 100%;
+    position : relative;
+    margin   : 5px 0;
 
     padding-bottom: 3px;
 
     background: white;
 
     list-style-type: none;
+
+    .build_header {
+        height : 3px;
+        width  : 100%;
+        background: gray;
+    }
+    &.success .build_header {
+        background: green;
+    }
+    &.failure .build_header {
+        background: red;
+    }
+    &.pending .build_header {
+        background: gray;
+    }
+    &.unknown .build_header {
+        background: gray;
+    }
 
     &.dragging {
         background: blue;

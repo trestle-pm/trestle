@@ -13,6 +13,17 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope) {
          return this.issue.pull_request && this.issue.pull_request.html_url;
       },
 
+      /** Return status of build.
+      * - "pending", "success", "failure", "error", "unknown"
+      */
+      getBuildStatus: function() {
+         var status = "unknown";
+         if(this.issue.tr_top_build_status) {
+            status = this.issue.tr_top_build_status.state;
+         }
+         return status;
+      },
+
       getAssignedUser: function() {
          return this.issue.assignee;
       },

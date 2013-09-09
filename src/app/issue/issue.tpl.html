@@ -1,8 +1,9 @@
+<div ng-controller="IssueCtrl as issueCtrl"
+     class="card {{issueCtrl.getBuildStatus()}} "
+    >
 
-<div class="card"
-    ng-controller="IssueCtrl as issueCtrl">
-
-  <div class="build_header"></div>
+  <div ng-if="issueCtrl.isPullRequest()"
+       class="build_header"></div>
   <div class="header">
     <span class="title" ng-click="issueCtrl.showIssueDetails()" >
       {{issueCtrl.issue.title}}
