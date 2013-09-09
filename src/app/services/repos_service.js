@@ -30,7 +30,7 @@ angular.module('Trestle')
  * Service to hold information about the repository that we are
  * connected to and using.
 */
-.service('trReposSrv', function($dialog, $q, gh, trRepoModel, trIssueHelpers) {
+.service('trReposSrv', function($modal, $q, gh, trRepoModel, trIssueHelpers) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
           "columns": ["In Progress", "Review", "CI", "Ship"]
@@ -91,7 +91,7 @@ angular.module('Trestle')
                promptToCreateConfig().then(
                   function(created_config) {
                      if(created_config) {
-                        me.loadConfig();
+                        me._loadConfig();
                      } else {
                         console.log('proceeding with no config');
                      }
@@ -112,11 +112,12 @@ angular.module('Trestle')
          var deferred = $q.defer();
 
          // Prompt to see if the user wants to create config
-         var msgbox = $dialog.messageBox('Missing Configuration',
-                                         'Create trestle configuration?',
-                                         [{label: 'Create', result: 'create'},
-                                          {label: 'Cancel', result: 'cancel'}]);
-         msgbox.open().then(function(result) {
+         var prompt = $modal.open({
+            templateUrl : 'services/missing_config_dialog.tpl.html',
+            backdrop    : 'static',
+            keyboard    : false
+         });
+         prompt.result.then(function(result) {
             if('create' === result) {
                console.log('Creating configuration...');
                create_config();  // resolve the deferred internally
@@ -126,6 +127,7 @@ angular.module('Trestle')
             }
          });
 
+         // Helper method to create configuration issue
          function create_config() {
             gh.createIssue(trRepoModel.owner, trRepoModel.repo,
                            TRESTLE_CONFIG_TITLE, JSON.stringify(DEFAULT_CONFIG))

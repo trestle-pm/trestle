@@ -1,6 +1,6 @@
 angular.module('Trestle.board')
 
-.controller('ToolbarCtrl', function($location, $stateParams, $dialog, gh) {
+.controller('ToolbarCtrl', function($location, $stateParams, gh) {
    var me = this;
 
    gh.listAllRepos($stateParams.owner, $stateParams.repo).then(function(allRepos) {
