@@ -4,7 +4,6 @@ angular.module('Trestle')
    var scope = $rootScope.$new();
 
    // Set some defaults for the application
-   scope = $rootScope.$new();
    scope.owner  = null;
    scope.repo   = null;
    scope.config = null;
@@ -136,8 +135,7 @@ angular.module('Trestle')
    * It is rejected if the config fails to parse.
    */
    this.readConfig = function() {
-      var scope         = this.$scope,
-          read_deferred = $q.defer(),
+      var read_deferred = $q.defer(),
           conf          = {};
 
       gh.searchIssues({title: TRESTLE_CONFIG_TITLE}).then(function(configIssues) {
