@@ -8,34 +8,12 @@ angular.module('Trestle.board')
     *                with a column.
     */
    this.init = function(options) {
-      this.issues     = [];
       this.labelName  = options.labelName;
       this.isBacklog  = !!options.isBacklog;
       this.columnName = (this.isBacklog ? 'Backlog' : this.labelName);
 
       $scope.$id = "ColumnCtrl_" + this.columnName + $scope.$id;
-
-      var me = this;
-      gh.listRepoIssues(trRepoModel.owner, trRepoModel.repo, {labels: this.labelName})
-         .then(function(issues) {
-            me.issues = issues;
-
-            // Parse the issues description for the configuration block
-            issues = _.map(issues, function(issue) {
-               GithubHelpers.parseIssueConf(issue);
-               return issue;
-            });
-
-            // Pre sort the issues so that we do not need order by in the
-            // template as this messes the jquery ui sortable plugin up.
-            issues = _.sortBy(issues, function(issue) {
-               return issue.extraData.weight;
-            });
-
-            // Expose the issues to the template
-            me.issues = issues;
-         });
-      };
+   };
 
    this.excludeColLabel = function(ghLabel) {
       return ghLabel.name !== this.labelName;

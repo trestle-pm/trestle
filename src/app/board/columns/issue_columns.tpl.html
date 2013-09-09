@@ -20,10 +20,9 @@
          target="_blank">Create Issue</a>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()"
-                              ng-model="colCtrl.issues" >
+      <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()" >
         <div class="card_wrapper"
-             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText"
+             ng-repeat="issue in repoModel.issues | issuesInBacklog| filter:main.cardSearchText"
              data-issue-id="{{issue.id}}" >
           <div tr-issue-card issue="issue"></div>
         </div>
@@ -41,10 +40,9 @@
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.getSortableOptions()"
-                              ng-model="colCtrl.issues" >
+      <ul class="column-body" ui-sortable="colCtrl.getSortableOptions()" >
         <div class="card_wrapper"
-             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText"
+             ng-repeat="issue in repoModel.issues | issuesWithLabel:colCtrl.labelName | filter:main.cardSearchText"
              data-issue-id="{{issue.id}}" >
           <div tr-issue-card issue="issue"></div>
         </div>
