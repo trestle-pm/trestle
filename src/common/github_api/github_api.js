@@ -24,19 +24,64 @@ angular.module('github.api', ['restangular'])
 
    var
    token_storage_key = 'gh-token',
-   token;
+   token,
+
+   response_extractors  = [];
 
    // Extend the API set the access token when we have one
    GitHubRestangular.setFullRequestInterceptor(function(element, operation, what,
                                                         url, headers, params) {
-      return {
-         element: element,
-         headers: headers,
-         // - Add the access_token (only if not set by the caller
-         params: angular.extend(params, {access_token: getAccessToken(),
-                                        '_cache_bust': new Date().getTime()})
+      var options = {
+         element:   element,
+         operation: operation,
+         what:      what,
+         url:       url,
+         headers:   headers,
+         params:    params
       };
+
+      // Ensure that access token is always available
+      _.defaults(options.params, {access_token: getAccessToken()});
+
+      // Do not let the browser cache calls so that we always get the latest data
+      // from GitHub.
+      _.defaults(options.params, {'_cache_bust': new Date().getTime()});
+
+      return options;
    });
+
+   /**
+    @ngdoc    function
+    @name     addResponseExtractor
+    @methodOf github.api.gh
+
+    @description
+    XXX
+
+    @param {function} handler Function to invoke with the current response.
+           The parameters for the function are the same as
+           `Restangular.setResponseExtractor` handlers.
+    */
+   this.addResponseExtractor = function(handler) {
+      response_extractors.push(handler);
+   };
+
+   // Configure Restangular to allows us to mutate the GitHub results as needed.
+   GitHubRestangular.setResponseExtractor(function(response, operation, what,
+                                                   url, headers, params) {
+      var handler_args = arguments;
+
+      _.each(response_extractors, function(handler) {
+         var handler_res = handler.apply(null, handler_args);
+         if (handler_res) {
+            response = handler_res;
+         }
+      });
+
+      // Return the response
+      return response;
+   });
+
 
    /**
     @ngdoc function
@@ -63,18 +108,6 @@ angular.module('github.api', ['restangular'])
       }
 
       return token;
-   }
-
-   /**
-    Helper function to convert GitHub's multiple string base 64 encoding into
-    the actual string it represents.
-    */
-   function ghB64Decode(str) {
-      // Decode each line seperatly and join them as a single string
-      var lines = _.map(str.split('\n'), function(b64Str) {
-         return window.atob(b64Str);
-      });
-      return lines.join('');
    }
 
    /**
@@ -237,16 +270,15 @@ angular.module('github.api', ['restangular'])
    };
 
    this.getIssue = function(owner, repo, issueNumber) {
-      console.log('get issue');
       return GitHubRestangular
          .one(['repos', owner, repo, 'issues', issueNumber].join('/'))
          .get();
    };
 
-   this.updateIssue = function(owner, repo, issueNumber, settings) {
+   this.updateIssue = function(owner, repo, issueNumber, fields) {
       return GitHubRestangular
          .one(['repos', owner, repo, 'issues', issueNumber].join('/'))
-         .patch(settings);
+         .patch(fields);
    };
 
    /**
@@ -290,6 +322,18 @@ angular.module('github.api', ['restangular'])
                                    {q: query},
                                    {'Accept': 'application/vnd.github.preview'});
    };
+
+   /**
+    Helper function to convert GitHub's multiple string base 64 encoding into
+    the actual string it represents.
+    */
+   function ghB64Decode(str) {
+      // Decode each line seperatly and join them as a single string
+      var lines = _.map(str.split('\n'), function(b64Str) {
+         return window.atob(b64Str);
+      });
+      return lines.join('');
+   }
 
    /**
     @ngdoc function

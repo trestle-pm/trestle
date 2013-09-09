@@ -30,7 +30,7 @@ angular.module('Trestle')
  * Service to hold information about the repository that we are
  * connected to and using.
 */
-.service('trReposSrv', function(gh, $dialog, $q, trRepoModel) {
+.service('trReposSrv', function($dialog, $q, gh, trRepoModel) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
           "columns": ["In Progress", "Review", "CI", "Ship"]
@@ -61,8 +61,11 @@ angular.module('Trestle')
    this._loadIssues = function() {
       gh.listRepoIssues(trRepoModel.owner, trRepoModel.repo)
          .then(function(issues) {
-            // Parse the issue config and add the weightings
-            trRepoModel.issues = issues;
+            // Pre sort the list of issues so that the jquery sortable plugin
+            // works correctly.
+            trRepoModel.issues = _.sortBy(issues, function(issue) {
+               return issue.config.weight;
+            }).reverse();
          });
    };
 

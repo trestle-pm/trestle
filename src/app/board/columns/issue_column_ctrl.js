@@ -1,6 +1,6 @@
 angular.module('Trestle.board')
 
-.controller('IssueColumnCtrl', function($scope, gh, GithubHelpers, trRepoModel) {
+.controller('IssueColumnCtrl', function($scope, gh, trRepoModel, gitHubExtensionService) {
    /**
     * options:
     *    labelName: The string for the label for this column or undefined.
@@ -23,7 +23,7 @@ angular.module('Trestle.board')
       var issue_id = $(selectableObj.item).data('issue-id');
 
       // Loop over the issues and find the one with the dragged issues id.
-      var issue_idx = _.findIndex(this.issues, function(issue) {
+      var issue_idx = _.findIndex(trRepoModel.issues, function(issue) {
          return issue.id === issue_id;
       });
 
@@ -38,8 +38,10 @@ angular.module('Trestle.board')
     * @postcondition The issue ordering in GitHub has been updated
     */
    this._onIssueMoved = function(evt, obj) {
-      var issue_idx = this._findIssueIdx(obj);
-      console.log(issue_idx);
+      var issue_idx = this._findIssueIdx(obj),
+          all_issues = trRepoModel.issues;
+
+      console.log('moved', issue_idx);
 
       // If the issue is not found that our column was updated due to the issue
       // being moved elsewhere.
@@ -53,19 +55,20 @@ angular.module('Trestle.board')
 
       if (issue_idx === 0) {
          weight = 0;
-         if (this.issues.length > 1) {
-            weight = this.issues[1].extraData.weight - 1;
+         if (all_issues.length > 1) {
+            weight = all_issues[1].config.weight - 1;
          }
       }
-      else if (issue_idx === this.issues.length - 1) {
+      else if (issue_idx === all_issues.length - 1) {
          weight = 0;
-         if (this.issues.length > 1) {
-            weight = this.issues[this.issues.length - 2].extraData.weight + 1;
+         if (all_issues.length > 1) {
+            weight = all_issues[all_issues.length - 2].config.weight + 1;
          }
       }
       else {
-         above = this.issues[issue_idx - 1].extraData.weight;
-         below = this.issues[issue_idx + 1].extraData.weight;
+         above = all_issues[issue_idx - 1].config.weight;
+         below = all_issues[issue_idx + 1].config.weight;
+
          if (above === 0) {
             weight = below / 2.0;
          }
@@ -78,18 +81,29 @@ angular.module('Trestle.board')
       }
 
       // Determine if any data needs to be updated.
-      var moved_issue = this.issues[issue_idx],
-          cur_weight = moved_issue.extraData.weight;
+      var moved_issue = all_issues[issue_idx],
+          cur_weight = moved_issue.config.weight;
 
+      console.log(cur_weight, moved_issue, below, above);
       if ( (below <= cur_weight) || (above >= cur_weight) ) {
-         GithubHelpers.updateIssueConf(moved_issue, function(config) {
-            config.weight = weight;
-         });
+         console.log('do it');
+         gh.getIssue(trRepoModel.owner, trRepoModel.repo, moved_issue.number)
+            .then(function(serverIssue) {
+               var new_body = gitHubExtensionService.mergeBodyConfig(
+                  serverIssue.body,
+                  _.defaults({weight: weight}, serverIssue.config));
+
+               return gh.updateIssue(trRepoModel.owner,
+                                     trRepoModel.repo,
+                                     moved_issue.number,
+                                     {body: new_body});
+            });
       }
    };
 
    this._onIssueReceived = function(evt, obj) {
-      var issue = this.issues[this._findIssueIdx(obj)],
+      var all_issues = trRepoModel.issues,
+          issue = all_issues[this._findIssueIdx(obj)],
           me = this;
 
       // Update the issues labels to only have our columns label
