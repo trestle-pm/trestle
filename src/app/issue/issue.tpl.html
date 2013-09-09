@@ -31,5 +31,26 @@
       {{label.name}}
     </li>
   </ul>
+
+  <ul class="votes">
+    <li ng-repeat="(login, details) in issueCtrl.issue.tr_comment_voting.users">
+      <img class="vote_avatar"
+           title="{{login}} {{details.count}}"
+           ng-src="{{details.avatar_url}}?s=30"
+           ng-class="{
+            yes: details.count > 0,
+            no: details.count < 0
+           }"
+           ></img>
+    </li>
+  </ul>
+
+  <div class="vote_count"
+       ng-class="{
+        positive: issueCtrl.issue.tr_comment_voting.total > 0,
+        negative: issueCtrl.issue.tr_comment_voting.total < 0
+       }">
+    {{issueCtrl.issue.tr_comment_voting.total}}
+  </div>
 </div>
 

@@ -2,11 +2,11 @@ var mod = angular.module('Trestle.issue', []);
 
 mod.controller('IssueCtrl', function($scope, $modal, $rootScope) {
    // init
-   $scope.$id = "IssueCtrl_" + $scope.$id;
 
    _.extend(this, {
       init: function(issue) {
          this.issue = issue;
+         $scope.$id = "IssueCtrl:" + issue.number + $scope.$id;
       },
 
       isPullRequest: function() {
