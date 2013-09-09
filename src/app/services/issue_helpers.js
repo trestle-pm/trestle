@@ -116,7 +116,6 @@ angular.module('Trestle')
 
    function _calculateCommentVoting(issue) {
       // Calculate the counting
-      //console.log(issue);
 
       var votes = _.reduce(issue.tr_comments, function(votes, comment) {
          var login = comment.user.login;
@@ -140,7 +139,6 @@ angular.module('Trestle')
 
          // Update the users total count with the new information
          votes[login].count = votes[login].count + total;
-         console.log(login, votes[login].count);
 
          return votes;
       }, {});
@@ -148,7 +146,11 @@ angular.module('Trestle')
       issue.tr_comment_voting = {
          users: votes,
          total: _.reduce(votes, function(count, voteDetails) {
-            return count + voteDetails.count;
+            if(voteDetails.count < 0 || count < 0) {
+               return -1;
+            } else {
+               return count + voteDetails.count;
+            }
          }, 0)
       };
    }
