@@ -20,17 +20,16 @@ mod.controller('IssueCtrl', function($scope, $dialog) {
       showIssueDetails: function() {
          var me = this;
          var opts = {
-            backdrop: true,
-            keyboard: true,
-            backdropClick: true,
-            templateUrl: "board/issue_details/issue_details.tpl.html",
-
-            controller: 'IssueDetailsCtrl'
+            backdrop      : true,
+            keyboard      : true,
+            backdropClick : true,
+            templateUrl   : "board/issue_details/issue_details.tpl.html",
+            resolve: {
+               issue: function() { return me.issue; }   // angular.copy ??
+            }
          };
 
-         var d = $dialog.dialog(angular.extend(opts, {resolve: {
-            issue: function() {return angular.copy(me.issue);}
-         }}));
+         var d = $dialog.dialog(opts);
          d.open();
       }
    });
