@@ -1,5 +1,5 @@
 
-<li class="card"
+<div class="card"
     ng-controller="IssueCtrl as issueCtrl">
 
   <div class="header">
@@ -12,7 +12,7 @@
          title="Assigned to no one."
          src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
     <span class="title" ng-click="showIssueDetails(issue)" >
-      {{issueCtrl.issue.title}}
+      {{issueCtrl.issue.title}} {{issueCtrl.issue.config.weight}} {{issueCtrl.issue.number}}
     </span>
   </div>
 
@@ -29,5 +29,5 @@
       {{label.name}}
     </li>
   </ul>
-</li>
+</div>
 

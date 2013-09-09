@@ -20,18 +20,16 @@
          target="_blank">Create Issue</a>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()"
-                              ng-model="colCtrl.issues" >
+      <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()" >
         <div class="card_wrapper"
-             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText"
+             ng-repeat="issue in repoModel.issues | issuesInBacklog | filter:repoModel.cardSearchText"
              data-issue-id="{{issue.id}}" >
-          <div tr-issue-card issue="issue"></div>
+          <tr-issue-card issue="issue" />
         </div>
       </ul> <!-- end of card list -->
     </li>
 
     <!-- Kanban Columns -->
-
     <li ng-repeat="col_label in repoModel.config.columns" class="column"
         ng-style="columnsCtrl.getColumnWidth()"
 
@@ -41,13 +39,12 @@
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.getSortableOptions()"
-                              ng-model="colCtrl.issues" >
-        <div class="card_wrapper"
-             ng-repeat="issue in colCtrl.issues | filter:main.cardSearchText"
+      <ul class="column-body" ui-sortable="colCtrl.getSortableOptions()" >
+        <li class="card_wrapper"
+             ng-repeat="issue in repoModel.issues | issuesWithLabel:colCtrl.labelName | filter:repoModel.cardSearchText | orderBy:'config.weight'"
              data-issue-id="{{issue.id}}" >
-          <div tr-issue-card issue="issue"></div>
-        </div>
+          <tr-issue-card issue="issue" />
+        </li>
       </ul>
       <!-- end of card list -->
     </li>

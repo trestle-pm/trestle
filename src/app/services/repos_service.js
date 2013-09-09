@@ -30,10 +30,10 @@ angular.module('Trestle')
  * Service to hold information about the repository that we are
  * connected to and using.
 */
-.service('trReposSrv', function(gh, $dialog, $q, trRepoModel) {
+.service('trReposSrv', function($dialog, $q, gh, trRepoModel, trIssueHelpers) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
-         "columns": ["In Progress", "Review", "CI", "Ship"]
+          "columns": ["In Progress", "Review", "CI", "Ship"]
        };
 
    this.refreshSettings = function(stateParams) {
@@ -44,9 +44,29 @@ angular.module('Trestle')
       trRepoModel.config = angular.copy(DEFAULT_CONFIG);
 
       // Spawn off the configuration loading
-      if(trRepoModel.owner && trRepoModel.repo) {
-         this.loadConfig();
+      var has_repo = trRepoModel.owner && trRepoModel.repo;
+      if( has_repo ) {
+         return $q.all([
+            this._loadConfig(),
+            this._loadIssues()
+         ]);
       }
+      else {
+         // Return an empty deferred so that callers can connect to the methods
+         // result no matter what.
+         return $q().resolve();
+      }
+   };
+
+   this._loadIssues = function() {
+      gh.listRepoIssues(trRepoModel.owner, trRepoModel.repo)
+         .then(function(issues) {
+            // Pre sort the list of issues so that the jquery sortable plugin
+            // works correctly.
+            trRepoModel.issues = _.sortBy(issues, function(issue) {
+               return issue.config.weight;
+            }).reverse();
+         });
    };
 
    /**
@@ -54,7 +74,7 @@ angular.module('Trestle')
    *
    * Q: How should we handle case where we don't end up with a config?
    */
-   this.loadConfig = function() {
+   this._loadConfig = function() {
       var me = this;
 
       // Attempt to lookup the configuration issue for this repository
@@ -111,7 +131,7 @@ angular.module('Trestle')
                            TRESTLE_CONFIG_TITLE, JSON.stringify(DEFAULT_CONFIG))
                .then(function(result_issue) {
                   console.log('issue created');
-                  gh.updateIssue(scope.owner, scope.repo,
+                  gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
                                  result_issue.number, {state: 'closed'}).then(
                      function(result_patch) {
                         deferred.resolve(true);

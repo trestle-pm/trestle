@@ -363,7 +363,7 @@ module.exports = function ( grunt ) {
          options: {
             dest: 'build/docs',
             scripts: ['vendor/angular/angular.js'],
-            title: "Octo Board",
+            title: "Trestle Docs",
             html5Mode: false
          },
 
