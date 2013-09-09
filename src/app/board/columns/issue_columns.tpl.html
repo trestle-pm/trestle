@@ -1,5 +1,4 @@
 <div ng-controller="ColumnsCtrl as columnsCtrl" >
-
   <button class="btn btn-primary backlog"
           ng-click="showBacklog = !showBacklog">
     {{showBacklog ? 'Hide Backlog' : 'Show Backlog'}}
@@ -8,17 +7,16 @@
   <ul class="issue-columns" >
     <!-- Backlog Column -->
     <li ng-show="showBacklog"
-        ng-style="getColumnWidth()"
+
+        ng-style="columnsCtrl.getColumnWidth()"
+
         ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({isBacklog:true,
-            owner: boardCtrl.owner,
-            repo: boardCtrl.repo
-        })" >
+        ng-init="colCtrl.init({isBacklog:true})" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <a class="btn btn-success"
-         ng-href="https://github.com/{{boardCtrl.owner}}/{{boardCtrl.repo}}/issues/new"
+         ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
          target="_blank">Create Issue</a>
 
       <!-- CARDS List -->
@@ -33,14 +31,12 @@
     </li>
 
     <!-- Kanban Columns -->
-    <li ng-repeat="col_label in boardCtrl.config.columns" class="column"
-        ng-style="getColumnWidth()"
+
+    <li ng-repeat="col_label in repoModel.config.columns" class="column"
+        ng-style="columnsCtrl.getColumnWidth()"
 
         ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({labelName:col_label,
-            owner: boardCtrl.owner,
-            repo: boardCtrl.repo
-        })" >
+        ng-init="colCtrl.init({labelName:col_label})" >
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 

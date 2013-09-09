@@ -250,6 +250,17 @@ angular.module('github.api', ['restangular'])
    };
 
    /**
+   * Create an issue.
+   * owner, repo, and title are required.
+   */
+   this.createIssue = function(owner, repo, title, body) {
+      return GitHubRestangular
+         .all(['repos', owner, repo, 'issues'].join('/'))
+         .post({title: title, body: body});
+   };
+
+
+   /**
     @ngdoc    function
     @name     searchIssues
     @method   searchIssues
@@ -266,6 +277,10 @@ angular.module('github.api', ['restangular'])
            are returned.
     */
    this.searchIssues = function(options) {
+      // XXX: Would this be faster since it is a single repos?
+      //  - /legacy/issues/search/:owner/:repository/:state/:keyword
+      //  http://developer.github.com/v3/search/legacy/#search-issues
+      //
       // Build up the search string by looking at the supplied options
       var query = '';
       if (options.title) {

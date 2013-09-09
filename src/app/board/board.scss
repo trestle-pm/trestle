@@ -1,7 +1,5 @@
-@import "app/board/toolbar/toolbar";
-@import "app/board/columns/issue_columns.scss";
 
-.board.container {
+.repos_base.container {
     // bootstrap container is required so that we can use the navbar
     // however the container defaults to a 960 width which does not work for us.
     width: 100%;
