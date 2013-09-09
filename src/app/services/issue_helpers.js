@@ -2,14 +2,14 @@ angular.module('Trestle')
 
 /**
  @ngdoc service
- @name Trestle.issueHelpers
+ @name Trestle.trIssueHelpers
 
  @description
  Simple service to hold methods helpful to working with issues.
  */
-.service('issueHelpers', function($q, gh) {
+.service('trIssueHelpers', function($q, gh, trRepoModel) {
    var me = this,
-       config_header = '<!-- OCTOBOARD',
+       config_header = '<!-- TRESTLE',
        config_footer = '-->';
 
    this.mergeBodyConfig = function(body, configObj) {
@@ -17,21 +17,113 @@ angular.module('Trestle')
       return [body, config_header, JSON.stringify(configObj), config_footer].join('\n');
    };
 
+   /**
+   * Spawns off queries to resolve all grafted on information for the issue.
+   *  (all comments, counts, build status, etc)
+   * We call this every time the issue is retrieved so that we can get
+   * the full details.
+   */
    this._resolveIssueFields = function(issue) {
       // Add a quick list of the issue label names
       issue.labelNames = _.map(issue.labels, function(labelObj) {
          return labelObj.name;
       });
 
-      // Parse the configuration out of the body text
+      // Spawn off all the resolve methods (may go async internally)
       resolveIssueConf(issue);
-
-      // Resolve the list of issue comments
       resolveIssueComments(issue);
+      resolvePullStatus(issue);
    };
 
+   // When we get issues parse the description and add a custom feed called
+   // `config` to the issue.
+   // note: operation is provided in lowercase
+   gh.addResponseExtractor(function(response, operation, what, url, headers, params) {
+      // endpoint: issue list
+      if (operation === 'get' && /^repos\/.+\/.+\/issues$/.exec(what)) {
+         response = _.map(response, function(issue) {
+            me._resolveIssueFields(issue);
+            return issue;
+         });
+      }
+      // endpoint: specific issue
+      else if (operation === 'get' && /^repos\/.+\/.+\/issues\/[0-9]+$/.exec(what)) {
+         var issue = response;
+         me._resolveIssueFields(issue);
+         return issue;
+      }
+
+      // Add override on pull request handler
+      if (operation === 'get' && /^repos\/.+\/.+\/pulls$/.exec(what)) {
+         response = _.map(response, function(pull) {
+            pull.tr_head = pull.head;
+            return pull;
+         });
+      }
+      // endpoint: specific issue
+      else if (operation === 'get' && /^repos\/.+\/.+\/pulls\/[0-9]+$/.exec(what)) {
+         var pull = response;
+         pull.tr_head = pull.head;
+         return pull;
+      }
+
+      return response;
+   });
+
+
+   // -- Private Helpers --- //
+
+   /**
+   * Request all comments for the issue and attach them.
+   * as part of this we are going to calculate voting information.
+   */
    function resolveIssueComments(issue) {
-      issue.comments = [];
+      issue.tr_comments = issue.tr_comments || [];
+      issue.tr_comment_voting = {
+         users: {
+            //username: {
+            //   avatar_url: "",
+            //   count: <total int> // -1, 0, 1
+            //}
+         },
+         total: 0   // <summed count>
+      };
+
+      // Go get all comments for the issue
+      gh.getIssueComments(trRepoModel.owner, trRepoModel.repo, issue.number).then(
+         function(commentResults) {
+            // Store on the issue
+            issue.tr_comments = commentResults;
+            _calculateCommentVoting(issue);
+         }
+      );
+   }
+
+   /**
+   * Helper to calculate the voting details for the current issue given
+   * the comments.
+   */
+   function _calculateCommentVoting(issue) {
+      var voting = {
+         users: { },
+         total: 0
+      };
+
+      // Calculate the counting
+      _.each(issue.comments, function(comment) {
+         var login = comment.user.login;
+
+         if(undefined === voting.users[login]) {
+            voting.users[login] = {
+               avatar_url : comment.user.avatar_url,
+               count      : 0
+            };
+         }
+
+         // XXX: Update the voting
+      });
+
+      issue.tr_comment_voting = voting;
    }
 
    function resolveIssueConf(issue) {
@@ -43,23 +135,24 @@ angular.module('Trestle')
       var body = issue.body;
 
       var lines = _.map(body.split('\n'), function(line) {return line.trim();}),
-          octo_begin = _.findIndex(lines, function(line) {return line === config_header;}),
-          octo_end   = _.findIndex(lines, function(line) {return line === config_footer;});
+          conf_begin = _.findIndex(lines, function(line) {return line === config_header;}),
+          conf_end   = _.findIndex(lines, function(line) {return line === config_footer;});
 
-      if (octo_begin > -1 && octo_end > -1) {
-         var config_str = lines.slice(octo_begin+1, octo_end).join('\n');
+      if (conf_begin > -1 && conf_end > -1) {
+         var config_str = lines.slice(conf_begin+1, conf_end).join('\n');
          try {
             config = _.defaults(JSON.parse(config_str), config);
             // Join non-config sections as the actual description
             // - Note: This strips the XML comment lines also
-            body = [].concat(lines.slice(0, octo_begin),
-                             lines.slice(octo_end + 1, lines.length-1)).join('\n');
+            body = [].concat(lines.slice(0, conf_begin),
+                             lines.slice(conf_end + 1, lines.length-1)).join('\n');
          } catch (err) {
             console.error('Loading configuration:', body, err);
          }
       }
 
       // Store the extra configuration
+      // XXX: change .config to .tr_config
       issue.config = config;
       // Store the cleaned up body
       issue.body = body;
@@ -67,24 +160,32 @@ angular.module('Trestle')
       return issue;
    }
 
-   // When we get issues parse the description and add a custom feed called
-   // `config` to the issue.
-   gh.addResponseExtractor(function(response, operation, what, url, headers, params) {
-      // Operation is provided as lowercase
-      if (operation === 'get' && /^repos\/.+\/.+\/issues$/.exec(what)) {
-         response = _.map(response, function(issue) {
-            me._resolveIssueFields(issue);
-            return issue;
-         });
-      }
-      else if (operation === 'get' && /^repos\/.+\/.+\/issues\/[0-9]+$/.exec(what)) {
-         var issue = response;
-         me._resolveIssueFields(issue);
-         return issue;
-      }
+   /**
+   * Spawn off queries to get build status and pull request details
+   * added to the issue.
+   */
+   function resolvePullStatus(issue) {
+      issue.tr_build_status = issue.tr_build_status || null;
+      issue.tr_pull_details = issue.tr_pull_details || null;
 
-      return response;
-   });
+      // If we have a valid pull for the issue, spawn off query for it's details
+      if(issue.pull_request && issue.pull_request.html_url) {
+         gh.getPull(trRepoModel.owner, trRepoModel.repo, issue.number).then(
+            function(pullResult) {
+               var head_ref = pullResult.tr_head.sha;
+               issue.tr_pull_details = pullResult;
+
+               gh.getStatus(trRepoModel.owner, trRepoModel.repo, head_ref).then(
+                  function(statusResult) {
+                     issue.tr_build_status     = statusResult;
+                     issue.tr_top_build_status = statusResult[0];
+                  }
+               );
+            }
+         );
+      }
+   }
+
 })
 
 /**
@@ -99,7 +200,7 @@ angular.module('Trestle')
         be returned by this filter.
  @returns {Array} Set of issues with the label
  */
-.filter('issuesWithLabel', function(issueHelpers) {
+.filter('issuesWithLabel', function() {
    return function(issues, labelName) {
       if (!labelName) { throw new Error('labelName must be set'); }
 
@@ -119,7 +220,7 @@ angular.module('Trestle')
 
  @returns {Array} Set of issues that are not part of a column
  */
-.filter('issuesInBacklog', function(issueHelpers, trRepoModel) {
+.filter('issuesInBacklog', function(trRepoModel) {
    return function(issues) {
       var columns = trRepoModel.config.columns;
       return _.filter(issues, function(issue) {

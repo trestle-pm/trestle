@@ -1,6 +1,6 @@
 angular.module('Trestle.board')
 
-.controller('IssueColumnCtrl', function($scope, gh, trRepoModel, gitHubExtensionService) {
+.controller('IssueColumnCtrl', function($scope, gh, trRepoModel, trIssueHelpers) {
    /**
     * options:
     *    labelName: The string for the label for this column or undefined.
@@ -89,7 +89,7 @@ angular.module('Trestle.board')
          console.log('do it');
          gh.getIssue(trRepoModel.owner, trRepoModel.repo, moved_issue.number)
             .then(function(serverIssue) {
-               var new_body = gitHubExtensionService.mergeBodyConfig(
+               var new_body = trIssueHelpers.mergeBodyConfig(
                   serverIssue.body,
                   _.defaults({weight: weight}, serverIssue.config));
 

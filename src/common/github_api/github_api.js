@@ -291,6 +291,14 @@ angular.module('github.api', ['restangular'])
          .post({title: title, body: body});
    };
 
+   /**
+   * Return list of all comments on the issue.
+   */
+   this.getIssueComments = function(owner, repo, issueNumber) {
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'issues', issueNumber, 'comments'].join('/'))
+         .get();
+   };
 
    /**
     @ngdoc    function
@@ -322,6 +330,20 @@ angular.module('github.api', ['restangular'])
                                    {q: query},
                                    {'Accept': 'application/vnd.github.preview'});
    };
+
+
+   this.getPull = function(owner, repo, issueNumber) {
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'pulls', issueNumber].join('/'))
+         .get();
+   };
+
+   this.getStatus = function(owner, repo, ref) {
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'statuses', ref].join('/'))
+         .get();
+   };
+
 
    /**
     Helper function to convert GitHub's multiple string base 64 encoding into

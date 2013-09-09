@@ -30,7 +30,7 @@ angular.module('Trestle')
  * Service to hold information about the repository that we are
  * connected to and using.
 */
-.service('trReposSrv', function($dialog, $q, gh, trRepoModel) {
+.service('trReposSrv', function($dialog, $q, gh, trRepoModel, trIssueHelpers) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
           "columns": ["In Progress", "Review", "CI", "Ship"]
