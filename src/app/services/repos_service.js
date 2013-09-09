@@ -131,7 +131,7 @@ angular.module('Trestle')
                            TRESTLE_CONFIG_TITLE, JSON.stringify(DEFAULT_CONFIG))
                .then(function(result_issue) {
                   console.log('issue created');
-                  gh.updateIssue(scope.owner, scope.repo,
+                  gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
                                  result_issue.number, {state: 'closed'}).then(
                      function(result_patch) {
                         deferred.resolve(true);
