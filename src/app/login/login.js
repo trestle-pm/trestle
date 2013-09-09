@@ -1,6 +1,6 @@
 /**
  @ngdoc overview
- @name  octoboard.login
+ @name  Trestle.login
 
  @description
  stuff about login
