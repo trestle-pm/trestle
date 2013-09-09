@@ -3,7 +3,7 @@
         height: 1em;
     }
 
-    .dropdown-menu {
+    #repo-list {
         width: 400px;
 
         .filter {
@@ -25,5 +25,11 @@
     #issue-search {
         width: 20em;
         margin: 5px;
+    }
+
+    #settings {
+        // Reduce the padding of the settings area to allow the avatar to have
+        // enough space
+        padding: 5px;
     }
 }

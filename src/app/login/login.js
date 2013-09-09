@@ -12,12 +12,9 @@ angular.module( 'Trestle.login', [
 ])
 
 
-.controller( 'LoginCtrl', function HomeController($http, $location, gh) {
-   var me = this;
-
+.controller( 'LoginCtrl', function HomeController($http, $location, auth, gh) {
    // Always start with a blonk username/password and remember turned off
-   this.username   = '';
-   this.passsword  = '';
+   this.username = this.password = '';
    this.rememberMe = false;
 
    this.attemptLogin = function() {
@@ -26,48 +23,26 @@ angular.module( 'Trestle.login', [
 
       // Make sure the user entered something
       if (!user || !pass) {
-         console.log('Dude you must enter something');
          // XXX look at basic field validation
+         console.log('Dude you must enter something');
          return;
-      }
+     }
 
-      // Try and login into GitHub.
-      var auth = user + ':' + pass;
-      var p = $http({
-         method: 'GET',
-         url:    'https://api.github.com/authorizations',
-         headers: {
-            Authorization: 'Basic ' + window.btoa(auth)
-         }
-      });
-
-      // If these are valid creds then create a token we can use from now.
-      // - Be smart and tag it so that we can use the same one latter for our app
-      p.success(function(auths) {
-         // See if any of the authorizations are for our app
-         var auth = _.find(auths, function(auth) {
-            return auth.note === "trestle";
-         });
-
-         // If none of the authorizations are for trestle then add one for the user
-         // XXX
-
-         // Cache the token so that we can use it later
-         if (auth) {
+      auth.login(user, pass, this.rememberMe).then(
+         function(token) {
             // Pass the token off to the `gh` service
             // - Tell the github service how long to hold the authentication
-            gh.setAccessToken(auth.token,
-                              me.rememberMe ? 'local' : 'session');
+            gh.setAccessToken(token);
 
             // Yeah, for successful auth so bounce the user to next page
             // - If the next page was supplied then use that otherwise
             //   bounce the user to the repo list by default
             $location.path('/repo');
-         }
-      });
-
-      // XXX handle bad cred case (some kind of error screen
-
+         },
+         function() {
+            // XXX handle bad cred case (some kind of error screen
+            console.log('more error');
+         });
    };
 })
 
