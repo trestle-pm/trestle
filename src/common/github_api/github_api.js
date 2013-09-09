@@ -294,10 +294,14 @@ angular.module('github.api', ['restangular'])
    /**
    * Return list of all comments on the issue.
    */
-   this.getIssueComments = function(owner, repo, issueNumber) {
+   this.getIssueComments = function(owner, repo, issueNumber, options) {
+      var headers = {};
+      if (options.asHtml) {
+         headers.Accept = 'application/vnd.github.html+json';
+      }
       return GitHubRestangular
          .one(['repos', owner, repo, 'issues', issueNumber, 'comments'].join('/'))
-         .get();
+         .get({}, headers);
    };
 
    /**
