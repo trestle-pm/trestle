@@ -16,40 +16,6 @@ describe( 'GitHub API (gh)', function() {
       expect( gh.hasAccessToken() ).not.toBeTruthy();
    }));
 
-   describe( 'setAccessToken', function() {
-      it('should allow setting the key in memory only', inject( function(gh) {
-         // When the access token is set with a storage plan
-         gh.setAccessToken('my token');
-         // Then the token is available for use
-         expect( gh.hasAccessToken() ).toBeTruthy();
-         // And the token is not stored in storage
-         expect( localStorage.getItem('gh-token') ).toBeNull();
-         expect( sessionStorage.getItem('gh-token') ).toBeNull();
-      }));
-
-      it('should allow setting the key in session storage', inject(function(gh) {
-         // When the access token is set with a storage plan
-         gh.setAccessToken('my token', 'session');
-         // Then the token is available for use
-         expect( gh.hasAccessToken() ).toBeTruthy();
-         // And the token is not stored in local storage
-         expect( localStorage.getItem('gh-token') ).toBeNull();
-         // And the token should be stored in session storage
-         expect( sessionStorage.getItem('gh-token') ).toEqual('my token');
-      }));
-
-      it('should allow setting the key in local storage', inject(function(gh) {
-         // When the access token is set with a storage plan
-         gh.setAccessToken('my token', 'local');
-         // Then the token is available for use
-         expect( gh.hasAccessToken() ).toBeTruthy();
-         // And the token should not be stored in session storage
-         expect( sessionStorage.getItem('gh-token') ).toBeNull();
-         // And the token is stored in local storage
-         expect( localStorage.getItem('gh-token') ).toEqual('my token');
-      }));
-   });
-
    describe('GitHub API', function() {
       beforeEach(inject(function(gh) {
          gh.setAccessToken('sometoken');

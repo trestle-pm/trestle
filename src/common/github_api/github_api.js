@@ -21,12 +21,9 @@ angular.module('github.api', ['restangular'])
  Angular service `gh` which provides tools for accessing GitHub API's
  */
 .service('gh', function gh(GitHubRestangular, $http, $interpolate, $rootScope, $q) {
-
    var
-   token_storage_key = 'gh-token',
-   token,
-
-   response_extractors  = [];
+   response_extractors  = [],
+   token;
 
    // Extend the API set the access token when we have one
    GitHubRestangular.setFullRequestInterceptor(function(element, operation, what,
@@ -97,16 +94,6 @@ angular.module('github.api', ['restangular'])
     @returns {string} The token or falsy if not found.
     */
    function getAccessToken() {
-      // If the token is not set then try local storage
-      if (!token && window.localStorage) {
-         token = window.localStorage.getItem(token_storage_key);
-      }
-
-      // If the token is still not set try the session storage
-      if (!token && window.sessionStorage) {
-         token = window.sessionStorage.getItem(token_storage_key);
-      }
-
       return token;
    }
 
@@ -120,7 +107,7 @@ angular.module('github.api', ['restangular'])
     resources on GitHub.
     */
    this.hasAccessToken = function() {
-      return !! getAccessToken();
+      return !!token;
    };
 
    /**
@@ -133,22 +120,14 @@ angular.module('github.api', ['restangular'])
 
     @param {string} newToken The new token to use for the service.  Pass a falsy
            value to clear the token.
-    @param {string} storageRule Indicates if/where the token can be stored.  By
-           passing 'local' or 'storage' the token we be stored for later retrival
-           if, for example, the page is reloaded.
     */
-   this.setAccessToken = function(newToken, storageRule) {
+   this.setAccessToken = function(newToken) {
       // Update our internal reference to the token
-      token = newToken;
+      token = newToken ? newToken : null;
+   };
 
-      // Set the value into storage if asked to
-      var action = !!token ? 'setItem' : 'removeItem';
-      if (storageRule === 'local' && window.localStorage) {
-         window.localStorage[action](token_storage_key, newToken);
-      }
-      else if (storageRule === 'session' && window.sessionStorage) {
-            window.sessionStorage[action](token_storage_key, newToken);
-      }
+   this.getUserDetails = function() {
+      return GitHubRestangular.one('user').get();
    };
 
    /**
@@ -347,7 +326,6 @@ angular.module('github.api', ['restangular'])
          .one(['repos', owner, repo, 'statuses', ref].join('/'))
          .get();
    };
-
 
    /**
     Helper function to convert GitHub's multiple string base 64 encoding into
