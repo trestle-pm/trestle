@@ -17,5 +17,7 @@
 
 // Bring in the various app tools
 @import "app/login/login";
+@import "app/toolbar/toolbar";
 @import "app/board/board";
+@import "app/board/columns/issue_columns";
 @import "app/issue/issues";
