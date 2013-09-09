@@ -4,7 +4,7 @@
 
   <div class="build_header"></div>
   <div class="header">
-    <span class="title" ng-click="showIssueDetails(issue)" >
+    <span class="title" ng-click="issueCtrl.showIssueDetails()" >
       {{issueCtrl.issue.title}}
     </span>
     <img ng-if="issueCtrl.getAssignedUser()"

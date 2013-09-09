@@ -1,6 +1,6 @@
 var mod = angular.module('Trestle.issue', []);
 
-mod.controller('IssueCtrl', function($scope) {
+mod.controller('IssueCtrl', function($scope, $dialog) {
    // init
    $scope.$id = "IssueCtrl_" + $scope.$id;
 
@@ -18,6 +18,7 @@ mod.controller('IssueCtrl', function($scope) {
       },
 
       showIssueDetails: function() {
+         var me = this;
          var opts = {
             backdrop: true,
             keyboard: true,
@@ -27,9 +28,8 @@ mod.controller('IssueCtrl', function($scope) {
             controller: 'IssueDetailsCtrl'
          };
 
-         var selected_issue = issue;
          var d = $dialog.dialog(angular.extend(opts, {resolve: {
-            issue: function() {return angular.copy(selected_issue);}
+            issue: function() {return angular.copy(me.issue);}
          }}));
          d.open();
       }
