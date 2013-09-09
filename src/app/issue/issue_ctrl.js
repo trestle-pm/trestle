@@ -1,6 +1,6 @@
 var mod = angular.module('Trestle.issue', []);
 
-mod.controller('IssueCtrl', function($scope, $dialog) {
+mod.controller('IssueCtrl', function($scope, $modal, $rootScope) {
    // init
    $scope.$id = "IssueCtrl_" + $scope.$id;
 
@@ -18,19 +18,20 @@ mod.controller('IssueCtrl', function($scope, $dialog) {
       },
 
       showIssueDetails: function() {
-         var me = this;
+         // Create a local scope for the template and add the issue into it
+         var modal_scope = $rootScope.$new();
+
+         modal_scope.issue = this.issue;
+
          var opts = {
-            backdrop      : true,
-            keyboard      : true,
-            backdropClick : true,
-            templateUrl   : "board/issue_details/issue_details.tpl.html",
-            resolve: {
-               issue: function() { return me.issue; }   // angular.copy ??
-            }
+            scope        : modal_scope,
+            windowClass  : 'issue_details_modal',
+            backdrop     : true,
+            keyboard     : true,
+            templateUrl  : "board/issue_details/issue_details.tpl.html"
          };
 
-         var d = $dialog.dialog(opts);
-         d.open();
+         $modal.open(opts);
       }
    });
 
