@@ -1,13 +1,86 @@
-<div ng-controller="IssueDetailsCtrl as detailsCtrl"
-     ng-init="detailsCtrl.init(issue)" >
-  <h1 class="modal-header" >
-    {{detailsCtrl.issue.title}}
-  </h1>
+<div ng-controller="IssueCtrl as issueCtrl"
+     ng-init="issueCtrl.init(issue)" >
 
-  <div class="modal-body">
-    {{detailsCtrl.issue.body}}
-
-    {{detailsCtrl.issue.html_url}}
+  <div class="header">
+    <img ng-if="issueCtrl.getAssignedUser()"
+         class="avatar"
+         title="Assigned to {{issueCtrl.getAssignedUser().login}}"
+         ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
+    <img ng-if="!issueCtrl.getAssignedUser()"
+         class="avatar empty"
+         title="Assigned to no one."
+         src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
+    <span class="title">
+      {{issueCtrl.issue.title}}
+    </span>
+    <a target="_blank" href="issueCtrl.issue.html_url">
+      <i class="icon-share"></i>
+    </a>
+    <i class="icon-remove" ng-click="$close()"></i>
   </div>
+
+  <div class="status_header">
+    <div ng-if="issueCtrl.isPullRequest()"
+         class="build_status {{issueCtrl.getBuildStatus()}}">
+      <a href="{{issueCtrl.tr_top_build_status.target_url}}" target="_blank">
+      {{issueCtrl.tr_top_build_status.description}}
+      </a>
+    </div>
+
+    <div class="comment_summary">
+      <div class="summary">
+         {{issueCtrl.tr_comments.length}} comments
+      </div>
+
+      <div class="vote_count"
+          ng-class="{
+           positive: issueCtrl.issue.tr_comment_voting.total > 0,
+           negative: issueCtrl.issue.tr_comment_voting.total < 0
+          }">
+       {{issueCtrl.issue.tr_comment_voting.total}}
+     </div>
+    </div>
+
+  </div>
+
+  <div class="milestone">
+    {{issueCtrl.issue.milstone.title}}
+  </div>
+
+  <div class="label_bar">
+    <div class="label_block">
+      <li ng-repeat="label in issueCtrl.issue.labels"
+          style="background-color: #{{label.color}}">
+        {{label.name}}
+      </li>
+    </div>
+
+    <button ng-if="!issueCtrl.isPullRequest()"
+            class="convert_pull btn btn-primary">
+    Convert to Pull
+    </button>
+    <button ng-if="issueCtrl.isPullRequest()"
+            class="convert_pull btn">
+    View Pull
+    </button>
+
+  </div>
+
+  <div class="scroll_area">
+    <div class="description">
+      {{issueCtrl.issue.body}}
+    </div>
+
+    <div class="comments">
+        <div class="comment"
+            ng-repeat="comment in issueCtrl.issue.tr_comments">
+          <img class="commenter"
+               ng-src="{{comment.user.avatar_url}}?s=30"/>
+          <div class="comment_body" ng-bind-html="comment.body_html"/>
+        </div>
+    </div>
+  </div>
+
+
 
 </div>
