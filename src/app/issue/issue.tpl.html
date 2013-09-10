@@ -7,6 +7,7 @@
   <div ng-if="issueCtrl.isPullRequest()"
        class="build_header"></div>
   <div class="header">
+    <a href="{{issueCtrl.issue.html_url}}" title="Open on GitHub" class="number ng-scope"><i ng-if="issueCtrl.isPullRequest()" class="icon-code-fork"></i>{{issueCtrl.issue.number}}</a>  <span class="title ng-binding">
     <span class="title">
       {{issueCtrl.issue.title}}
     </span>
@@ -16,42 +17,44 @@
          ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
     <img ng-if="!issueCtrl.getAssignedUser()"
          class="avatar empty"
-         title="Assigned to no one."
+         title="Assigned to no one." 
          src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
   </div>
-
-  <div class="milestone" ng-show="issue.milestone">
-    {{issueCtrl.issue.milestone.title}}
+  <div class="content">
+      <span class="milestone" ng-show="issue.milestone">
+        {{issueCtrl.issue.milestone.title}}
+      </span>
+      <span class="label"
+            ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels"
+            style="background-color: #{{label.color}}">
+          {{label.name}}
+      </span>
   </div>
-
-  <ul class="labels">
-    <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
-    <li ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels"
-        style="background-color: #{{label.color}}">
-      {{label.name}}
-    </li>
-  </ul>
-
-  <div class="voting_bar">
-    <ul class="votes">
-      <li ng-repeat="(login, details) in issueCtrl.issue.tr_comment_voting.users">
-        <img class="vote_avatar"
+  <div class="reviews">
+    <div class="votes">
+        <div class="vote_count"
+             ng-class="{
+              positive: issueCtrl.issue.tr_comment_voting.total > 0,
+              negative: issueCtrl.issue.tr_comment_voting.total < 0
+             }">
+          {{issueCtrl.issue.tr_comment_voting.total}}
+        </div>
+        <img ng-repeat="(login, details) in issueCtrl.issue.tr_comment_voting.users"
+             class="vote_avatar"
              title="{{login}} {{details.count}}"
              ng-src="{{details.avatar_url}}?s=30"
              ng-class="{
               yes: details.count > 0,
               no: details.count < 0
              }"
-             ></img>
-      </li>
-    </ul>
-
-    <div class="vote_count"
-         ng-class="{
-          positive: issueCtrl.issue.tr_comment_voting.total > 0,
-          negative: issueCtrl.issue.tr_comment_voting.total < 0
-         }">
-      {{issueCtrl.issue.tr_comment_voting.total}}
+             />
+    </div>
+    <div class="stats">
+        <!--<span class="todos"><i class="icon-check"></i>3/6</span>-->
+        <span class="comments">
+            <i class="icon-comments"></i>
+            {{issueCtrl.tr_comments.length}}
+        </span>
     </div>
   </div>
 </div>
