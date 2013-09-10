@@ -1,6 +1,6 @@
 var mod = angular.module('Trestle.issue', []);
 
-mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
+mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh) {
    // init
 
    _.extend(this, {
@@ -88,8 +88,17 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
       /**
       * Called to assign the given user to the issue.
       */
-      assignUser: function(userLogin) {
-         console.log("Assigning: " + userLogin);
+      assignUser: function(user) {
+         console.log("Assigning: " + user.login);
+         // short-circut locally to get immediate update
+         this.issue.assignee = user;
+
+         gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
+                        this.issue.number, {assignee: user.login}).then(
+            function(result) {
+               console.log('assignment: success');
+            }
+         );
       }
    });
 

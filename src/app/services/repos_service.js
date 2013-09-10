@@ -9,8 +9,8 @@ angular.module('Trestle')
    scope.config = null;
 
    // XXX upcoming
-   scope.issues        = [];
-   scope.collaborators = [];
+   scope.issues    = [];
+   scope.assignees = [];
 
    // TODO: Move this to a filter helper of some type
    scope.cardSearchText = null;
@@ -50,7 +50,7 @@ angular.module('Trestle')
          return $q.all([
             this._loadConfig(),
             this._loadIssues(),
-            this._loadCollaborators()
+            this._loadAssignees()
          ]);
       }
       else {
@@ -72,12 +72,12 @@ angular.module('Trestle')
    };
 
    /**
-   * Load all collaborators on this repository.
+   * Load all assignees on this repository.
    */
-   this._loadCollaborators = function() {
-      gh.listRepoUsers(trRepoModel.owner, trRepoModel.repo)
-         .then(function(collaborators) {
-            trRepoModel.collaborators = collaborators;
+   this._loadAssignees = function() {
+      gh.listRepoAssignees(trRepoModel.owner, trRepoModel.repo)
+         .then(function(assignees) {
+            trRepoModel.assignees = assignees;
          });
    };
 

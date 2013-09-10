@@ -10,9 +10,9 @@
              ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
       </a>
       <ul class="dropdown-menu">
-        <li ng-repeat="user in repoModel.collaborators"
-            class="collaborator"
-            ng-click="issueCtrl.assignUser(user.login)">
+        <li ng-repeat="user in repoModel.assignees"
+            class="assignee"
+            ng-click="issueCtrl.assignUser(user)">
           <img class="avatar" ng-src="{{user.avatar_url}}?s=30"></img>
           <span class="user_login">{{user.login}}</span>
         </li>
