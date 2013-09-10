@@ -43,8 +43,14 @@
 
   </div>
 
-  <div class="milestone">
-    {{issueCtrl.issue.milstone.title}}
+  <div class="details">
+    <div class="milestone" ng-show="issue.milestone">
+      {{issueCtrl.issue.milestone.title}}
+    </div>
+    <div class="branch_info" ng-show="issueCtrl.isPullRequest()">
+      to {{issueCtrl.issue.tr_pull_details.base.label}}
+      from {{issueCtrl.issue.tr_pull_details.tr_head.label}}
+    </div>
   </div>
 
   <div class="label_bar">
