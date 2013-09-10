@@ -61,11 +61,7 @@ angular.module('Trestle')
    this._loadIssues = function() {
       gh.listRepoIssues(trRepoModel.owner, trRepoModel.repo)
          .then(function(issues) {
-            // Pre sort the list of issues so that the jquery sortable plugin
-            // works correctly.
-            trRepoModel.issues = _.sortBy(issues, function(issue) {
-               return issue.config.weight;
-            }).reverse();
+            trRepoModel.issues = issues;
          });
    };
 
