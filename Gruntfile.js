@@ -170,6 +170,16 @@ module.exports = function ( grunt ) {
                   expand: true
                }
             ]
+         },
+         publish_dev: {
+            files: [
+               {
+                  src: ['**'],
+                  dest: '<%= publish_dir %>',
+                  cwd: '<%= build_dir %>',
+                  expand: true
+               }
+            ]
          }
       },
 
@@ -487,6 +497,7 @@ module.exports = function ( grunt ) {
 
    /** Add target to use for regular development. */
    grunt.registerTask( 'dev', ['build', 'connect', 'watch'] );
+   grunt.registerTask( 'publish', ['build', 'copy:publish_dev'] );
 
    /**
     * The `build` task gets your app ready to run for development and testing.
