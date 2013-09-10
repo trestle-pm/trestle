@@ -21,7 +21,8 @@
 
   <div class="status_header">
     <div ng-if="issueCtrl.isPullRequest()"
-         class="build_status {{issueCtrl.getBuildStatus()}}">
+         class="build_status"
+         ng-class="issueCtrl.getBuildStatus()">
       <a href="{{issueCtrl.tr_top_build_status.target_url}}" target="_blank">
       {{issueCtrl.tr_top_build_status.description}}
       </a>

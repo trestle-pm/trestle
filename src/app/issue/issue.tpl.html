@@ -1,5 +1,6 @@
 <div ng-controller="IssueCtrl as issueCtrl"
-     class="card {{issueCtrl.getBuildStatus()}}"
+     class="card"
+     ng-class="issueCtrl.getBuildStatus()"
      ng-click="issueCtrl.showIssueDetails()"
     >
 
