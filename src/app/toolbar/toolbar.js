@@ -1,6 +1,5 @@
 angular.module('Trestle.board')
 
-
 /**
  @ngdoc function
  @name  Trestle.board.ToolbarCtrl
@@ -8,7 +7,7 @@ angular.module('Trestle.board')
  @description
  Provides the tools for handling the toolbar
  */
-.controller('ToolbarCtrl', function($location, $stateParams, $dialog, gh) {
+.controller('ToolbarCtrl', function($location, $stateParams, gh) {
    /**
     @ngdoc    method
     @name     init

@@ -1,8 +1,15 @@
+<div ng-controller="IssueCtrl as issueCtrl"
+     class="card"
+     ng-class="issueCtrl.getBuildStatus()"
+     ng-click="issueCtrl.showIssueDetails()"
+    >
 
-<div class="card"
-    ng-controller="IssueCtrl as issueCtrl">
-
+  <div ng-if="issueCtrl.isPullRequest()"
+       class="build_header"></div>
   <div class="header">
+    <span class="title">
+      {{issueCtrl.issue.title}}
+    </span>
     <img ng-if="issueCtrl.getAssignedUser()"
          class="avatar"
          title="Assigned to {{issueCtrl.getAssignedUser().login}}"
@@ -11,9 +18,6 @@
          class="avatar empty"
          title="Assigned to no one."
          src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
-    <span class="title" ng-click="showIssueDetails(issue)" >
-      {{issueCtrl.issue.title}} {{issueCtrl.issue.config.weight}} {{issueCtrl.issue.number}}
-    </span>
   </div>
 
   <div class="milestone" ng-show="issue.milestone">
@@ -22,12 +26,33 @@
 
   <ul class="labels">
     <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
-    <!-- Note the use of filter from parent controller in scope -->
-    <!-- <li ng-repeat="label in issueCtrl.issue.labels | filter:colCtrl.excludeColLabel" -->
-    <li ng-repeat="label in issueCtrl.issue.labels"
+    <li ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels"
         style="background-color: #{{label.color}}">
       {{label.name}}
     </li>
   </ul>
+
+  <div class="voting_bar">
+    <ul class="votes">
+      <li ng-repeat="(login, details) in issueCtrl.issue.tr_comment_voting.users">
+        <img class="vote_avatar"
+             title="{{login}} {{details.count}}"
+             ng-src="{{details.avatar_url}}?s=30"
+             ng-class="{
+              yes: details.count > 0,
+              no: details.count < 0
+             }"
+             ></img>
+      </li>
+    </ul>
+
+    <div class="vote_count"
+         ng-class="{
+          positive: issueCtrl.issue.tr_comment_voting.total > 0,
+          negative: issueCtrl.issue.tr_comment_voting.total < 0
+         }">
+      {{issueCtrl.issue.tr_comment_voting.total}}
+    </div>
+  </div>
 </div>
 

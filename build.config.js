@@ -54,11 +54,16 @@ module.exports = {
          'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
          'vendor/angular-ui-router/release/angular-ui-router.js',
          'vendor/angular-ui-utils/modules/route/route.js',
-         'vendor/restangular/dist/restangular.js'
+         'vendor/restangular/dist/restangular.js',
+         'vendor/angular-sanitize/angular-sanitize.js'
       ],
       css: [
          'vendor/bootstrap/docs/assets/css/bootstrap.css',
          'vendor/bootstrap/docs/assets/css/bootstrap-responsive.css'
+      ],
+      assets: [
+         'vendor/bootstrap/docs/assets/img/glyphicons-halflings.png',
+         'vendor/bootstrap/docs/assets/img/glyphicons-halflings-white.png',
       ]
    }
 };

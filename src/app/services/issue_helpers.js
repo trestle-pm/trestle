@@ -25,7 +25,7 @@ angular.module('Trestle')
    */
    this._resolveIssueFields = function(issue) {
       // Add a quick list of the issue label names
-      issue.labelNames = _.map(issue.labels, function(labelObj) {
+      issue.tr_label_names = _.map(issue.labels, function(labelObj) {
          return labelObj.name;
       });
 
@@ -116,7 +116,6 @@ angular.module('Trestle')
 
    function _calculateCommentVoting(issue) {
       // Calculate the counting
-      //console.log(issue);
 
       var votes = _.reduce(issue.tr_comments, function(votes, comment) {
          var login = comment.user.login;
@@ -140,7 +139,6 @@ angular.module('Trestle')
 
          // Update the users total count with the new information
          votes[login].count = votes[login].count + total;
-         console.log(login, votes[login].count);
 
          return votes;
       }, {});
@@ -148,7 +146,11 @@ angular.module('Trestle')
       issue.tr_comment_voting = {
          users: votes,
          total: _.reduce(votes, function(count, voteDetails) {
-            return count + voteDetails.count;
+            if(voteDetails.count < 0 || count < 0) {
+               return -1;
+            } else {
+               return count + voteDetails.count;
+            }
          }, 0)
       };
    }
@@ -232,7 +234,7 @@ angular.module('Trestle')
       if (!labelName) { throw new Error('labelName must be set'); }
 
       return _.filter(issues, function(issue) {
-         return _.contains(issue.labelNames, labelName);
+         return _.contains(issue.tr_label_names, labelName);
       });
    };
 })
@@ -251,9 +253,29 @@ angular.module('Trestle')
    return function(issues) {
       var columns = trRepoModel.config.columns;
       return _.filter(issues, function(issue) {
-         return _.intersection(issue.labelNames, columns).length === 0;
+         return _.intersection(issue.tr_label_names, columns).length === 0;
       });
    };
 })
+
+
+/**
+ @ngdoc filter
+ @name  Trestle.nonColumnLabels
+
+ @description
+ Takes an array of label objects and filters it down to only labels that don't contain
+ column labels.
+*/
+.filter('nonColumnLabels', function(trRepoModel) {
+   return function(labels) {
+      var col_labels = trRepoModel.config.columns;
+
+      return _.filter(labels, function(label) {
+         return !_.contains(col_labels, label.name);
+      });
+   };
+})
+
 
 ;

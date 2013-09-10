@@ -9,7 +9,8 @@ angular.module( 'Trestle', [
    'ui.sortable',
    'ui.bootstrap',
    'ui.state',
-   'ui.route'
+   'ui.route',
+   'ngSanitize'
 ])
 
 .config( function ( $stateProvider, $urlRouterProvider ) {
