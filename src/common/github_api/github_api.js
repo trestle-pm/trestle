@@ -138,7 +138,7 @@ angular.module('github.api', ['restangular'])
     @description
     Returns the list if users which have access to the supplied repository
 
-    @see http://developer.github.com/v3/repos/#list-contributors
+    @see http://developer.github.com/v3/repos/collaborators/#list
 
     @param {string} owner The owner of the repository
     @param {string} repo  The name of the repository
