@@ -2,14 +2,29 @@
      ng-init="issueCtrl.init(issue)" >
 
   <div class="header">
-    <img ng-if="issueCtrl.getAssignedUser()"
-         class="avatar"
-         title="Assigned to {{issueCtrl.getAssignedUser().login}}"
-         ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
-    <img ng-if="!issueCtrl.getAssignedUser()"
-         class="avatar empty"
-         title="Assigned to no one."
-         src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
+    <li class="user-selector dropdown">
+      <a class="dropdown-toggle">
+        <img class="avatar"
+             title="Assigned to {{issueCtrl.getAssignedUserDetails(30).name}}"
+             ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
+        Click Me
+      </a>
+      <ul class="dropdown-menu">
+        <li>
+          <img class="avatar" src="http://www.gravatar.com/avatar/0?d=mm&f=y&s=30"/>
+          bob
+        </li>
+        <li>
+          <img class="avatar" src="http://www.gravatar.com/avatar/0?d=mm&f=y&s=30"/>
+          jim
+        </li>
+        <li>
+          <img class="avatar" src="http://www.gravatar.com/avatar/0?d=mm&f=y&s=30"/>
+          kirk
+        </li>
+      </ul>
+    </li>
+
     <span class="title">
       {{issueCtrl.issue.title}}
     </span>

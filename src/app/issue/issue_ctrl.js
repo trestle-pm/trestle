@@ -24,8 +24,23 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
          return status;
       },
 
-      getAssignedUser: function() {
-         return this.issue.assignee;
+      /**
+      * Return a obj of user details suitable for use in templates.
+      */
+      getAssignedUserDetails: function(avSize) {
+         avSize = avSize || 30;
+
+         if(this.issue.assignee) {
+            return {
+               name       : this.issue.assignee.login,
+               avatar_url : this.issue.assignee.avatar_url + "?s=" + avSize
+            };
+         } else {
+            return {
+               name       : 'no one',
+               avatar_url : 'http://www.gravatar.com/avatar/0?d=mm&f=y&s=' + avSize
+            };
+         }
       },
 
       /**
