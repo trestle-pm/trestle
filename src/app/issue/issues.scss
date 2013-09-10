@@ -104,3 +104,21 @@
     }
 
 }
+
+
+.issue_detail {
+   .user-selector {
+      .dropdown-menu {
+        li {
+            &:hover {
+                background: blue;
+            }
+            margin: 4px;
+
+            .avatar {
+                padding: 4px;
+            }
+        }
+      }
+   }
+}

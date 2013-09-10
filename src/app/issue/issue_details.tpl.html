@@ -1,4 +1,5 @@
-<div ng-controller="IssueCtrl as issueCtrl"
+<div class="issue_detail"
+     ng-controller="IssueCtrl as issueCtrl"
      ng-init="issueCtrl.init(issue)" >
 
   <div class="header">
@@ -7,7 +8,6 @@
         <img class="avatar"
              title="Assigned to {{issueCtrl.getAssignedUserDetails(30).name}}"
              ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
-        Click Me
       </a>
       <ul class="dropdown-menu">
         <li>
