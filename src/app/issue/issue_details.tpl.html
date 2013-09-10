@@ -49,7 +49,7 @@
 
   <div class="label_bar">
     <div class="label_block">
-      <li ng-repeat="label in issueCtrl.issue.labels"
+      <li ng-repeat="label in issueCtrl.getLabels({stripCols:true})"
           style="background-color: #{{label.color}}">
         {{label.name}}
       </li>

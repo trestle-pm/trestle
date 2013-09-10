@@ -1,6 +1,6 @@
 var mod = angular.module('Trestle.issue', []);
 
-mod.controller('IssueCtrl', function($scope, $modal, $rootScope) {
+mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
    // init
 
    _.extend(this, {
@@ -26,6 +26,29 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope) {
 
       getAssignedUser: function() {
          return this.issue.assignee;
+      },
+
+      /**
+      * Return the label names for the issue.
+      * by default we strip out the issue columns from this list.
+      *
+      *  config:
+      *    - stripCols: <bool>  If true strip the column labels.
+      */
+      getLabels: function(config) {
+         config = _.defaults({}, config, {
+            stripCols: true
+         });
+
+         var col_labels = trRepoModel.config.columns;
+         var labels = this.issue.labels.slice(0);
+
+         if(config.stripCols) {
+            labels = _.filter(labels, function(label) {
+               return !_.contains(col_labels, label.name);
+            });
+         }
+         return labels;
       },
 
       showIssueDetails: function() {
