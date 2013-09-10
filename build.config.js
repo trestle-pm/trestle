@@ -60,6 +60,10 @@ module.exports = {
       css: [
          'vendor/bootstrap/docs/assets/css/bootstrap.css',
          'vendor/bootstrap/docs/assets/css/bootstrap-responsive.css'
+      ],
+      assets: [
+         'vendor/bootstrap/docs/assets/img/glyphicons-halflings.png',
+         'vendor/bootstrap/docs/assets/img/glyphicons-halflings-white.png',
       ]
    }
 };
