@@ -20,7 +20,8 @@ angular.module('github.api', ['restangular'])
  @description
  Angular service `gh` which provides tools for accessing GitHub API's
  */
-.service('gh', function gh(GitHubRestangular, $http, $interpolate, $rootScope, $q) {
+
+.service('gh', function gh($q, GitHubRestangular) {
    var
    response_extractors  = [],
    token;
