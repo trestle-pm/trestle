@@ -25,7 +25,7 @@
 
   <ul class="labels">
     <li ng-if="issueCtrl.isPullRequest()" class="pull">pull</li>
-    <li ng-repeat="label in issueCtrl.getLabels({stripCols: true})"
+    <li ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels"
         style="background-color: #{{label.color}}">
       {{label.name}}
     </li>

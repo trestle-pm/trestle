@@ -258,4 +258,24 @@ angular.module('Trestle')
    };
 })
 
+
+/**
+ @ngdoc filter
+ @name  Trestle.nonColumnLabels
+
+ @description
+ Takes an array of label objects and filters it down to only labels that don't contain
+ column labels.
+*/
+.filter('nonColumnLabels', function(trRepoModel) {
+   return function(labels) {
+      var col_labels = trRepoModel.config.columns;
+
+      return _.filter(labels, function(label) {
+         return !_.contains(col_labels, label.name);
+      });
+   };
+})
+
+
 ;
