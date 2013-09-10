@@ -39,7 +39,7 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope) {
             windowClass  : 'issue_details_modal',
             backdrop     : true,
             keyboard     : true,
-            templateUrl  : "board/issue_details/issue_details.tpl.html"
+            templateUrl  : "issue/issue_details.tpl.html"
          };
 
          $modal.open(opts);
