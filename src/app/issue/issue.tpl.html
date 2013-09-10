@@ -17,7 +17,7 @@
          ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
     <img ng-if="!issueCtrl.getAssignedUser()"
          class="avatar empty"
-         title="Assigned to no one." 
+         title="Assigned to no one."
          src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
   </div>
   <div class="content">
@@ -30,7 +30,8 @@
           {{label.name}}
       </span>
   </div>
-  <div class="reviews">
+  <div class="reviews"
+       ng-if="issueCtrl.issue.tr_comments.length > 0">
     <div class="votes">
         <div class="vote_count"
              ng-class="{
@@ -53,7 +54,7 @@
         <!--<span class="todos"><i class="icon-check"></i>3/6</span>-->
         <span class="comments">
             <i class="icon-comments"></i>
-            {{issueCtrl.tr_comments.length}}
+            {{issueCtrl.issue.tr_comments.length}}
         </span>
     </div>
   </div>
