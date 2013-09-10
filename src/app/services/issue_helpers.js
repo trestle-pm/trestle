@@ -25,7 +25,7 @@ angular.module('Trestle')
    */
    this._resolveIssueFields = function(issue) {
       // Add a quick list of the issue label names
-      issue.labelNames = _.map(issue.labels, function(labelObj) {
+      issue.tr_label_names = _.map(issue.labels, function(labelObj) {
          return labelObj.name;
       });
 
@@ -234,7 +234,7 @@ angular.module('Trestle')
       if (!labelName) { throw new Error('labelName must be set'); }
 
       return _.filter(issues, function(issue) {
-         return _.contains(issue.labelNames, labelName);
+         return _.contains(issue.tr_label_names, labelName);
       });
    };
 })
@@ -253,7 +253,7 @@ angular.module('Trestle')
    return function(issues) {
       var columns = trRepoModel.config.columns;
       return _.filter(issues, function(issue) {
-         return _.intersection(issue.labelNames, columns).length === 0;
+         return _.intersection(issue.tr_label_names, columns).length === 0;
       });
    };
 })
