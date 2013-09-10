@@ -1,11 +1,12 @@
 <div ng-controller="IssueCtrl as issueCtrl"
-     class="card {{issueCtrl.getBuildStatus()}} "
+     class="card {{issueCtrl.getBuildStatus()}}"
+     ng-click="issueCtrl.showIssueDetails()"
     >
 
   <div ng-if="issueCtrl.isPullRequest()"
        class="build_header"></div>
   <div class="header">
-    <span class="title" ng-click="issueCtrl.showIssueDetails()" >
+    <span class="title">
       {{issueCtrl.issue.title}}
     </span>
     <img ng-if="issueCtrl.getAssignedUser()"
