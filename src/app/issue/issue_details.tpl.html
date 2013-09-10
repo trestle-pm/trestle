@@ -10,17 +10,11 @@
              ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
       </a>
       <ul class="dropdown-menu">
-        <li>
-          <img class="avatar" src="http://www.gravatar.com/avatar/0?d=mm&f=y&s=30"/>
-          bob
-        </li>
-        <li>
-          <img class="avatar" src="http://www.gravatar.com/avatar/0?d=mm&f=y&s=30"/>
-          jim
-        </li>
-        <li>
-          <img class="avatar" src="http://www.gravatar.com/avatar/0?d=mm&f=y&s=30"/>
-          kirk
+        <li ng-repeat="user in repoModel.collaborators"
+            class="collaborator"
+            ng-click="issueCtrl.assignUser(user.login)">
+          <img class="avatar" ng-src="{{user.avatar_url}}?s=30"></img>
+          <span class="user_login">{{user.login}}</span>
         </li>
       </ul>
     </li>

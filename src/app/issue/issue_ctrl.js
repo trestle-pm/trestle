@@ -69,8 +69,10 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
       showIssueDetails: function() {
          // Create a local scope for the template and add the issue into it
          var modal_scope = $rootScope.$new();
+         modal_scope.$id = "modal:issue_details:" + modal_scope.$id;
 
          modal_scope.issue = this.issue;
+         modal_scope.repoModel = trRepoModel;
 
          var opts = {
             scope        : modal_scope,
@@ -81,6 +83,13 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
          };
 
          $modal.open(opts);
+      },
+
+      /**
+      * Called to assign the given user to the issue.
+      */
+      assignUser: function(userLogin) {
+         console.log("Assigning: " + userLogin);
       }
    });
 
