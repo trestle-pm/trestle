@@ -9,7 +9,8 @@ angular.module('Trestle')
    scope.config = null;
 
    // XXX upcoming
-   scope.issues = [];
+   scope.issues        = [];
+   scope.collaborators = [];
 
    // TODO: Move this to a filter helper of some type
    scope.cardSearchText = null;
@@ -48,7 +49,8 @@ angular.module('Trestle')
       if( has_repo ) {
          return $q.all([
             this._loadConfig(),
-            this._loadIssues()
+            this._loadIssues(),
+            this._loadCollaborators()
          ]);
       }
       else {
@@ -66,6 +68,16 @@ angular.module('Trestle')
             trRepoModel.issues = _.sortBy(issues, function(issue) {
                return issue.config.weight;
             }).reverse();
+         });
+   };
+
+   /**
+   * Load all collaborators on this repository.
+   */
+   this._loadCollaborators = function() {
+      gh.listRepoUsers(trRepoModel.owner, trRepoModel.repo)
+         .then(function(collaborators) {
+            trRepoModel.collaborators = collaborators;
          });
    };
 
