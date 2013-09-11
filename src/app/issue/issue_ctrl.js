@@ -85,6 +85,10 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh
          $modal.open(opts);
       },
 
+      stopEvent: function(event) {
+         event.stopPropagation();
+      },
+
       /**
       * Popup dialog to allow converting issue to pull.
       */

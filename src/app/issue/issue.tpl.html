@@ -7,7 +7,14 @@
   <div ng-if="issueCtrl.isPullRequest()"
        class="build_header"></div>
   <div class="header">
-    <a href="{{issueCtrl.issue.html_url}}" title="Open on GitHub" class="number ng-scope"><i ng-if="issueCtrl.isPullRequest()" class="icon-code-fork"></i>{{issueCtrl.issue.number}}</a>  <span class="title ng-binding">
+    <a ng-href="{{issueCtrl.issue.html_url}}"
+       ng-click="issueCtrl.stopEvent($event)"
+       target="_blank"
+       title="Open on GitHub"
+       class="number ng-scope">
+       <i ng-if="issueCtrl.isPullRequest()" class="icon-code-fork"></i>
+       {{issueCtrl.issue.number}}
+    </a>
     <span class="title">
       {{issueCtrl.issue.title}}
     </span>
