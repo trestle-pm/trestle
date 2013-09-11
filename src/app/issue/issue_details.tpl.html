@@ -1,15 +1,24 @@
-<div ng-controller="IssueCtrl as issueCtrl"
+<div class="issue_detail"
+     ng-controller="IssueCtrl as issueCtrl"
      ng-init="issueCtrl.init(issue)" >
 
   <div class="header">
-    <img ng-if="issueCtrl.getAssignedUser()"
-         class="avatar"
-         title="Assigned to {{issueCtrl.getAssignedUser().login}}"
-         ng-src="{{issueCtrl.getAssignedUser().avatar_url}}?s=30" />
-    <img ng-if="!issueCtrl.getAssignedUser()"
-         class="avatar empty"
-         title="Assigned to no one."
-         src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&f=y">
+    <li class="user-selector dropdown">
+      <a class="dropdown-toggle">
+        <img class="avatar"
+             title="Assigned to {{issueCtrl.getAssignedUserDetails(30).name}}"
+             ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
+      </a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="user in repoModel.assignees"
+            class="assignee"
+            ng-click="issueCtrl.assignUser(user)">
+          <img class="avatar" ng-src="{{user.avatar_url}}?s=30"></img>
+          <span class="user_login">{{user.login}}</span>
+        </li>
+      </ul>
+    </li>
+
     <span class="title">
       {{issueCtrl.issue.title}}
     </span>

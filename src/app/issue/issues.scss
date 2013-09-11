@@ -212,6 +212,22 @@ $border_radius_card:3px;
 
 }
 
+.issue_detail {
+   .user-selector {
+      .dropdown-menu {
+        li {
+            &:hover {
+                background: blue;
+            }
+            margin: 4px;
+
+            .avatar {
+                padding: 4px;
+            }
+        }
+      }
+   }
+}
 
 .convert_to_pull {
     margin: 8px;
