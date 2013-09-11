@@ -117,6 +117,30 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh
                console.log('assignment: success');
             }
          );
+      },
+
+      /**
+      * Assign the issue to a milestone given the milestone's number
+      */
+      assignMilestone: function(msNumber) {
+         console.log('assigned milestone: ' + msNumber);
+         var new_milestone = null;
+
+         // short-circut so we see locally.
+         if(msNumber) {
+            new_milestone = _.find(trRepoModel.milestones, function(ms) {
+               return ms.number === msNumber;
+            });
+         }
+         this.issue.milestone = new_milestone;
+
+         // tell github about the update
+         gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
+                        this.issue.number, {milestone: msNumber})
+            .then(function(result) {
+               console.log('assign milestone: success');
+            }
+         );
       }
    });
 
