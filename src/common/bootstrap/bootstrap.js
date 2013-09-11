@@ -2,7 +2,7 @@
  * Enhances the angular bootstrap directive to allow it to stay open when the
  * user clicks inside the menu.
  */
-angular.module('ui.bootstrap.dropdownToggle', []).directive('dropdownToggleNoClose',
+angular.module('ui.bootstrap.dropdownToggleNoClose', []).directive('dropdownToggleNoClose',
   ['$document', '$location', '$window', function ($document, $location, $window) {
   var openElement = null,
       closeMenu   = angular.noop;
