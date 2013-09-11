@@ -1,6 +1,6 @@
 var mod = angular.module('Trestle');
 
-mod.controller('ConvertToPullCtrl', function($scope, $modal, trRepoModel, gh) {
+mod.controller('ConvertToPullCtrl', function($scope, $modal, trRepoModel, gh, trIssueHelpers) {
    _.extend(this, {
       init: function(issue) {
          var me = this;
@@ -46,10 +46,13 @@ mod.controller('ConvertToPullCtrl', function($scope, $modal, trRepoModel, gh) {
       },
 
       convertToPull: function() {
+         var me = this;
+
          gh.createPullFromIssue(trRepoModel.owner, trRepoModel.repo, this.issue.number,
                                 this.baseBranch, this.topicBranch)
             .then(function(result) {
                console.log('pull created');
+               trIssueHelpers._resolveIssueFields(me.issue);
 
                // Close up the dialog
                $scope.$close();
