@@ -133,21 +133,21 @@ angular.module('github.api', ['restangular'])
 
    /**
     @ngdoc    function
-    @name     listRepoUsers
+    @name     listRepoAssignees
     @methodOf github.api.gh
 
     @description
-    Returns the list if users which have access to the supplied repository
+    Returns the list if users which can be assigned to an issue
 
-    @see http://developer.github.com/v3/repos/#list-contributors
+    @see http://developer.github.com/v3/issues/assignees/
 
     @param {string} owner The owner of the repository
     @param {string} repo  The name of the repository
 
-    @returns {Promise} When resolved the list of all collaborators.
+    @returns {Promise} When resolved the list of all assignees
     */
-   this.listRepoUsers = function(owner, repo) {
-      var url = ['repos', owner, repo, 'collaborators'].join('/');
+   this.listRepoAssignees = function(owner, repo) {
+      var url = ['repos', owner, repo, 'assignees'].join('/');
       return GitHubRestangular.one(url).get({per_page: 100});
    };
 

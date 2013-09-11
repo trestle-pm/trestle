@@ -1,6 +1,6 @@
 var mod = angular.module('Trestle.issue', []);
 
-mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
+mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh) {
    // init
 
    _.extend(this, {
@@ -24,8 +24,23 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
          return status;
       },
 
-      getAssignedUser: function() {
-         return this.issue.assignee;
+      /**
+      * Return a obj of user details suitable for use in templates.
+      */
+      getAssignedUserDetails: function(avSize) {
+         avSize = avSize || 30;
+
+         if(this.issue.assignee) {
+            return {
+               name       : this.issue.assignee.login,
+               avatar_url : this.issue.assignee.avatar_url + "?s=" + avSize
+            };
+         } else {
+            return {
+               name       : 'no one',
+               avatar_url : 'http://www.gravatar.com/avatar/0?d=mm&f=y&s=' + avSize
+            };
+         }
       },
 
       /**
@@ -54,8 +69,10 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
       showIssueDetails: function() {
          // Create a local scope for the template and add the issue into it
          var modal_scope = $rootScope.$new();
+         modal_scope.$id = "modal:issue_details:" + modal_scope.$id;
 
          modal_scope.issue = this.issue;
+         modal_scope.repoModel = trRepoModel;
 
          var opts = {
             scope        : modal_scope,
@@ -66,6 +83,22 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel) {
          };
 
          $modal.open(opts);
+      },
+
+      /**
+      * Called to assign the given user to the issue.
+      */
+      assignUser: function(user) {
+         console.log("Assigning: " + user.login);
+         // short-circut locally to get immediate update
+         this.issue.assignee = user;
+
+         gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
+                        this.issue.number, {assignee: user.login}).then(
+            function(result) {
+               console.log('assignment: success');
+            }
+         );
       }
    });
 
