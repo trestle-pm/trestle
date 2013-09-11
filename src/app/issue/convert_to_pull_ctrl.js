@@ -1,6 +1,6 @@
 var mod = angular.module('Trestle');
 
-mod.controller('ConvertToPullCtrl', function($scope, $modal, $rootScope, trRepoModel, gh) {
+mod.controller('ConvertToPullCtrl', function($scope, $modal, trRepoModel, gh) {
    _.extend(this, {
       init: function(issue) {
          var me = this;
@@ -21,6 +21,7 @@ mod.controller('ConvertToPullCtrl', function($scope, $modal, $rootScope, trRepoM
             .then(function(branches) {
                me.branches = branches;
             }
+            // TODO: handle error case
          );
       },
 
@@ -36,6 +37,8 @@ mod.controller('ConvertToPullCtrl', function($scope, $modal, $rootScope, trRepoM
 
       updateDiffDetails: function() {
          var me = this;
+         this.compareResults = null;
+
          gh.compareCommits(trRepoModel.owner, trRepoModel.repo, this.baseBranch, this.topicBranch)
             .then(function(compareResults) {
                me.compareResults = compareResults;
@@ -47,10 +50,10 @@ mod.controller('ConvertToPullCtrl', function($scope, $modal, $rootScope, trRepoM
                                 this.baseBranch, this.topicBranch)
             .then(function(result) {
                console.log('pull created');
-            });
 
-         // Close up the dialog
-         $scope.$close();
+               // Close up the dialog
+               $scope.$close();
+            });
       }
 
    });
