@@ -19,10 +19,17 @@
          ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
          target="_blank">Create Issue</a>
 
+      <div class="milestone_selection">
+        <select ng-init="msFilterVal='*'"
+                ng-model="msFilterVal"
+                ng-options="m.value as m.title for m in columnsCtrl.getMilestoneSelectOptions()">
+        </select>
+      </div>
+
       <!-- CARDS List -->
       <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()" >
         <div class="card_wrapper"
-             ng-repeat="issue in repoModel.issues | issuesInBacklog | filter:repoModel.cardSearchText"
+             ng-repeat="issue in repoModel.issues | issuesInBacklog | filterMilestones:msFilterVal | filter:repoModel.cardSearchText"
              data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
         </div>
