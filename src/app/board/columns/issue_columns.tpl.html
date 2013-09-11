@@ -31,11 +31,9 @@
           ui-sortable="colCtrl.getSortableOptions()" >
 
         <li class="card_wrapper"
-             ng-repeat="issue in colCtrl.issues | issuesInBacklog | filterMilestones:msFilterVal | filter:repoModel.cardSearchText"
+             ng-repeat="issue in colCtrl.issues | filterMilestones:msFilterVal | filter:repoModel.cardSearchText"
              data-issue-id="{{issue.id}}" >
-
           <tr-issue-card issue="issue" />
-
         </li>
       </ul> <!-- end of card list -->
     </li>
