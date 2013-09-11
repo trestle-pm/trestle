@@ -1,4 +1,7 @@
 $border_radius_card:3px;
+.card_wrapper {
+    list-style: none;
+}
 .card {
     border     : 1px solid darken($color_background,20);
     box-shadow : 1px 1px 3px rgba(0,0,0,.5);
@@ -59,6 +62,7 @@ $border_radius_card:3px;
         font-weight:bold;
         background:#fff;
         border-bottom: 1px solid lighten($color_grey,20);
+		position:relative;
 		&:first-child {
 			border-radius: $border_radius_card $border_radius_card 0 0;
 		}
@@ -102,6 +106,14 @@ $border_radius_card:3px;
             border-radius:25px;
             border: 1px solid rgba(0,0,0,.5);
             box-shadow : 1px 0 4px rgba(0,0,0,.5);
+			&.empty {
+			    height: 25px;
+			    right: 0;
+			    top: -1px;
+			    border-radius: 0;
+			    box-shadow: none;
+			    opacity: .7;
+			}
         }
     .content{
         margin: 0;
