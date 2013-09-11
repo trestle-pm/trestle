@@ -227,6 +227,12 @@ angular.module('github.api', ['restangular'])
       return d.promise;
    };
 
+   this.getRepos = function(owner, repo) {
+      return GitHubRestangular
+         .one(['repos', owner, repo].join('/'))
+         .get();
+   };
+
    this.listAllRepos = function() {
       var me = this;
 
@@ -322,9 +328,27 @@ angular.module('github.api', ['restangular'])
          .get();
    };
 
+   this.createPullFromIssue = function(owner, repo, issueNumber, base, head) {
+      return GitHubRestangular
+         .all(['repos', owner, repo, 'pulls'].join('/'))
+         .post({issue: issueNumber, base: base, head: head });
+   };
+
    this.getStatus = function(owner, repo, ref) {
       return GitHubRestangular
          .one(['repos', owner, repo, 'statuses', ref].join('/'))
+         .get();
+   };
+
+   this.getBranches = function(owner, repo) {
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'branches'].join('/'))
+         .get();
+   };
+
+   this.compareCommits = function(owner, repo, base, head) {
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'compare', base + '...' + head].join('/'))
          .get();
    };
 

@@ -63,7 +63,8 @@
     </div>
 
     <button ng-if="!issueCtrl.isPullRequest()"
-            class="convert_pull btn btn-primary">
+            class="convert_pull btn btn-primary"
+            ng-click="issueCtrl.convertToPull()">
     Convert to Pull
     </button>
     <button ng-if="issueCtrl.isPullRequest()"
