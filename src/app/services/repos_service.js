@@ -11,6 +11,7 @@ angular.module('Trestle')
    // XXX upcoming
    scope.issues = [];
    scope.milestones = [];
+   scope.repoDetails = null;
 
    // TODO: Move this to a filter helper of some type
    scope.cardSearchText = null;
@@ -50,7 +51,8 @@ angular.module('Trestle')
          return $q.all([
             this._loadConfig(),
             this._loadIssues(),
-            this._loadMilestones()
+            this._loadMilestones(),
+            this._loadRepoDetails()
          ]);
       }
       else {
@@ -71,6 +73,13 @@ angular.module('Trestle')
       gh.listMilestones(trRepoModel.owner, trRepoModel.repo)
          .then(function(milestones) {
             trRepoModel.milestones = milestones;
+         });
+   };
+
+   this._loadRepoDetails = function() {
+      gh.getRepos(trRepoModel.owner, trRepoModel.repo)
+         .then(function(repos) {
+            trRepoModel.repoDetails = repos;
          });
    };
 

@@ -22,7 +22,7 @@ $border_radius_card:3px;
         border-top: 1px solid lighten($build-color, 15);
         border-bottom: 1px solid darken($build-color, 10);
     }
-       
+
     &.success .build_header {
         $build-color: $color_success;
         background: $build-color;
@@ -88,7 +88,7 @@ $border_radius_card:3px;
             }
         }
         .title {
-            
+
             white-space: normal;
             line-height:1.3em;
         }
@@ -108,7 +108,7 @@ $border_radius_card:3px;
         padding: 0 5px;
         white-space:normal;
     }
-    
+
     .milestone{
         display: inline-block;
         padding: 2px 10px 2px 7px;
@@ -126,7 +126,7 @@ $border_radius_card:3px;
         font-size:.9em;
         border-radius: 0 $border_radius_card $border_radius_card 0;
     }
-    
+
     .label{
         overflow:hidden;
         border-bottom:1px solid rgba(0, 0, 0, 0.35);
@@ -135,10 +135,10 @@ $border_radius_card:3px;
         display:inline-block;
 		margin:2px;
     }
-    
-    
 
-    
+
+
+
 
     /** Voting styling */
     .reviews {
@@ -152,13 +152,13 @@ $border_radius_card:3px;
 
             border-radius : 13px 0 0 13px;
             background    : $color_grey;
-            
+
             color: #ffffff;
             text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
             box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.45), 1px 1px 0 rgba(255,255,255, 1);
             font-weight: bold;
             font-size:1em;
-			
+
 			&.even{
 				border-radius : 13px;
 			}
@@ -184,10 +184,10 @@ $border_radius_card:3px;
             &.no {
                 border-color: darken($color_danger,5);
             }
-            
+
         }
 
-        
+
     }
     .stats{
         position:absolute;
@@ -210,4 +210,57 @@ $border_radius_card:3px;
         }
     }
 
+}
+
+
+.convert_to_pull {
+    margin: 8px;
+
+    .branch-selector {
+        display: inline-block;
+    }
+
+    .branch-pulldown {
+        width: 300px;
+        margin-top: 4px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        font-size: 12px;
+        color: #666;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 5px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+
+        .menu-header {
+            padding: 8px 10px;
+            background-color: #eeeeee;
+            background-image: -moz-linear-gradient(#fafafa, #eee);
+            background-image: -webkit-linear-gradient(#fafafa, #eee);
+            background-image: linear-gradient(#fafafa, #eee);
+            background-repeat: repeat-x;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu-list {
+            max-height: 400px;
+            overflow: auto;
+        }
+
+        .menu-item {
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            display: table;
+            table-layout: fixed;
+            width: 100%;
+            overflow: hidden;
+            color: inherit;
+
+            &:hover {
+                background: blue;
+            }
+        }
+    }
 }
