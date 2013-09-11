@@ -62,10 +62,10 @@ $border_radius_card:3px;
         font-weight:bold;
         background:#fff;
         border-bottom: 1px solid lighten($color_grey,20);
-        position:relative;
-        &:first-child {
-            border-radius: $border_radius_card $border_radius_card 0 0;
-        }
+		position:relative;
+		&:first-child {
+			border-radius: $border_radius_card $border_radius_card 0 0;
+		}
     }
         .icon-code-fork {
             color: darken($color_grey, 15);
@@ -106,14 +106,14 @@ $border_radius_card:3px;
             border-radius:25px;
             border: 1px solid rgba(0,0,0,.5);
             box-shadow : 1px 0 4px rgba(0,0,0,.5);
-            &.empty {
-                height: 25px;
-                right: 0;
-                top: -1px;
-                border-radius: 0;
-                box-shadow: none;
-                opacity: .7;
-            }
+			&.empty {
+			    height: 25px;
+			    right: 0;
+			    top: -1px;
+			    border-radius: 0;
+			    box-shadow: none;
+			    opacity: .7;
+			}
         }
     .content{
         margin: 0;
@@ -239,44 +239,6 @@ $border_radius_card:3px;
         }
       }
    }
-
-   .label_bar {
-		border-style: solid;
-		border-width: 1px;
-		border-right: none;
-		min-width: 300px;
-
-		display : inline-block;
-		border-radius: 2px;
-	    padding : 2px;
-		margin  : 2px;
-		margin-right : 0px;
-
-		.label {
-		   margin : 2px;
-		}
-   }
-
-   .label_editor {
-        display : inline-block;
-
-		.label-item {
-			margin: 3px;
-			padding: 2px;
-			border-style: line;
-			border-width: 1px;
-			border-radius: 2px;
-
-			&.enabled {
-			   background-color: blue;
-			}
-
-			.pill {
-			   border-radius: 2px;
-			   padding : 2px;
-			}
-		}
-   }
 }
 
 .convert_to_pull {
@@ -330,6 +292,7 @@ $border_radius_card:3px;
         }
     }
 }
+
 
 .modal {
     border     : 1px solid #000;
@@ -495,55 +458,6 @@ $border_radius_card:3px;
 		.branch_info{
 		    display:none;
 		}
-		.description{
-			padding:10px 20px;
-			border-bottom:1px solid lighten($color_grey,20);
-			h4{
-				margin: 0;
-				font-size: 1em;
-				color:$color_grey;
-			}
-		}
-		.comments{
-			background: lighten($color_grey,30);
-			border-radius: 0 0 $border_radius_card $border_radius_card;
-			padding: 10px;
-			.comment{
-				position:relative;
-				margin: 0 0 10px;
-			}
-			.comment:last-child{
-				margin:0;
-			}
-			.commenter{
-				height:40px;
-				max-height:40px;
-				max-width:40px;
-		        position:absolute;
-		        left:-2px;
-		        top:-2px;
-		        border-radius:25px;
-				border: 2px solid lighten($color_grey,10);
-			}
-			.comment_body{
-				margin:0 0 0 30px;
-				padding: 7px 10px 7px 15px;
-				background:#fff;
-				border: 3px solid lighten($color_grey,20);
-				p:last-child{ margin:0;}
-			}
-			h4 {
-				margin: 0 0 0 47px;
-				font-size: 1em;
-				color:$color_grey;
-				font-weight:normal;
-				em{
-					font-style:normal;
-					color:darken($color_grey, 15);
-					font-weight:bold;
-				}
-			}
-		}
 
 		.pull{
 		    .milestone{
@@ -574,31 +488,32 @@ $border_radius_card:3px;
 		        }
 		    }
 		}
-}
 
 
 
 
 
-/** Voting styling */
-.vote_count {
-    display : inline-block;
-    margin   : 0;
-    padding  : 0px 8px 0px;
 
-    border-radius : 13px 0 0 13px;
-    background    : $color_grey;
+		/** Voting styling */
+		.vote_count {
+		    display : inline-block;
+		    margin   : 0;
+		    padding  : 0px 8px 0px;
 
-    color: #ffffff;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
-    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.45), 1px 1px 0 rgba(255,255,255, .3);
-    font-weight: bold;
-    font-size:1em;
+		    border-radius : 13px 0 0 13px;
+		    background    : $color_grey;
 
-    &.positive {
-        background: $color_success;
-    }
-    &.negative {
-        background: $color_danger;
-    }
+		    color: #ffffff;
+		    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+		    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.45), 1px 1px 0 rgba(255,255,255, .3);
+		    font-weight: bold;
+		    font-size:1em;
+
+		    &.positive {
+		        background: $color_success;
+		    }
+		    &.negative {
+		        background: $color_danger;
+		    }
+		}
 }
