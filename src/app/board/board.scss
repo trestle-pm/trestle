@@ -28,6 +28,8 @@ ul.issue-columns {
 }
 
 .btn.backlog {
-  -webkit-transform: rotate(90deg);
-  -webkit-transform-origin: 0 100%;
+  @include rotate(90deg);
+  @include transform-origin(0, 100%);
+  position: absolute;
+  top: 175px;
 }
