@@ -1,6 +1,9 @@
 /**
  * Enhances the angular bootstrap directive to allow it to stay open when the
  * user clicks inside the menu.
+ *
+ * Add 'no-close' class to any direct children of dropdown-menu that
+ * should not get clicked on.
  */
 angular.module('ui.bootstrap.dropdownToggleNoClose', []).directive('dropdownToggleNoClose',
   ['$document', '$location', '$window', function ($document, $location, $window) {
@@ -33,6 +36,7 @@ angular.module('ui.bootstrap.dropdownToggleNoClose', []).directive('dropdownTogg
                     event.preventDefault();
                     event.stopPropagation();
                  }
+                 $document.unbind('click', closeMenu);
                  element.parent().removeClass('open');
                  closeMenu   = angular.noop;
                  openElement = null;
@@ -47,11 +51,18 @@ angular.module('ui.bootstrap.dropdownToggleNoClose', []).directive('dropdownTogg
         angular.forEach(element.parent().children(), function(node) {
            var elm = angular.element(node);
            if (elm.hasClass('dropdown-menu')) {
-              elm.bind('click', function(event){
-                 // Stop the event so that the close menu above is not triggered
-                 event.preventDefault();
-                 event.stopPropagation();
-                 return false;
+              angular.forEach(elm.children(), function(child) {
+                 var child_elt = angular.element(child);
+
+                 if(child_elt.hasClass('no-close')) {
+                    child_elt.bind('click', function(event) {
+                       // Stop the event so that the close menu above is not triggered
+                       event.preventDefault();
+                       event.stopPropagation();
+                       return false;
+                    });
+                 }
+
               });
            }
         });
