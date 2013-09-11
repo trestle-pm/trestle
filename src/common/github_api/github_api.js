@@ -328,6 +328,12 @@ angular.module('github.api', ['restangular'])
          .get();
    };
 
+   this.listMilestones = function(owner, repo, args) {
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'milestones'].join('/'))
+         .get(_.defaults({}, args, {state: 'open'}));
+   };
+
    /**
     Helper function to convert GitHub's multiple string base 64 encoding into
     the actual string it represents.
