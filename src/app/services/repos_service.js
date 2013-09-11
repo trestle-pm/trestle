@@ -36,7 +36,8 @@ angular.module('Trestle')
 .service('trReposSrv', function($modal, $q, gh, trRepoModel, trIssueHelpers, auth) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
-          "columns": ["In Progress", "Review", "CI", "Ship"]
+          "columns": ["In Progress", "Review", "CI", "Ship"],
+          "wip_limit": 10
        };
 
    this.refreshSettings = function(stateParams) {

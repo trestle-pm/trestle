@@ -45,7 +45,13 @@
         ng-controller="IssueColumnCtrl as colCtrl"
         ng-init="colCtrl.init({labelName:col_label})" >
 
-      <h1 class="column-header">{{colCtrl.columnName}}</h1>
+      <h1 class="column-header">
+        <span class="column_name">{{colCtrl.columnName}}</span>
+        <span ng-class="{
+                over_limit: colCtrl.issues.length > repoModel.config.wip_limit
+              }"
+              class="wip_count">{{colCtrl.issues.length}}</span>
+      </h1>
 
       <!-- CARDS List -->
       <ul class="column-body" ng-model="colCtrl.issues"
