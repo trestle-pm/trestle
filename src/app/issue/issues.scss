@@ -1,35 +1,51 @@
-
+$border_radius_card:3px;
 .card {
-    border     : 1px solid #e5e5e5;
-    box-shadow : 2px 2px 7px #888;
-
+    border     : 1px solid darken($color_background,20);
+    box-shadow : 1px 1px 3px rgba(0,0,0,.5);
+    border-radius: $border_radius_card;
     width    : 100%;
     position : relative;
-    margin   : 5px 0;
-
-    padding-bottom: 3px;
-
-    background: white;
-
+    margin   : 8px 0;
+    padding: 0;
+    background: lighten($color_grey,30);
     list-style-type: none;
+    min-height:42px;
 
     /** styling for the build headers */
     .build_header {
-        height : 3px;
+        height : 5px;
+        margin-top:-1px;
         width  : 100%;
-        background: gray;
+        border-radius: $border_radius_card $border_radius_card 0 0;
+        $build-color: $color_grey;
+        background: $build-color;
+        border-top: 1px solid lighten($build-color, 15);
+        border-bottom: 1px solid darken($build-color, 10);
     }
+       
     &.success .build_header {
-        background: green;
+        $build-color: $color_success;
+        background: $build-color;
+        border-top: 1px solid lighten($build-color, 15);
+        border-bottom: 1px solid darken($build-color, 10);
     }
     &.failure .build_header {
-        background: red;
+        $build-color: $color_danger;
+        background: $build-color;
+        border-top: 1px solid lighten($build-color, 15);
+        border-bottom: 1px solid darken($build-color, 10);
     }
     &.pending .build_header {
-        background: gray;
+        $build-color: $color_primary ;
+        background: $build-color;
+        border-top: 1px solid lighten($build-color, 15);
+        border-bottom: 1px solid darken($build-color, 10);
     }
     &.unknown .build_header {
-        background: gray;
+        $build-color: $color_grey;
+        background: $build-color;
+        border-top: 1px solid lighten($build-color, 15);
+        border-bottom: 1px solid darken($build-color, 10);
     }
 
     &.dragging {
@@ -37,68 +53,159 @@
     }
 
     .header {
-        margin: 5px;
+        margin: 0;
+        padding: 3px 50px 3px 5px;
+        font-size:1.2em;
+        font-weight:bold;
+        background:#fff;
+        border-bottom: 1px solid lighten($color_grey,20);
+		&:first-child {
+			border-radius: $border_radius_card $border_radius_card 0 0;
+		}
     }
-
-    .labels {
-        @include inline-block-list();
-
-        li {
+        .icon-code-fork {
+            color: darken($color_grey, 15);
+            font-size:1em;
+            font-weight:bold;
+            margin-right:3px;
+        }
+        .number{
+            display:inline-block;
+            border: 1px solid $color_primary ;
+            color: $color_primary ;
+            font-size: .85em;
+            font-weight: normal;
             padding: 0 4px;
-            margin: 0 4px;
-
-            border-radius: 2px;
+            border-radius:$border_radius_card;
+            background-color: lighten($color_primary ,45);
+            &:hover{
+                text-decoration:none;
+                background-color: $color_primary ;
+                color:#fff;
+                    .icon-code-fork{
+                        color:#fff;
+                    }
+            }
         }
-        li.pull {
-            background-color: lightskyblue;
+        .title {
+            
+            white-space: normal;
+            line-height:1.3em;
         }
+        .avatar{
+            height:50px;
+			max-height:50px;
+			max-width:50px;
+            position:absolute;
+            right:-5px;
+            top:-6px;
+            border-radius:25px;
+            border: 1px solid rgba(0,0,0,.5);
+            box-shadow : 1px 0 4px rgba(0,0,0,.5);
+        }
+    .content{
+        margin: 0;
+        padding: 0 5px;
+        white-space:normal;
     }
+    
+    .milestone{
+        display: inline-block;
+        padding: 2px 10px 2px 7px;
+        margin: 1px 2px 0 -8px;
+        line-height: 14px;
+        color: #ffffff;
+        vertical-align: baseline;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+        background-color:darken($color_grey,0);
+        border:1px solid darken($color_grey,20);
+        border-top-color: lighten($color_grey, 5);
+        border-left-color:darken($color_grey,45);
+        font-style: italic;
+        font-weight: normal;
+        font-size:.9em;
+        border-radius: 0 $border_radius_card $border_radius_card 0;
+    }
+    
+    .label{
+        overflow:hidden;
+        border-bottom:1px solid rgba(0, 0, 0, 0.35);
+        border-right:1px solid rgba(0, 0, 0, 0.35);
+        text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
+        display:inline-block;
+		margin:2px;
+    }
+    
+    
 
-    .title {
-        // Undo horizontal list setting
-        white-space: normal;
-    }
+    
 
     /** Voting styling */
-    .voting_bar {
+    .reviews {
         position : relative;
-        min-height : 1em;
-        @include clearfix;
+        white-space: normal;
+        padding: 3px 6px 1px;
+        .vote_count {
+            display : inline-block;
+            margin   : 0 0 2px 0;
+            padding  : 2px 8px 3px;
 
-        .votes {
-            @include inline-block-list();
-            padding: 5px;
-
-            .vote_avatar {
-                max-width    : 20px;
-                max-height   : 20px;
-                border-style : solid;
-                border-width : 2px;
-                margin       : 2px;
-                border-color : grey;
-
-                &.yes {
-                    border-color: green;
-                }
-                &.no {
-                    border-color: red;
-                }
+            border-radius : 13px 0 0 13px;
+            background    : $color_grey;
+            
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+            box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.45), 1px 1px 0 rgba(255,255,255, 1);
+            font-weight: bold;
+            font-size:1em;
+			
+			&.even{
+				border-radius : 13px;
+			}
+            &.positive {
+                background: $color_success;
+            }
+            &.negative {
+                background: $color_danger;
             }
         }
 
-        .vote_count {
-            float    : right;
-            margin   : 4px;
-            padding  : 3px;
-
-            border-radius : 9px;
-            background    : grey;
-
-            &.positive {
-                background: green;
+        .vote_avatar {
+            max-width    : 20px;
+            max-height   : 20px;
+            border-style : solid;
+            border-width : 3px;
+            margin       : 0 4px 2px -1px;
+            border-color : grey;
+            vertical-align:middle;
+            &.yes {
+                border-color: darken($color_success,5);
             }
-            &.negative {
-                background: red;
+            &.no {
+                border-color: darken($color_danger,5);
+            }
+            
+        }
+
+        
+    }
+    .stats{
+        position:absolute;
+        right:3px;
+        bottom:5px;
+        padding:0 4px;
+        color:$color_grey;
+        font-size:1.2em;
+        &:hover{
+            color:darken($color_grey,35);
+        }
+        span{
+            margin-right:10px;
+            &.todos i{
+                margin-right:5px;
+            }
+            &:last-child{
+                margin-right:0;
             }
         }
     }
