@@ -1,0 +1,104 @@
+<div class="convert_to_pull"
+     ng-controller="ConvertToPullCtrl as convertCtrl"
+     ng-init="convertCtrl.init(issue)" >
+
+  <div class="modal-header">
+    <h3>Convert Issue to pull</h3>
+  </div>
+
+  <p>We are converting pull for issue: {{convertCtrl.issue.title}}</p>
+
+  <div class="branches">
+    <!-- Base Branch -->
+    <span class="branch_type">Base Branch:</span>
+    <div class="branch-selector dropdown" >
+      <a class="btn dropdown-toggle-no-close" >
+        {{convertCtrl.baseBranch}}<span class="caret"></span>
+      </a>
+
+      <div class="branch-pulldown dropdown-menu">
+        <div class="menu-header">
+          <span class="menu-title">Choose base branch</span>
+        </div>
+        <div class="menu-filter" >
+          <input type="text" placeholder="Search" ng-model="baseBranchSearch"
+                 class="search-query" ></input>
+        </div>
+
+        <div class="menu-list">
+          <div class="menu-item"
+              ng-repeat="branch in convertCtrl.branches | filter:baseBranchSearch"
+              ng-click="convertCtrl.selectBaseBranch(branch.name)">
+            {{branch.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Topic Branch -->
+    <span class="branch_type">Topic Branch:</span>
+    <div class="branch-selector dropdown" >
+      <a class="btn dropdown-toggle-no-close" >
+        {{convertCtrl.topicBranch}}<span class="caret"></span>
+      </a>
+
+      <div class="branch-pulldown dropdown-menu">
+        <div class="menu-header">
+          <span class="menu-title">Choose topic branch</span>
+        </div>
+        <div class="menu-filter" >
+          <input type="text" placeholder="Search" ng-model="topicBranchSearch"
+                 class="search-query" ></input>
+        </div>
+
+        <div class="menu-list">
+          <div class="menu-item"
+              ng-repeat="branch in convertCtrl.branches | filter:topicBranchSearch"
+              ng-click="convertCtrl.selectTopicBranch(branch.name)">
+            {{branch.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button ng-click="convertCtrl.convertToPull()"
+          class="btn btn-primary"
+          ng-disabled="convertCtrl.baseBranch === convertCtrl.topicBranch">
+    Convert
+  </button>
+
+  <div class="compare_summary"
+       ng-show="convertCtrl.compareResults">
+    <p>Status: {{convertCtrl.compareResults.status}}</p>
+    <p>Total commits: {{convertCtrl.compareResults.total_commits}}</p>
+    <p>Files changed: {{convertCtrl.compareResults.files.length}}</p>
+    <a class="btn" target="_blank"
+     ng-href="{{convertCtrl.compareResults.html_url}}">Compare</a>
+
+    <div class="commit_list">
+      <div class="commit"
+           ng-repeat="commit in convertCtrl.compareResults.commits">
+        <img class="avatar"
+             ng-src="{{commit.committer.avatar_url}}?s=30"></img>
+        <span class="committer"> {{commit.committer.name}} </span>
+        <a ng-href="{{commit.url}}" class="message">{{commit.commit.message}}</span>
+        <a ng-href="{{commit.url}}" class="sha">{{commit.sha | limitTo:7}}</span>
+      </div>
+    </div>
+
+    <div class="file_list">
+      <div>Files:</div>
+      <div class="file_details"
+           ng-repeat="file in convertCtrl.compareResults.files">
+        <div class="file_header">{{file.filename}} - {{file.additions}} - {{file.deletions}}</div>
+        <div class="patch">
+          <pre>{{file.patch}}</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

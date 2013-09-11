@@ -104,3 +104,56 @@
     }
 
 }
+
+
+.convert_to_pull {
+    margin: 8px;
+
+    .branch-selector {
+        display: inline-block;
+    }
+
+    .branch-pulldown {
+        width: 300px;
+        margin-top: 4px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        font-size: 12px;
+        color: #666;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 5px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+
+        .menu-header {
+            padding: 8px 10px;
+            background-color: #eeeeee;
+            background-image: -moz-linear-gradient(#fafafa, #eee);
+            background-image: -webkit-linear-gradient(#fafafa, #eee);
+            background-image: linear-gradient(#fafafa, #eee);
+            background-repeat: repeat-x;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .menu-list {
+            max-height: 400px;
+            overflow: auto;
+        }
+
+        .menu-item {
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            display: table;
+            table-layout: fixed;
+            width: 100%;
+            overflow: hidden;
+            color: inherit;
+
+            &:hover {
+                background: blue;
+            }
+        }
+    }
+}
