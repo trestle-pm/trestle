@@ -6,7 +6,7 @@
 
   <ul class="issue-columns" >
     <!-- Backlog Column -->
-    <li ng-show="showBacklog"
+    <li ng-show="showBacklog" class="column"
 
         ng-style="columnsCtrl.getColumnWidth()"
 
@@ -15,17 +15,17 @@
 
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
-      <a class="btn btn-success"
-         ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
-         target="_blank">Create Issue</a>
-
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.geSortableOptions()" >
-        <div class="card_wrapper"
-             ng-repeat="issue in repoModel.issues | issuesInBacklog | filter:repoModel.cardSearchText"
+      <ul class="column-body" ng-model="colCtrl.issues"
+          ui-sortable="colCtrl.getSortableOptions()" >
+
+        <li class="card_wrapper"
+             ng-repeat="issue in colCtrl.issues | filter:repoModel.cardSearchText"
              data-issue-id="{{issue.id}}" >
+
           <tr-issue-card issue="issue" />
-        </div>
+
+        </li>
       </ul> <!-- end of card list -->
     </li>
 
@@ -39,11 +39,15 @@
       <h1 class="column-header">{{colCtrl.columnName}}</h1>
 
       <!-- CARDS List -->
-      <ul class="column-body" ui-sortable="colCtrl.getSortableOptions()" >
+      <ul class="column-body" ng-model="colCtrl.issues"
+          ui-sortable="colCtrl.getSortableOptions()" >
+
         <li class="card_wrapper"
-             ng-repeat="issue in repoModel.issues | issuesWithLabel:colCtrl.labelName | filter:repoModel.cardSearchText | orderBy:'config.weight'"
-             data-issue-id="{{issue.id}}" >
+            ng-repeat="issue in colCtrl.issues | filter:repoModel.cardSearchText"
+            data-issue-id="{{issue.id}}" >
+
           <tr-issue-card issue="issue" />
+
         </li>
       </ul>
       <!-- end of card list -->
