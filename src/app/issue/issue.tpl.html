@@ -12,6 +12,9 @@
       {{issueCtrl.issue.title}}
     </span>
     <img class="avatar"
+         ng-class="{
+            empty: !issueCtrl.issue.assignee
+         }"
          title="Assigned to {{issueCtrl.getAssignedUserDetails(30).name}}"
          ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
   </div>
