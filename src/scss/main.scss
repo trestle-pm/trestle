@@ -19,9 +19,21 @@ body{
 	background: $color_background;
 }
 
+.repos_base.container {
+    // bootstrap container is required so that we can use the navbar
+    // however the container defaults to a 960 width which does not work for us.
+    width: 100%;
+}
+
+.avatar {
+    max-width: 30px;
+    max-height: 30px;
+    border-radius: 5px;
+}
+
+
 // Bring in the various app tools
 @import "app/login/login";
 @import "app/toolbar/toolbar";
-@import "app/board/board";
 @import "app/board/columns/issue_columns";
 @import "app/issue/issues";

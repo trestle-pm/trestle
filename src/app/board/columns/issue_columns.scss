@@ -1,4 +1,29 @@
 
+ul.user-list, ul.issue-columns, ul.milestone-columns, ul.column-body {
+    margin:  0;
+    padding: 0;
+}
+
+ul.issue-columns, ul.milestone-columns {
+    @include inline-block-list-container();
+    margin-left: 25px;
+
+    > li {
+        @include inline-block-list-item();
+
+        vertical-align: top;
+    }
+}
+
+
+.btn.backlog {
+  @include rotate(90deg);
+  @include transform-origin(0, 100%);
+  position: absolute;
+  top: 175px;
+}
+
+
 .column-header {
     text-align: center;
 
