@@ -1,5 +1,8 @@
-<div class="card"
+<div class="card {{issueCtrl.getBuildStatus()}}"
       ng-controller="IssueCtrl as issueCtrl"
+      ng-class="{
+        updated: issueCtrl.hasBeenUpdatedSinceLastView()
+      }"
       ng-class="issueCtrl.getBuildStatus()"
       ng-click="issueCtrl.showIssueDetails()">
    <div class="build-header"
@@ -58,7 +61,7 @@
          <!--<span class="todos"><i class="icon-check"></i>3/6</span>-->
          <span class="comments">
             <i class="icon-comments"></i>
-            {{issueCtrl.issue.tr_comments.length}}
+            {{issueCtrl.issue.comments}}
          </span>
       </div>
    </div>
