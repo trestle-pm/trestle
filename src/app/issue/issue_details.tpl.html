@@ -57,9 +57,16 @@
   </div>
 
   <div class="details">
-    <div class="milestone" ng-show="issue.milestone">
-      {{issueCtrl.issue.milestone.title}}
+
+    <div class="milestone">
+      <select ng-init="msValue=issueCtrl.issue.milestone.number"
+              ng-model="msValue"
+              ng-options="m.number as m.title for m in repoModel.milestones"
+              ng-change="issueCtrl.assignMilestone(msValue)">
+        <option value="">No Milestone</option>
+      </select>
     </div>
+
     <div class="branch_info" ng-show="issueCtrl.isPullRequest()">
       to {{issueCtrl.issue.tr_pull_details.base.label}}
       from {{issueCtrl.issue.tr_pull_details.tr_head.label}}
