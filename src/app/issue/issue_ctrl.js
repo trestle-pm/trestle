@@ -46,7 +46,7 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh
       /** Return true if the given label is enabled on our issue.
       */
       isLabelEnabled: function(labelName) {
-         return _.contains(_.pluck(this.issue.labels, 'name'), labelName);
+         return _.contains(this.issue.tr_label_names, labelName);
       },
 
       /**
@@ -54,19 +54,21 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh
       */
       toggleLabel: function(labelObj) {
          var enable = !this.isLabelEnabled(labelObj.name);
+
+         // Set label names locally so we can short-circut the roundtrip to github
          if(enable) {
             this.issue.labels.push(labelObj);
+            this.issue.tr_label_names.push(labelObj.name);
          } else {
             this.issue.labels = _.filter(this.issue.labels, function(label) {
                return label.name !== labelObj.name;
             });
+            this.issue.tr_label_names = _.without(this.issue.tr_label_names, labelObj.name);
          }
 
          // Push change to github
-         var label_names = _.pluck(this.issue.labels, 'name');
-
          gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
-                        this.issue.number, {labels: label_names}).then(
+                        this.issue.number, {labels: this.issue.tr_label_names}).then(
             function(result) {
                console.log('assignment: success');
             }
