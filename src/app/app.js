@@ -59,6 +59,9 @@ angular.module( 'Trestle', [
          views: {
             columns: {
                templateUrl: 'board/columns/issue_columns.tpl.html'
+            },
+            filter: {
+               templateUrl: 'issue_filters/issue_filter.tpl.html'
             }
          },
          resolve: {

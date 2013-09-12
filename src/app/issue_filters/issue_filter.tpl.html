@@ -1,0 +1,17 @@
+<div id="issue-filters-drawer"
+     ng-controller="IssueFilterCtrl as filterCtrl"
+     ng-init="filterCtrl.init()" >
+
+  <button id="filterToggleBtn"
+          ng-click="fitlerCtrl.showDrawer = !fitlerCtrl.showDrawer" >
+    <span ng-if="fitlerCtrl.showDrawer">Hide</span>
+    <span ng-if="!fitlerCtrl.showDrawer">Show</span>
+  </button>
+
+
+  <div class="drawer" ng-class="{show: fitlerCtrl.showDrawer,
+                                hide: !fitlerCtrl.showDrawer}" >
+    stuff
+  </div>
+
+</div>
