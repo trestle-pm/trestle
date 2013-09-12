@@ -1,0 +1,16 @@
+#issue-filters-drawer {
+    position: absolute;
+    top:      40px;
+    right:    0;
+}
+
+.drawer {
+    background: white;
+    &.hide {
+        display: none;
+    }
+
+    &.show {
+        display: block;
+    }
+}
