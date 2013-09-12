@@ -31,7 +31,7 @@
           ui-sortable="colCtrl.getSortableOptions()" >
 
         <li class="card_wrapper"
-             ng-repeat="issue in colCtrl.issues | filterMilestones:msFilterVal | filter:repoModel.cardSearchText"
+             ng-repeat="issue in colCtrl.issues | filterMilestones:msFilterVal | globalIssueFilter"
              data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
         </li>
@@ -58,7 +58,7 @@
           ui-sortable="colCtrl.getSortableOptions()" >
 
         <li class="card_wrapper"
-            ng-repeat="issue in colCtrl.issues | filter:repoModel.cardSearchText"
+            ng-repeat="issue in colCtrl.issues | globalIssueFilter"
             data-issue-id="{{issue.id}}" >
 
           <tr-issue-card issue="issue" />

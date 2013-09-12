@@ -1,0 +1,46 @@
+<div id="issue-filters-drawer"
+     ng-controller="IssueFilterCtrl as filterCtrl"
+     ng-init="filterCtrl.init()" >
+
+  <button id="filterToggleBtn"
+          class="btn-primary"
+          ng-click="fitlerCtrl.showDrawer = !fitlerCtrl.showDrawer" >
+    <span ng-if="fitlerCtrl.showDrawer">Hide</span>
+    <span ng-if="!fitlerCtrl.showDrawer">Show</span>
+  </button>
+
+
+  <div class="drawer" ng-class="{show: fitlerCtrl.showDrawer,
+                                 hide: !fitlerCtrl.showDrawer}" >
+    <h1>Filters</h1>
+    <ul >
+      <li ng-click="filterCtrl.setFilter('owner', sessionModel.user.login)"
+          ng-class="{active: issueFilters.owner == sessionModel.user.login}">
+        Assigned to Me
+      </li>
+      <li ng-click="filterCtrl.setFilter('reviewer', sessionModel.user.login)"
+          ng-class="{active: issueFilters.reviewer == sessionModel.user.login}">
+        Reviewed by Me
+      </li>
+    </ul>
+
+    <ul class="clearfix" >
+      <li ng-repeat="user in repoModel.assignees"
+          ng-click="filterCtrl.setFilter('owner', user.login)"
+          ng-class="{active: issueFilters.owner == user.login}"
+          style="float: left;" >
+        <img class="avatar" ng-src="{{user.avatar_url}}?s=30" ng-title="{{user.login}}" />
+      </li>
+    </ul>
+
+    <ul class="clearfix" >
+      <li ng-repeat="milestone in repoModel.milestones"
+          ng-click="filterCtrl.setFilter('milestone', milestone.title)"
+          ng-class="{active: issueFilters.milestone == milestone.title}" >
+        {{milestone.title}}
+      </li>
+    </ul>
+
+  </div>
+
+</div>
