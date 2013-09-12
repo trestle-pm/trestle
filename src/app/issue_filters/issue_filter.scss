@@ -1,17 +1,16 @@
 #issue-filters-drawer {
     position: absolute;
-    top:      150px;
+    top:      40px;
     right:    0;
 }
 
 .drawer {
+    background: white;
     &.hide {
-        display:   none;
-        background: red;
+        display: none;
     }
 
     &.show {
         display: block;
-        background: green;
     }
 }
