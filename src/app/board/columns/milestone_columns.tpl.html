@@ -1,0 +1,48 @@
+<div ng-controller="MilestoneColumnsCtrl as columnsCtrl" >
+
+  <ul class="milestone-columns" >
+    <!-- Empty Milestone Column -->
+    <li ng-style="columnsCtrl.getColumnWidth()"
+        ng-controller="IssueColumnCtrl as colCtrl"
+        ng-init="colCtrl.init({isNoMilestone:true})" >
+
+      <h1 class="column-header">{{colCtrl.columnName}}</h1>
+
+      <!-- CARDS List -->
+      <ul class="column-body" ng-model="colCtrl.issues"
+          ui-sortable="colCtrl.getSortableOptions()" >
+
+        <li class="card_wrapper"
+             ng-repeat="issue in colCtrl.issues | filter:repoModel.cardSearchText"
+             data-issue-id="{{issue.id}}" >
+          <tr-issue-card issue="issue" />
+        </li>
+      </ul> <!-- end of card list -->
+    </li>
+
+    <!-- Kanban Columns -->
+    <li ng-repeat="ms in repoModel.milestones" class="column"
+        ng-style="columnsCtrl.getColumnWidth()"
+
+        ng-controller="IssueColumnCtrl as colCtrl"
+        ng-init="colCtrl.init({milestone:ms})" >
+
+      <h1 class="column-header">
+        <span class="column_name">{{colCtrl.columnName}}</span>
+      </h1>
+
+      <!-- CARDS List -->
+      <ul class="column-body" ng-model="colCtrl.issues"
+          ui-sortable="colCtrl.getSortableOptions()" >
+
+        <li class="card_wrapper"
+            ng-repeat="issue in colCtrl.issues | filter:repoModel.cardSearchText"
+            data-issue-id="{{issue.id}}" >
+          <tr-issue-card issue="issue" />
+        </li>
+      </ul>
+      <!-- end of card list -->
+    </li>
+
+  </ul>
+</div>
