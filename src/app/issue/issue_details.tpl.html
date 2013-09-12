@@ -74,13 +74,33 @@
   </div>
 
   <div class="label_bar">
-    <div class="label_block">
-      <li ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels"
-          style="background-color: #{{label.color}}">
-        {{label.name}}
-      </li>
-    </div>
+    <span class="label"
+      ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels"
+      style="background-color: #{{label.color}}">
+      {{label.name}}
+    </span>
+  </div>
 
+  <div class="label_editor dropdown">
+    <button class="btn dropdown-toggle-no-close">Edit<span class="caret"/></button>
+
+    <div class="dropdown-menu">
+      <div class="label-list no-close">
+         <div class="label-item"
+              ng-repeat="label in repoModel.labels | nonColumnLabels"
+              ng-click="issueCtrl.toggleLabel(label)"
+              ng-class="{
+                enabled: issueCtrl.isLabelEnabled(label.name)
+              }">
+              <span class="pill" style="background-color: #{{label.color}}">
+                 {{label.name}}
+              </span>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
     <button ng-if="!issueCtrl.isPullRequest()"
             class="convert_pull btn btn-primary"
             ng-click="issueCtrl.convertToPull()">

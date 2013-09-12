@@ -13,6 +13,7 @@ angular.module('Trestle')
    scope.milestones  = [];
    scope.repoDetails = null;
    scope.assignees   = [];
+   scope.labels      = [];
 
    // TODO: Move this to a filter helper of some type
    scope.cardSearchText = null;
@@ -59,7 +60,8 @@ angular.module('Trestle')
             this._loadIssues(),
             this._loadMilestones(),
             this._loadRepoDetails(),
-            this._loadAssignees()
+            this._loadAssignees(),
+            this._loadLabels()
          ]);
       }
       else {
@@ -82,6 +84,13 @@ angular.module('Trestle')
       return gh.listMilestones(trRepoModel.owner, trRepoModel.repo)
          .then(function(milestones) {
             trRepoModel.milestones = milestones;
+         });
+   };
+
+   this._loadLabels = function() {
+      return gh.listLabels(trRepoModel.owner, trRepoModel.repo)
+         .then(function(labels) {
+            trRepoModel.labels = labels;
          });
    };
 

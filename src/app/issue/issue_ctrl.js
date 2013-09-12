@@ -43,27 +43,36 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh
          }
       },
 
-      /**
-      * Return the label names for the issue.
-      * by default we strip out the issue columns from this list.
-      *
-      *  config:
-      *    - stripCols: <bool>  If true strip the column labels.
+      /** Return true if the given label is enabled on our issue.
       */
-      getLabels: function(config) {
-         config = _.defaults({}, config, {
-            stripCols: true
-         });
+      isLabelEnabled: function(labelName) {
+         return _.contains(this.issue.tr_label_names, labelName);
+      },
 
-         var col_labels = trRepoModel.config.columns;
-         var labels = this.issue.labels.slice(0);
+      /**
+      * Toggle the state of the given label.
+      */
+      toggleLabel: function(labelObj) {
+         var enable = !this.isLabelEnabled(labelObj.name);
 
-         if(config.stripCols) {
-            labels = _.filter(labels, function(label) {
-               return !_.contains(col_labels, label.name);
+         // Set label names locally so we can short-circut the roundtrip to github
+         if(enable) {
+            this.issue.labels.push(labelObj);
+            this.issue.tr_label_names.push(labelObj.name);
+         } else {
+            this.issue.labels = _.filter(this.issue.labels, function(label) {
+               return label.name !== labelObj.name;
             });
+            this.issue.tr_label_names = _.without(this.issue.tr_label_names, labelObj.name);
          }
-         return labels;
+
+         // Push change to github
+         gh.updateIssue(trRepoModel.owner, trRepoModel.repo,
+                        this.issue.number, {labels: this.issue.tr_label_names}).then(
+            function(result) {
+               console.log('assignment: success');
+            }
+         );
       },
 
       showIssueDetails: function() {
