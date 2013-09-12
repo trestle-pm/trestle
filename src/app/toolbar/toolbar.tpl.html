@@ -41,6 +41,12 @@
       </li>
     </ul>
 
+    <button class="pull-right btn"
+            ng-click="toolbarCtrl.refreshRepo()">
+      <i class="icon-refresh"
+         ng-class="{ 'icon-spin': toolbarCtrl.isRefreshing }"></i>
+    </button>
+
     <ul class="nav pull-right"
         ng-controller="UserDetailsCtrl as userCtrl"
         ng-init="userCtrl.init()">
