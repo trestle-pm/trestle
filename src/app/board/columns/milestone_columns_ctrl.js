@@ -6,6 +6,10 @@ angular.module('Trestle.board')
 .controller('MilestoneColumnsCtrl', function($scope, trRepoModel) {
    $scope.$id = "MilestoneColumnsCtrl:" + $scope.$id;
 
+   /**
+   * Return the width to use for the columns.
+   * - take into account the extra column for 'no milestone'
+   */
    this.getColumnWidth = function() {
       var num_columns = trRepoModel.milestones ? trRepoModel.milestones.length : 0;
 
