@@ -33,7 +33,8 @@ angular.module('Trestle')
  * Service to hold information about the repository that we are
  * connected to and using.
 */
-.service('trReposSrv', function($modal, $q, gh, trRepoModel, trIssueHelpers, auth) {
+.service('trReposSrv', function($modal, $q, gh, $stateParams,
+                                trRepoModel, trIssueHelpers, auth) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
           "columns": ["In Progress", "Review", "CI", "Ship"],
@@ -41,11 +42,14 @@ angular.module('Trestle')
        };
 
    this.refreshSettings = function(stateParams) {
+      stateParams = stateParams || $stateParams;
+
       trRepoModel.owner = stateParams.owner;
       trRepoModel.repo  = stateParams.repo;
 
-      // XXX: Hack, remove this
-      trRepoModel.config = angular.copy(DEFAULT_CONFIG);
+      if(!trRepoModel.config) {
+         trRepoModel.config = angular.copy(DEFAULT_CONFIG);
+      }
 
       if(!auth.getAuthToken()) {
          console.warn('trReposSrv:refreshSettings: no auth token, skipping');
