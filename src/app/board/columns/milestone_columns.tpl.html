@@ -10,10 +10,10 @@
 
       <!-- CARDS List -->
       <ul class="column-body"
-          ui-sortable="colCtrl.getSortableOptions()" >
+          tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)" >
 
         <li class="card-wrapper"
-             ng-repeat="issue in colCtrl.issues | filter:issueFilters.searchText"
+             ng-repeat="issue in repoModel.issues | filterMilestones:'none' | filter:issueFilters.searchText | orderBy:'config.milestoneWeight'"
              data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
         </li>
@@ -33,10 +33,10 @@
 
       <!-- CARDS List -->
       <ul class="column-body"
-          ui-sortable="colCtrl.getSortableOptions()" >
+          tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)" >
 
         <li class="card-wrapper"
-            ng-repeat="issue in colCtrl.issues | filter:issueFilters.searchText"
+            ng-repeat="issue in repoModel.issues | filterMilestones:colCtrl.milestone.title | filter:issueFilters.searchText | orderBy:'config.milestoneWeight'"
             data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
         </li>
