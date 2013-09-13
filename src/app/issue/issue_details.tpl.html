@@ -105,7 +105,10 @@
          Convert to Pull
       </button>
    </div>
-   <div class="description">
+   <div class="description"
+        ng-class="{
+         empty: issueCtrl.issue.body.trim() === ''
+        }">
       <h4>Description:</h4>
       {{issueCtrl.issue.body}}
    </div>
