@@ -259,6 +259,14 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       }
     }
 }
+// Placeholder to drop card into column
+.drop-area{
+  height          : $avatar-size-card*2;
+  background      : transparentize($color-lightest, .85);
+  border          : 2px dashed transparentize($color-lightest, .5);
+  border-radius   : $br-card;
+}
+
 /************* DETAILS ****************/
 // Popup window with all the issue/pull details
 .modal {
