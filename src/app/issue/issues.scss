@@ -1,332 +1,678 @@
-$border_radius_card:3px;
-.card_wrapper {
-    list-style: none;
+/***************************************
+ *        ISSUES/PULLS
+ ***************************************/
+
+@import "compass/css3/box-sizing";
+// ISSUE VARS & MIXINS
+// -------------------------------------------------------
+$br-card          : 3px;      // border radius for the card
+$avatar-size-card : 50px;     // size of the avatar on the card
+$avatar-size-vote : 20px;     // size of the little vote thumbs
+$avatar-size-details : 60px;  // size of avatar on modal detail window
+$avatar-size-comment : 40px;  // size of avatar on issue/pull comments
+
+// Build status colored bars on cards
+@mixin build-header-style ($color:$color-grey) {
+  background      : $color;
+  border-top      : 1px solid lighten($color, 15);
+  border-bottom   : 1px solid darken($color, 10);
 }
+
+// Build colors in modal window
+@mixin build-details-style ($color:$color-grey) {
+  background      : lighten($color, 30);
+  color           : darken($color, 15);
+}
+
+// SHARED COMPONENTS
+// -------------------------------------------------------
+// Small badge with issue number and pull icon
+.issue-number {
+  display         : inline-block;
+  padding         : 0 4px;
+  background      : lighten($color-primary ,45);
+  border          : 1px solid $color-primary;
+  border-radius   : $br-card;
+  color           : $color-primary;
+  font-size       : .85em;
+  font-weight     : normal;
+
+  .icon-code-fork {
+    margin-right  : 1px;
+    color         : darken($color-grey, 15);
+    font-size     : 1em;
+    font-weight   : bold;
+  }
+
+  &:hover {
+    background      : $color-primary;
+    color           : $color-lightest;
+    text-decoration : none;
+
+    .icon-code-fork {
+      color           : $color-lightest;
+     }
+  }
+}
+
+// Small badges for labels
+.label {
+  display         : inline-block;
+  overflow        : hidden;
+  margin          : 2px;
+  border-bottom   : 1px solid rgba(0, 0, 0, 0.35);
+  border-right    : 1px solid rgba(0, 0, 0, 0.35);
+  text-shadow     : 0 -1px 1px rgba(0, 0, 0, 0.35);
+}
+
+// Small badge of code review count (ie 1,-2)
+.vote-count {
+  display         : inline-block;
+  margin          : 0 0 2px 0;
+  padding         : 2px 8px 3px;
+  background      : $color-grey;
+  border-radius   : 13px 0 0 13px;
+  box-shadow      : -1px -1px 0 rgba(0, 0, 0, 0.45), 1px 1px 0 rgba(255,255,255, .3);
+  color           : $color-lightest;
+  font-size       : 1em;
+  font-weight     : bold;
+  text-shadow     : 0 -1px 0 rgba(0, 0, 0, 0.35);
+
+  &.positive { background: $color-success; }
+  &.negative { background: $color-danger; }
+}
+
+.dropdown-menu {
+  padding         : 0;
+
+  // Selectable options
+  .label-item, li {
+    margin          : 0;
+    padding         : 1px 4px;
+    border-bottom   : 1px solid lighten($color-grey,25);
+    cursor          : pointer;
+    font-size       : .95em;
+
+    &:last-child {
+      border-bottom-width:0;
+    }
+
+    &:hover {
+      background-color: lighten($color-grey,30);
+    }
+  }
+}
+
+// COMPONENTS
+// -------------------------------------------------------
+/************* CARDS ****************/
+// Pull/issue cards
 .card {
-    border     : 1px solid darken($color_background,20);
-    box-shadow : 1px 1px 3px rgba(0,0,0,.5);
-    border-radius: $border_radius_card;
-    width    : 100%;
-    position : relative;
-    margin   : 8px 0;
-    padding: 0;
-    background: lighten($color_grey,30);
-    list-style-type: none;
-    min-height:42px;
+  width           : 100%;
+  min-height      : 42px;
+  position        : relative;
+  margin          : 8px 0;
+  padding         : 0;
+  background      : lighten($color-grey,30);
+  border          : 1px solid darken($color-background,20);
+  border-radius   : $br-card;
+  box-shadow      : 1px 1px 3px rgba(0,0,0,.5);
+  list-style-type : none;
 
-    /** styling for the build headers */
-    .build_header {
-        height : 5px;
-        margin-top:-1px;
-        width  : 100%;
-        border-radius: $border_radius_card $border_radius_card 0 0;
-        $build-color: $color_grey;
-        background: $build-color;
-        border-top: 1px solid lighten($build-color, 15);
-        border-bottom: 1px solid darken($build-color, 10);
+  // Small strip on the top of the card
+  // showing the build status
+  .build-header {
+    height          : 5px;
+    width           : 100%;
+    margin-top      : -1px;
+    border-radius   : $br-card $br-card 0 0;
+
+    @include build-header-style($color-grey);
+  }
+    &.success .build-header { @include build-header-style($color-success); }
+    &.failure .build-header { @include build-header-style($color-danger);  }
+    &.pending .build-header { @include build-header-style($color-primary); }
+    &.unknown .build-header { @include build-header-style;                 }
+
+  // Card header with title & assigned person
+  .header {
+    position        : relative;
+    margin          : 0;
+    padding         : 3px $avatar-size-card 3px 5px;
+    background      : $color-lightest;
+    border-bottom   : 1px solid lighten($color-grey,20);
+    border-radius   : 0;
+    font-size       : 1.2em;
+    font-weight     : bold;
+
+    &:first-child {
+      border-top-right-radius : $br-card;
+      border-top-left-radius  : $br-card;
     }
 
-    &.success .build_header {
-        $build-color: $color_success;
-        background: $build-color;
-        border-top: 1px solid lighten($build-color, 15);
-        border-bottom: 1px solid darken($build-color, 10);
+    &:last-child {
+      border-bottom-right-radius : $br-card;
+      border-bottom-left-radius  : $br-card;
     }
-    &.failure .build_header {
-        $build-color: $color_danger;
-        background: $build-color;
-        border-top: 1px solid lighten($build-color, 15);
-        border-bottom: 1px solid darken($build-color, 10);
-    }
-    &.pending .build_header {
-        $build-color: $color_primary ;
-        background: $build-color;
-        border-top: 1px solid lighten($build-color, 15);
-        border-bottom: 1px solid darken($build-color, 10);
-    }
-    &.unknown .build_header {
-        $build-color: $color_grey;
-        background: $build-color;
-        border-top: 1px solid lighten($build-color, 15);
-        border-bottom: 1px solid darken($build-color, 10);
+  }
+
+    // Name of the issue or pull
+    .title {
+      white-space     : normal;
+      line-height     :1.3em;
     }
 
-    &.dragging {
-        background: blue;
+    // Assigned user
+    .avatar {
+      height          : $avatar-size-card;
+      max-height      : $avatar-size-card;
+      max-width       : $avatar-size-card;
+      position        : absolute;
+      right           : -5px;
+      top             : -6px;
+      border          : 1px solid rgba(0,0,0,.5);
+      border-radius   : $avatar-size-card / 2;
+      box-shadow      : 1px 0 4px rgba(0,0,0,.5);
+
+      // If no one is assigned
+      &.empty {
+        height          : $avatar-size-card / 2;
+        right           : 0;
+        top             : -1px;
+        border-radius   : 0;
+        box-shadow      : none;
+        opacity         : .7;
+      }
     }
 
-    .header {
-        margin: 0;
-        padding: 3px 50px 3px 5px;
-        font-size:1.2em;
-        font-weight:bold;
-        background:#fff;
-        border-bottom: 1px solid lighten($color_grey,20);
-		position:relative;
-		&:first-child {
-			border-radius: $border_radius_card $border_radius_card 0 0;
-		}
-    }
-        .icon-code-fork {
-            color: darken($color_grey, 15);
-            font-size:1em;
-            font-weight:bold;
-            margin-right:3px;
-        }
-        .number{
-            display:inline-block;
-            border: 1px solid $color_primary ;
-            color: $color_primary ;
-            font-size: .85em;
-            font-weight: normal;
-            padding: 0 4px;
-            border-radius:$border_radius_card;
-            background-color: lighten($color_primary ,45);
-            &:hover{
-                text-decoration:none;
-                background-color: $color_primary ;
-                color:#fff;
-                    .icon-code-fork{
-                        color:#fff;
-                    }
-            }
-        }
-        .title {
+  // Card content with milestones and labels
+  .content {
+    margin          : 0;
+    padding         : 0 5px;
+    white-space     : normal;
+  }
 
-            white-space: normal;
-            line-height:1.3em;
-        }
-        .avatar{
-            height:50px;
-			max-height:50px;
-			max-width:50px;
-            position:absolute;
-            right:-5px;
-            top:-6px;
-            border-radius:25px;
-            border: 1px solid rgba(0,0,0,.5);
-            box-shadow : 1px 0 4px rgba(0,0,0,.5);
-			&.empty {
-			    height: 25px;
-			    right: 0;
-			    top: -1px;
-			    border-radius: 0;
-			    box-shadow: none;
-			    opacity: .7;
-			}
-        }
-    .content{
-        margin: 0;
-        padding: 0 5px;
-        white-space:normal;
+    .milestone {
+      display         : inline-block;
+      padding         : 2px 10px 2px 7px;
+      margin          : 1px 2px 1px -8px;
+      background      : darken($color-grey,0);
+      border          : 1px solid darken($color-grey,20);
+      border-top-color: lighten($color-grey, 5);
+      border-left-color: darken($color-grey,45);
+      border-radius   : 0 $br-card $br-card 0;
+      font-size       : .9em;
+      line-height     : 1.2em;
+      color           : $color-lightest;
+      font-style      : italic;
+      font-weight     : normal;
+      vertical-align  : baseline;
+      text-shadow     : 0 -1px 0 rgba(0, 0, 0, 0.35);
     }
 
-    .milestone{
-        display: inline-block;
-        padding: 2px 10px 2px 7px;
-        margin: 1px 2px 0 -8px;
-        line-height: 14px;
-        color: #ffffff;
-        vertical-align: baseline;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
-        background-color:darken($color_grey,0);
-        border:1px solid darken($color_grey,20);
-        border-top-color: lighten($color_grey, 5);
-        border-left-color:darken($color_grey,45);
-        font-style: italic;
-        font-weight: normal;
-        font-size:.9em;
-        border-radius: 0 $border_radius_card $border_radius_card 0;
+  // Area for code review summary
+  .reviews {
+    position        : relative;
+    white-space     : normal;
+    padding         : 3px 6px 1px;
+  }
+    // Thumbnails of who has commented
+    .vote-avatar {
+      max-width       : $avatar-size-vote;
+      max-height      : $avatar-size-vote;
+      margin          : 0 4px 2px -1px;
+      border          : 3px solid $color-grey;
+      vertical-align:middle;
+
+      &.yes { border-color: darken($color-success,5); }
+      &.no  { border-color: darken($color-danger,5);  }
     }
 
-    .label{
-        overflow:hidden;
-        border-bottom:1px solid rgba(0, 0, 0, 0.35);
-        border-right:1px solid rgba(0, 0, 0, 0.35);
-        text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
-        display:inline-block;
-		margin:2px;
-    }
+    // Number of comments & todos
+    .stats {
+      position        : absolute;
+      right           : 3px;
+      bottom          : 5px;
+      padding         : 0 4px;
+      color           : $color-grey;
+      font-size       : 1.2em;
 
+      &:hover {
+        color           : darken($color-grey,35);
+      }
 
+      // Icon/number pair
+      span {
+        margin-right    : 10px;
 
-
-
-    /** Voting styling */
-    .reviews {
-        position : relative;
-        white-space: normal;
-        padding: 3px 6px 1px;
-        .vote_count {
-            display : inline-block;
-            margin   : 0 0 2px 0;
-            padding  : 2px 8px 3px;
-
-            border-radius : 13px 0 0 13px;
-            background    : $color_grey;
-
-            color: #ffffff;
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
-            box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.45), 1px 1px 0 rgba(255,255,255, 1);
-            font-weight: bold;
-            font-size:1em;
-
-			&.even{
-				border-radius : 13px;
-			}
-            &.positive {
-                background: $color_success;
-            }
-            &.negative {
-                background: $color_danger;
-            }
+        &.todos i {
+          margin-right    : 5px;
         }
 
-        .vote_avatar {
-            max-width    : 20px;
-            max-height   : 20px;
-            border-style : solid;
-            border-width : 3px;
-            margin       : 0 4px 2px -1px;
-            border-color : grey;
-            vertical-align:middle;
-            &.yes {
-                border-color: darken($color_success,5);
-            }
-            &.no {
-                border-color: darken($color_danger,5);
-            }
-
-        }
-
-
-    }
-    .stats{
-        position:absolute;
-        right:3px;
-        bottom:5px;
-        padding:0 4px;
-        color:$color_grey;
-        font-size:1.2em;
-        &:hover{
-            color:darken($color_grey,35);
-        }
-        span{
-            margin-right:10px;
-            &.todos i{
-                margin-right:5px;
-            }
-            &:last-child{
-                margin-right:0;
-            }
-        }
-    }
-
-}
-
-.issue_detail {
-   .user-selector {
-      .dropdown-menu {
-        li {
-            &:hover {
-                background: blue;
-            }
-            margin: 4px;
-
-            .avatar {
-                padding: 4px;
-            }
+        &:last-child {
+          margin-right    : 0;
         }
       }
-   }
-
-   .label_bar {
-		border-style: solid;
-		border-width: 1px;
-		border-right: none;
-		min-width: 300px;
-
-		display : inline-block;
-		border-radius: 2px;
-	    padding : 2px;
-		margin  : 2px;
-		margin-right : 0px;
-
-		.label {
-		   margin : 2px;
-		}
-   }
-
-   .label_editor {
-        display : inline-block;
-
-		.label-item {
-			margin: 3px;
-			padding: 2px;
-			border-style: line;
-			border-width: 1px;
-			border-radius: 2px;
-
-			&.enabled {
-			   background-color: blue;
-			}
-
-			.pill {
-			   border-radius: 2px;
-			   padding : 2px;
-			}
-		}
-   }
-}
-
-.convert_to_pull {
-    margin: 8px;
-
-    .branch-selector {
-        display: inline-block;
-    }
-
-    .branch-pulldown {
-        width: 300px;
-        margin-top: 4px;
-        margin-bottom: 20px;
-        overflow: hidden;
-        font-size: 12px;
-        color: #666;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ccc;
-        border: 1px solid rgba(0,0,0,0.15);
-        border-radius: 5px;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.25);
-
-        .menu-header {
-            padding: 8px 10px;
-            background-color: #eeeeee;
-            background-image: -moz-linear-gradient(#fafafa, #eee);
-            background-image: -webkit-linear-gradient(#fafafa, #eee);
-            background-image: linear-gradient(#fafafa, #eee);
-            background-repeat: repeat-x;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .menu-list {
-            max-height: 400px;
-            overflow: auto;
-        }
-
-        .menu-item {
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            display: table;
-            table-layout: fixed;
-            width: 100%;
-            overflow: hidden;
-            color: inherit;
-
-            &:hover {
-                background: blue;
-            }
-        }
     }
 }
+/************* DETAILS ****************/
+// Popup window with all the issue/pull details
+.modal {
+  max-height      : 80%;
+  overflow        : auto;
+  padding         : 0;
+  background      : lighten($color-grey,30);
+  border          : 1px solid $color-darkest;
+  border-radius   : $br-card;
+  box-shadow      : 1px 1px 3px rgba(0,0,0,.5);
+
+  // Modal header with title, assigned person & links
+  .header {
+    position        : relative;
+    margin          : 0;
+    padding         : 3px 90px 3px ($avatar-size-details + 5);
+    background      : lighten($color-grey,30);
+    border-bottom   : 1px solid lighten($color-grey,20);
+    border-radius   : $br-card $br-card 0 0;
+    font-size       : 1.2em;
+    font-weight     : bold;
+  }
+
+    // Name of the issue or pull
+    .title {
+      white-space     : normal;
+      line-height     : 1.3em;
+    }
+
+    // Link to issue or pull
+    .issue-number {
+      position        : absolute;
+      top             : 2px;
+      right           : 28px;
+    }
+
+    // Icon to close modal window
+    .close {
+      float           : none;
+      position        : absolute;
+      right           : 5px;
+      top             : 3px;
+    }
+
+    // Select user assigned to issue or pull
+    .user-selector {
+      position        : static;
+
+      .dropdown-toggle {
+        position        : static;
+        z-index         : 100;
+
+        // User assigned to issue or pull
+        .avatar {
+          height          : $avatar-size-details;
+          max-height      : $avatar-size-details;
+          max-width       : $avatar-size-details;
+          position        : absolute;
+          left            : -5px;
+          top             : -6px;
+          z-index         : 100;
+          border          : 1px solid rgba(0,0,0,.5);
+          border-radius   : 35px;
+          box-shadow      : 1px 0 4px rgba(0,0,0,.5);
+        }
+      }
+
+      // List of users to assign
+      .dropdown-menu {
+        z-index         : 50;
+        margin-top      : 19px;
+
+        h4 {
+          margin          : 0;
+          padding         : 6px 5px 0;
+          background      : lighten($color-grey, 20);
+          border-bottom   : 1px solid lighten($color-grey, 10);
+          font-size       : .8em;
+        }
+
+        .avatar {
+          border-radius   : 2px;
+        }
+      }
+    }
+
+  // Top bar showing build status, comments and reviews
+  .status-header {
+    width           : 100%;
+    height          : 28px;
+    position        : relative;
+    padding         : 0;
+    background      : $color-grey;
+    border-top      : 1px solid darken($color-grey,10);
+    border-bottom   : 1px solid darken($color-grey,10);
+  }
+    // Build status details
+    .build-status {
+      display         : inline-block;
+      @include box-sizing(border-box);
+      height          : 100%;
+      width           : 60%;
+      z-index         : 10;
+      overflow        : hidden;
+      padding         : 3px 0 3px 65px;
+      border-right    : 1px solid darken($color-grey,15);
+
+      &.success { @include build-details-style($color-success); }
+      &.failure { @include build-details-style($color-danger); }
+      &.pending { @include build-details-style($color-primary); }
+      &.unknown { @include build-details-style; }
+    }
+
+    // Number of comments and todos on this issue/pull
+    .comment-summary {
+      display         : inline-block;
+      @include box-sizing(border-box);
+      position        : absolute;
+      right           : 1px;
+      top             : 0;
+      z-index         : 0;
+      min-width       : 40%;
+      height          : 100%;
+      padding         : 3px 0;
+      margin          : 0;
+      color           : $color-lightest;
+      font-size       : 1.2em;
+      text-align      : right;
+
+      // Icon
+      i {
+        color           :lighten($color-grey,30);
+      }
+
+      // Icon/Number Pair
+      span {
+        margin-right      : 10px;
+
+        &.todos i {
+          margin-right      : 4px;
+        }
+
+        &:last-child {
+          margin-right      : 0;
+        }
+      }
+    }
+
+  // Details on which branches are being merged
+  // - doesn't show for issue
+  .branch-info {
+     display        : none;
+  }
+
+  // Bar with actions you can perform on a pull/issue
+  .controls {
+    padding         : 5px 10px;
+    background      : $color-lightest;
+    border-bottom   : 1px solid lighten($color-grey,25);
+    box-shadow      : 0 3px 3px rgba(0,0,0,.1);
+  }
+
+    // Dropdown that lets you select milestone
+    select.milestone {
+      display         : inline-block;
+      width           : 25%;
+      margin          : 2px 0 0 0;
+      padding         : 0;
+      color           : $color-darkest;
+      font-size       : 1em;
+    }
+
+    // Show and edit labels
+    .label-bar {
+      display         : inline-block;
+      @include box-sizing(border-box);
+      width           : 55%;
+      padding         : 0 4px;
+
+      // Container around labels
+      .labels {
+        display         : inline-block;
+        @include box-sizing(border-box);
+        width           : 80%;
+        height          : 30px;
+        overflow        : hidden;
+        margin          : 0;
+        padding         : 2px;
+        background      : rgba(0, 0, 0, 0.025);
+        border          : 1px solid lighten($color-grey, 20);
+        border-radius   : 0 2px 2px 0;
+      }
+
+      .label {
+         margin         : 2px;
+      }
+    }
+
+    // Dropdown to choose labels
+    .label-editor {
+      display         : inline-block;
+      width           : 20%;
+
+      // Dropdown button
+      .btn {
+        width           : 100%;
+        padding         : 4px;
+        margin-top      : 1px;
+        border-radius   : 3px 0 0 3px;
+        font-size       : .85em;
+
+        // Icon
+        span {
+          font-size       : .85em;
+        }
+      }
+
+      // Change shape of button
+      // when the dropdown is active
+      .open .btn {
+        border-radius   : 3px 0 0 0;
+      }
+
+      .dropdown-menu {
+        margin          : -2px 0 0;
+        border-radius   : 0 4px 4px 4px;
+        border-top      : 6px solid #e6e6e6;
+        padding         : 0;
+      }
+
+      // List of labels
+      .label-item {
+        &:first-child {
+          border-top      : 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        // Selected labels
+        &.enabled {
+           background     : lighten($color-grey,15);
+        }
+
+        // Small block of color for each label
+        .color-preview {
+          display         : inline-block;
+          width           : 10px;
+          height          : 10px;
+          border-radius   : 2px;
+          margin          : 0 3px;
+        }
+      }
+    }
+
+    // Convert to pull button
+    .convert-pull {
+      height          : 29px;
+      width           : 20%;
+      padding         : 0 4px;
+    }
+
+  // Description of issue/pull
+  .description {
+    padding         : 10px 20px;
+    background      : $color-lightest;
+    border-bottom   : 1px solid lighten($color-grey,20);
+    box-shadow      : 0 1px 2px rgba(0,0,0,.1) inset;
+
+    h4 {
+      margin          : 0;
+      color           : $color-grey;
+      font-size       : 1em;
+    }
+  }
+
+  // Comments on an issue/pull
+  .comments {
+    padding         : 10px;
+    border-radius   : 0 0 $br-card $br-card;
+
+    .comment {
+      position        : relative;
+      margin          : 0 0 10px;
+    }
+
+    .comment:last-child {
+      margin          : 0;
+    }
+
+    // User who made the comment
+    .commenter {
+      height          : $avatar-size-comment;
+      max-height      : $avatar-size-comment;
+      max-width       : $avatar-size-comment;
+      position        : absolute;
+      left            : -2px;
+      top             : -2px;
+      border          : 2px solid lighten($color-grey,10);
+      border-radius   : $avatar-size-comment / 2 + 5;
+    }
+
+    .comment-body {
+      margin          : 0 0 0 ($avatar-size-comment - 10);
+      padding         : 7px 10px 7px 15px;
+      background      : #fff;
+      border          : 3px solid lighten($color-grey,20);
+
+      // Remove spacing on the bottom content
+      p:last-child {
+        margin          : 0;
+      }
+    }
+
+    // Username who made the comment
+    h4 {
+      margin          : 0 0 0 ($avatar-size-comment + 7);
+      font-size       : 1em;
+      color           : $color-grey;
+      font-weight     : normal;
+
+      // Username
+      em {
+        font-style      : normal;
+        color           : darken($color-grey, 15);
+        font-weight     : bold;
+      }
+    }
+  }
+}
+
+// The selected card is a pull, so style the modal accordingly
+.pull {
+  select.milestone {
+    width           : 35%;
+  }
+
+  .label-bar {
+    width           : 65%;
+    padding-left    : 10px;
+  }
+
+  // Hide the convert button (it already is a pull)
+  .convert-pull {
+    display         : none;
+  }
+
+  // Show info on which branch this is being merged from and to
+  .branch-info {
+    display         : block;
+    @include box-sizing(border-box);
+    width           : 100%;
+    padding         : 3px 5px;
+    background      : lighten($color-grey,35);
+    border-bottom   : 1px solid lighten($color-grey,25);
+    font-size       : .9em;
+    text-align      : center;
+
+    // Branch names
+    pre {
+      display         : inline;
+      padding         : 1px 4px;
+      background      : lighten($color-primary,40);
+      border-color    : lighten($color-primary,30);
+      white-space     : nowrap;
+      font-size       : .95em;
+    }
+  }
+}
+
+/************* CONVERT TO PULL ****************/
+// Popup window for creating pull request
+.convert-to-pull {
+  margin: 8px;
+
+  .branch-selector {
+    display: inline-block;
+  }
+
+  .branch-pulldown {
+    width: 300px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #666;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 5px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+
+    .menu-header {
+      padding: 8px 10px;
+      background-color: #eeeeee;
+      background-image: -moz-linear-gradient(#fafafa, #eee);
+      background-image: -webkit-linear-gradient(#fafafa, #eee);
+      background-image: linear-gradient(#fafafa, #eee);
+      background-repeat: repeat-x;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .menu-list {
+      max-height: 400px;
+      overflow: auto;
+    }
+
+    .menu-item {
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+      overflow: hidden;
+      color: inherit;
+
+      &:hover {
+        background: blue;
+      }
+    }
+  }
+}
+

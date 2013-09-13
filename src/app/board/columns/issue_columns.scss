@@ -1,3 +1,5 @@
+// Remove bullet from cards
+.card-wrapper { list-style: none; }
 
 ul.user-list, ul.issue-columns, ul.milestone-columns, ul.column-body {
     margin:  0;

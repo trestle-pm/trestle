@@ -16,7 +16,7 @@
 }
 
 body{
-	background: $color_background;
+  background: $color_background;
 }
 
 .repos_base.container {
@@ -31,6 +31,8 @@ body{
     border-radius: 5px;
 }
 
+// Disable scrolling
+.no-scroll{ overflow: hidden; }
 
 // Bring in the various app tools
 @import "app/login/login";
