@@ -2,11 +2,10 @@
  *        ISSUES/PULLS
  ***************************************/
 
-@import "compass/css3/box-sizing";
 // ISSUE VARS & MIXINS
 // -------------------------------------------------------
 $br-card          : 3px;      // border radius for the card
-$avatar-size-card : 50px;     // size of the avatar on the card
+$avatar-size-card : 35px;     // size of the avatar on the card
 $avatar-size-vote : 20px;     // size of the little vote thumbs
 $avatar-size-details : 60px;  // size of avatar on modal detail window
 $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
@@ -29,16 +28,17 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 // Small badge with issue number and pull icon
 .issue-number {
   display         : inline-block;
-  padding         : 0 4px;
+  padding         : 2px 4px;
   background      : lighten($color-primary ,45);
   border          : 1px solid $color-primary;
   border-radius   : $br-card;
   color           : $color-primary;
-  font-size       : .85em;
+  font-size       : .9em;
   font-weight     : normal;
+  line-height     : .9em;
 
   .icon-code-fork {
-    margin-right  : 1px;
+    margin-right  : -1px;
     color         : darken($color-grey, 15);
     font-size     : 1em;
     font-weight   : bold;
@@ -63,7 +63,12 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
   border-bottom   : 1px solid rgba(0, 0, 0, 0.35);
   border-right    : 1px solid rgba(0, 0, 0, 0.35);
   text-shadow     : 0 -1px 1px rgba(0, 0, 0, 0.35);
+  opacity: .6;
+  &:hover {
+    opacity: 1;
+  }
 }
+
 
 // Small badge of code review count (ie 1,-2)
 .vote-count {
@@ -142,7 +147,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
     background      : $color-lightest;
     border-bottom   : 1px solid lighten($color-grey,20);
     border-radius   : 0;
-    font-size       : 1.2em;
+    font-size       : 1em;
     font-weight     : bold;
 
     &:first-child {
@@ -159,7 +164,6 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
     // Name of the issue or pull
     .title {
       white-space     : normal;
-      line-height     :1.3em;
     }
 
     // Assigned user
@@ -176,7 +180,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 
       // If no one is assigned
       &.empty {
-        height          : $avatar-size-card / 2;
+        height          : $avatar-size-card - 10;
         right           : 0;
         top             : -1px;
         border-radius   : 0;
@@ -289,6 +293,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       position        : absolute;
       top             : 2px;
       right           : 28px;
+      padding         : 3px 4px;
     }
 
     // Icon to close modal window
@@ -449,7 +454,8 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       }
 
       .label {
-         margin         : 2px;
+        margin         : 2px;
+        opacity        : 1;
       }
     }
 
