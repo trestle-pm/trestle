@@ -13,7 +13,10 @@
         ng-controller="IssueColumnCtrl as colCtrl"
         ng-init="colCtrl.init({isBacklog:true})" >
 
-      <h1 class="column-header">{{colCtrl.columnName}}</h1>
+      <h1 class="column-header">
+        <span class="column_name">{{colCtrl.columnName}}</span>
+        <span class="wip_count">{{colCtrl.issues.length}}</span>
+      </h1>
 
       <a class="btn btn-success"
          ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
