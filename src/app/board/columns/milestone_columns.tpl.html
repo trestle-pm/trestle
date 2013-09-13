@@ -12,7 +12,7 @@
       <ul class="column-body"
           ui-sortable="colCtrl.getSortableOptions()" >
 
-        <li class="card_wrapper"
+        <li class="card-wrapper"
              ng-repeat="issue in colCtrl.issues | filter:issueFilters.searchText"
              data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
@@ -35,7 +35,7 @@
       <ul class="column-body"
           ui-sortable="colCtrl.getSortableOptions()" >
 
-        <li class="card_wrapper"
+        <li class="card-wrapper"
             ng-repeat="issue in colCtrl.issues | filter:issueFilters.searchText"
             data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
