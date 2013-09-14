@@ -17,7 +17,10 @@
 
   </head>
 
-  <body ui-view="body" >
+  <body ui-view="body"
+        ng-class="{
+		  'no-scroll': modalIsUp
+		}">
   </body>
 
 </html>
