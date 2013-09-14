@@ -31,11 +31,10 @@
 
       <!-- CARDS List -->
       <ul class="column-body"
-          ui-sortable="colCtrl.getSortableOptions()" >
+          tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)">
 
         <li class="card-wrapper"
-             ng-repeat="issue in colCtrl.issues | filterMilestones:msFilterVal | globalIssueFilter"
-
+             ng-repeat="issue in repoModel.issues | issuesInBacklog | filterMilestones:msFilterVal | globalIssueFilter | orderBy:'config.columnWeight'"
              data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
         </li>
@@ -58,17 +57,17 @@
       </h1>
 
       <!-- CARDS List -->
-      <ul class="column-body"
-          ui-sortable="colCtrl.getSortableOptions()" >
+      <ul class="column-body" tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)" >
 
         <li class="card-wrapper"
-            ng-repeat="issue in colCtrl.issues | globalIssueFilter"
+            ng-repeat="issue in repoModel.issues | issuesWithLabel:colCtrl.labelName | globalIssueFilter | orderBy:'config.columnWeight'"
             data-issue-id="{{issue.id}}" >
 
           <tr-issue-card issue="issue" />
 
         </li>
       </ul>
+
       <!-- end of card list -->
     </li>
 
