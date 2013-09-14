@@ -25,8 +25,9 @@ angular.module('Trestle.board')
             // Let issues be dragged between any lists with the `column-body`
             // class.  The class must be on the direct parent of the issues.
             connectWith: '.column-body',
-            helper: 'clone',
-            opacity: 0.8
+            helper:      'clone',
+            opacity:     0.8,
+            placeholder: 'drop-area'
          };
 
          // Extract the handler funcstions syntax.
