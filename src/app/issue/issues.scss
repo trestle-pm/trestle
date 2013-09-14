@@ -4,7 +4,6 @@
 
 // ISSUE VARS & MIXINS
 // -------------------------------------------------------
-$br-card          : 3px;      // border radius for the card
 $avatar-size-card : 35px;     // size of the avatar on the card
 $avatar-size-vote : 20px;     // size of the little vote thumbs
 $avatar-size-details : 60px;  // size of avatar on modal detail window
@@ -69,6 +68,14 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
   }
 }
 
+// Small block of color for labels
+.color-preview {
+  display         : inline-block;
+  width           : 10px;
+  height          : 10px;
+  border-radius   : 2px;
+  margin          : 0 3px;
+}
 
 // Small badge of code review count (ie 1,-2)
 .vote-count {
@@ -508,15 +515,6 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
         // Selected labels
         &.enabled {
            background     : lighten($color-grey,15);
-        }
-
-        // Small block of color for each label
-        .color-preview {
-          display         : inline-block;
-          width           : 10px;
-          height          : 10px;
-          border-radius   : 2px;
-          margin          : 0 3px;
         }
       }
     }
