@@ -13,7 +13,7 @@
           tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)" >
 
         <li class="card-wrapper"
-             ng-repeat="issue in repoModel.issues | filterMilestones:'none' | filter:issueFilters.searchText | orderBy:'config.milestoneWeight'"
+             ng-repeat="issue in repoModel.issues | filterMilestones:'none' | globalIssueFilter | orderBy:'config.milestoneWeight'"
              data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
         </li>
@@ -36,7 +36,7 @@
           tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)" >
 
         <li class="card-wrapper"
-            ng-repeat="issue in repoModel.issues | filterMilestones:colCtrl.milestone.title | filter:issueFilters.searchText | orderBy:'config.milestoneWeight'"
+            ng-repeat="issue in repoModel.issues | filterMilestones:colCtrl.milestone.title | globalIssueFilter | orderBy:'config.milestoneWeight'"
             data-issue-id="{{issue.id}}" >
           <tr-issue-card issue="issue" />
         </li>
