@@ -110,7 +110,9 @@
          empty: issueCtrl.issue.body.trim() === ''
         }">
       <h4>Description:</h4>
-      {{issueCtrl.issue.body}}
+      <div class="issue-body"
+         ng-bind-html="issueCtrl.issue.body_html">
+      </div>
    </div>
    <div class="comments">
       <div class="comment"
