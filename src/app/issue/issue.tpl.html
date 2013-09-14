@@ -31,7 +31,7 @@
       </span>
       <span class="label"
             style="background-color: #{{label.color}}"
-            ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels">
+            ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels | orderBy:'name'">
          {{label.name}}
       </span>
    </div>
