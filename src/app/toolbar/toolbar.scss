@@ -1,35 +1,37 @@
 .board-toolbar {
-    .brand img {
-        height: 1em;
+  margin-bottom   : 8px;
+
+  .brand img {
+    height          : 1em;
+  }
+
+  #repo-list {
+    width           : 400px;
+
+    .filter {
+      margin          : 5px;
+
+      .search-query {
+        width           :      100%;
+        padding         :    13px;
+        box-sizing      : border-box;
+      }
     }
 
-    #repo-list {
-        width: 400px;
-
-        .filter {
-            margin: 5px;
-
-            .search-query {
-                width:      100%;
-                padding:    13px;
-                box-sizing: border-box;
-            }
-        }
-
-        .repo-list {
-            height:   300px;
-            overflow: auto;
-        }
+    .repo-list {
+        height        : 300px;
+        overflow      : auto;
     }
+  }
 
-    #issue-search {
-        width: 20em;
-        margin: 5px;
-    }
+  #issue-search {
+    width           : 20em;
+    margin          : 5px;
+  }
 
-    #settings {
-        // Reduce the padding of the settings area to allow the avatar to have
-        // enough space
-        padding: 5px;
-    }
+  #settings {
+    // Reduce the padding of the settings area to allow the avatar to have
+    // enough space
+    padding         : 5px;
+  }
 }

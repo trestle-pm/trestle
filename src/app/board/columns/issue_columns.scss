@@ -27,31 +27,34 @@ ul.issue-columns, ul.milestone-columns {
 
 
 .column-header {
-    text-align: center;
+    text-align: left;
 
     position: relative;
     box-sizing: border-box;
     margin-top: 0;
-    color: #555;
+    color: $color-background;
 
     line-height: 20px;
     margin-bottom: 10px;
-    padding: 3px;
-    padding-left: 10px;
-    border: 1px solid #e5e5e5;
-    background: #f3f3f3;
+    padding: 3px 4px 3px 7px;
+    box-shadow: 0 1px 1px transparentize($color-lightest, .6) inset;
+    background: transparentize($color-lightest, .4);
     font-size: 100%;
 
     .wip_count {
-        border: solid;
-        border-width: 1px;
-        border-radius: 2px;
-        border-color: light-grey;
+        background: transparent;
+        padding:3px 5px;
+        line-height:1em;
+        border-radius:50px;
+        color: transparentize($color-background, .4);
         float: right;
 
         &.over_limit {
-
-            background: red;
+            background: $color-danger;
+            color: $color-lightest;
+            border-bottom   : 1px solid rgba(0, 0, 0, 0.35);
+            border-right    : 1px solid rgba(0, 0, 0, 0.35);
+            text-shadow     : 0 -1px 1px rgba(0, 0, 0, 0.35);
         }
     }
 }
