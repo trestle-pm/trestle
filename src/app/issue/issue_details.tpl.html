@@ -95,7 +95,7 @@
          </div><!--Keep collapsed to prevent spacing bug--><div class="labels">
             <span class="label"
                   style="background-color: #{{label.color}}"
-                  ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels">
+                  ng-repeat="label in issueCtrl.issue.labels | nonColumnLabels | orderBy:'name'">
                {{label.name}}
             </span>&nbsp;
          </div>
