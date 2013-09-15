@@ -26,8 +26,9 @@ angular.module( 'Trestle', [
 .config( function ( $stateProvider, $urlRouterProvider ) {
    // Repository base
    $stateProvider
-      .state( 'repos', {
+      .state( 'repo', {
          url: '/repo',
+
          views: {
             body: {
                templateUrl: 'repos.tpl.html'
@@ -41,9 +42,9 @@ angular.module( 'Trestle', [
                var token = auth.getAuthToken();
                if(!token) {
                   return $q.reject('no auth');
-               } else {
-                  gh.setAccessToken(token);
                }
+
+               return gh.setAccessToken(token);
             }
          },
          onEnter: function() {
@@ -51,21 +52,33 @@ angular.module( 'Trestle', [
          }
       });
 
+   $stateProvider.state('repo.selected', {
+      url: '/:owner/:repo',
+      abstract: true,
+
+      views: {
+         'filter@repo': {
+            templateUrl: 'issue_filters/issue_filter.tpl.html'
+         }
+      },
+      resolve: {
+         repos_srv: function(trReposSrv, $stateParams) {
+            return trReposSrv.refreshSettings($stateParams);
+         }
+      },
+      onEnter: function() {
+         console.log('repo selected');
+      }
+   });
+
    // Board page
    $stateProvider
-      .state('repos.board', {
-         url: '/:owner/:repo/board',
+      .state('repo.selected.board', {
+         url: '/board',
+
          views: {
-            columns: {
+            'columns@repo': {
                templateUrl: 'board/columns/issue_columns.tpl.html'
-            },
-            filter: {
-               templateUrl: 'issue_filters/issue_filter.tpl.html'
-            }
-         },
-         resolve: {
-            repos_srv: function(trReposSrv, $stateParams) {
-               return trReposSrv.refreshSettings($stateParams);
             }
          },
          onEnter: function() {
@@ -75,23 +88,16 @@ angular.module( 'Trestle', [
 
    // Milestone page
    $stateProvider
-      .state('repos.milestones', {
-         url: '/:owner/:repo/milestones',
+      .state('repo.selected.milestones', {
+         url: '/milestones',
+
          views: {
-            columns: {
+            'columns@repo': {
                templateUrl: 'board/columns/milestone_columns.tpl.html'
-            },
-            filter: {
-               templateUrl: 'issue_filters/issue_filter.tpl.html'
-            }
-         },
-         resolve: {
-            repos_srv: function(trReposSrv, $stateParams) {
-               return trReposSrv.refreshSettings($stateParams);
             }
          },
          onEnter: function() {
-            console.log('entering repos.milestone');
+            console.log('entering repo.selected.milestone');
          }
       });
 
