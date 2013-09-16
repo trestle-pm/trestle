@@ -1,46 +1,46 @@
-<div ng-controller="ColumnsCtrl as columnsCtrl" >
-  <button class="btn btn-primary backlog"
-          ng-click="showBacklog = !showBacklog">
-    {{showBacklog ? 'Hide Backlog' : 'Show Backlog'}}
-  </button>
+<div class="hide-bl" ng-controller="ColumnsCtrl as columnsCtrl"
+      ng-class="{
+         'show-bl': columnsCtrl.showBacklog,
+         'hide-bl': !columnsCtrl.showBacklog
+      }">
 
+   <!-- Backlog Column -->
+   <div id="backlog-drawer"
+       ng-controller="IssueColumnCtrl as colCtrl"
+       ng-init="colCtrl.init({isBacklog:true})" >
+      <button id="backlog-toggle-btn"
+              ng-click="columnsCtrl.showBacklog = !columnsCtrl.showBacklog" >
+        <span ng-if="!columnsCtrl.showBacklog"><i class="icon-caret-right"></i></span>
+        <span ng-if="columnsCtrl.showBacklog"><i class="icon-caret-left"></i></span>
+      </button>
+      <div class="drawer">
+          <h1 class="column-header">
+             <span class="column_name">{{colCtrl.columnName}}</span>
+             <span class="wip-count">{{colCtrl.issues.length}}</span>
+         </h1>
+      <select class="milestone-selection"
+              ng-init="msFilterVal='*'"
+              ng-model="msFilterVal"
+              ng-options="m.value as m.title for m in columnsCtrl.getMilestoneSelectOptions()">
+      </select>
+     <a id="new-issue" class=""
+        ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
+        target="_blank">New Issue</a>
+
+
+     <!-- CARDS List -->
+     <ul class="column-body"
+         tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)">
+
+       <li class="card-wrapper"
+            ng-repeat="issue in repoModel.issues | issuesInBacklog | filterMilestones:msFilterVal | globalIssueFilter | orderBy:'config.columnWeight'"
+            data-issue-id="{{issue.id}}" >
+         <tr-issue-card issue="issue" />
+       </li>
+     </ul> <!-- end of card list -->
+   </div>
+</div>
   <ul class="issue-columns" >
-    <!-- Backlog Column -->
-    <li ng-show="showBacklog" class="column"
-
-        ng-style="columnsCtrl.getColumnWidth()"
-
-        ng-controller="IssueColumnCtrl as colCtrl"
-        ng-init="colCtrl.init({isBacklog:true})" >
-
-      <h1 class="column-header">
-        <span class="column_name">{{colCtrl.columnName}}</span>
-        <span class="wip-count">{{colCtrl.issues.length}}</span>
-      </h1>
-
-      <a class="btn btn-success"
-         ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
-         target="_blank">Create Issue</a>
-
-      <div class="milestone_selection">
-        <select ng-init="msFilterVal='*'"
-                ng-model="msFilterVal"
-                ng-options="m.value as m.title for m in columnsCtrl.getMilestoneSelectOptions()">
-        </select>
-      </div>
-
-      <!-- CARDS List -->
-      <ul class="column-body"
-          tr-issue-sortable="colCtrl.onIssueMoved(issues, issue)">
-
-        <li class="card-wrapper"
-             ng-repeat="issue in repoModel.issues | issuesInBacklog | filterMilestones:msFilterVal | globalIssueFilter | orderBy:'config.columnWeight'"
-             data-issue-id="{{issue.id}}" >
-          <tr-issue-card issue="issue" />
-        </li>
-      </ul> <!-- end of card list -->
-    </li>
-
     <!-- Kanban Columns -->
     <li ng-repeat="col_label in repoModel.config.columns" class="column"
         ng-style="columnsCtrl.getColumnWidth()"
@@ -51,7 +51,7 @@
       <h1 class="column-header">
         <span class="column_name">{{colCtrl.columnName}}</span>
         <span ng-class="{
-                over-limit: colCtrl.issues.length > repoModel.config.wip_limit
+                'over-limit': colCtrl.issues.length > repoModel.config.wip_limit
               }"
               class="wip-count">{{colCtrl.issues.length}}</span>
       </h1>
