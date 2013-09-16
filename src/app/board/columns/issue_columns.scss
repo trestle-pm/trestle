@@ -1,75 +1,80 @@
 // Remove bullet from cards
-.card-wrapper { list-style: none; }
-
-ul.user-list, ul.issue-columns, ul.milestone-columns, ul.column-body {
-    margin:  0;
-    padding: 0;
+.card-wrapper {
+  list-style      : none;
 }
 
-ul.issue-columns, ul.milestone-columns {
-    @include inline-block-list-container();
-    margin-left: 25px;
-
-    > li {
-        @include inline-block-list-item();
-
-        vertical-align: top;
-    }
+.user-list,
+.issue-columns,
+.milestone-columns,
+.column-body {
+  margin          :  0;
+  padding         : 0;
 }
 
+.issue-columns,
+.milestone-columns {
+  @include inline-block-list-container();
+  margin-left     : 25px;
+
+  > li {
+    @include inline-block-list-item();
+    vertical-align    : top;
+  }
+}
 
 .btn.backlog {
   @include rotate(90deg);
   @include transform-origin(0, 100%);
-  position: absolute;
-  top: 175px;
+  position        : absolute;
+  top             : 175px;
 }
 
-
+// Text labels on the top of each column
 .column-header {
-    text-align: center;
+  position        : relative;
+  box-sizing      : border-box;
+  margin-top      : 0;
+  margin-bottom   : 10px;
+  padding         : 3px 4px 3px 7px;
+  background      : transparentize($color-lightest, .4);
+  box-shadow      : 0 1px 1px transparentize($color-lightest, .6) inset;
+  font-size       : 1em;
+  line-height     : 1.5em;
+  text-align      : left;
+  color           : $color-background;
 
-    position: relative;
-    box-sizing: border-box;
-    margin-top: 0;
-    color: #555;
+  // Number of cards in each column
+  .wip-count {
+    float           : right;
+    padding         : 3px 5px;
+    background      : transparent;
+    border-radius   : 50px;
+    color           : transparentize($color-background, .4);
+    line-height     : 1em;
 
-    line-height: 20px;
-    margin-bottom: 10px;
-    padding: 3px;
-    padding-left: 10px;
-    border: 1px solid #e5e5e5;
-    background: #f3f3f3;
-    font-size: 100%;
-
-    .wip_count {
-        border: solid;
-        border-width: 1px;
-        border-radius: 2px;
-        border-color: light-grey;
-        float: right;
-
-        &.over_limit {
-
-            background: red;
-        }
+    // Highlight numbers that are over threshold
+    &.over-limit {
+      background      : $color-danger;
+      border-bottom   : 1px solid rgba(0, 0, 0, 0.35);
+      border-right    : 1px solid rgba(0, 0, 0, 0.35);
+      color           : $color-lightest;
+      text-shadow     : 0 -1px 1px rgba(0, 0, 0, 0.35);
     }
+  }
 }
 
 .column {
-    margin: 0;
-    padding: 0 10px;
-    margin-before: 0;
+  box-sizing      : border-box;
+  // hack: make sure the columns are large enough for the dropzone
+  min-height      : 1000px;
 
-    vertical-align: top;
-
-    box-sizing: border-box;
-
-    // hack: make sure the columns are large enough for the dropzone
-    min-height: 1000px;
+  margin          : 0;
+  padding         : 0 10px;
+  margin-before   : 0;
+  vertical-align  : top;
 }
 
 .column-body {
-    // Make sure there is some place to put drag issues to
-    min-height: 1000px;
+  // Make sure there is some place to put drag issues to
+  min-height      : 1000px;
 }

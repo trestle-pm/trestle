@@ -15,7 +15,7 @@
 
       <h1 class="column-header">
         <span class="column_name">{{colCtrl.columnName}}</span>
-        <span class="wip_count">{{colCtrl.issues.length}}</span>
+        <span class="wip-count">{{colCtrl.issues.length}}</span>
       </h1>
 
       <a class="btn btn-success"
@@ -51,9 +51,9 @@
       <h1 class="column-header">
         <span class="column_name">{{colCtrl.columnName}}</span>
         <span ng-class="{
-                over_limit: colCtrl.issues.length > repoModel.config.wip_limit
+                over-limit: colCtrl.issues.length > repoModel.config.wip_limit
               }"
-              class="wip_count">{{colCtrl.issues.length}}</span>
+              class="wip-count">{{colCtrl.issues.length}}</span>
       </h1>
 
       <!-- CARDS List -->
