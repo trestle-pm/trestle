@@ -95,7 +95,7 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh
          // - see: https://github.com/trestle-pm/trestle/issues/80
          $rootScope.modalIsUp = true;
          $modal.open(opts).finally(function() {
-            $rootScope.modalIsUp = true;
+            $rootScope.modalIsUp = false;
          });
       },
 
