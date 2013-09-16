@@ -1,5 +1,5 @@
 /***************************************
- *        FILTER PANEL
+ *        FILTERS
  ***************************************/
 
 // FILTER VARS & MIXINS
@@ -11,6 +11,7 @@ $filter-width: 175px;   // width of the filter panel
 
 // COMPONENTS
 // -------------------------------------------------------
+/************* FILTER PANEL ****************/
 // Right drawer that contains all the filters
 #issue-filters-drawer {
   position        : fixed;

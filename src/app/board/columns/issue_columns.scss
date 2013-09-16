@@ -1,5 +1,13 @@
+/***************************************
+ *        COLUMNS
+ ***************************************/
+
+// ISSUE VARS & MIXINS
+// -------------------------------------------------------
 $backlog-width: 235px;
 
+// SHARED COMPONENTS
+// -------------------------------------------------------
 // Remove bullet from cards
 .card-wrapper {
   list-style      : none;
@@ -13,28 +21,33 @@ $backlog-width: 235px;
   padding         : 0;
 }
 
+// COMPONENTS
+// -------------------------------------------------------
+/************* COLUMNS ****************/
+
+// Stretch column containers to fill height
+.columns,
+.columns > div{
+  height:100%
+}
+
+// Container around cards that scrolls
 .issue-columns,
 .milestone-columns {
   @include inline-block-list-container();
   margin-left     : 25px;
-  overflow: auto;
-  height: 100%;
-  padding-top: 8px;
-  padding-top:$header-height + 8px;
-  box-sizing:border-box;
+  overflow        : auto;
+  height          : 100%;
+  padding-top     : 8px;
+  padding-top     : $header-height + 8px;
+  box-sizing      : border-box;
   @include transition(margin $animation-speed ease-in);
 
+  // Columns
   > li {
     @include inline-block-list-item();
     vertical-align    : top;
   }
-}
-
-.btn.backlog {
-  @include rotate(90deg);
-  @include transform-origin(0, 100%);
-  position        : absolute;
-  top             : 175px;
 }
 
 // Text labels on the top of each column
@@ -73,7 +86,6 @@ $backlog-width: 235px;
 
 .column {
   box-sizing      : border-box;
-  // hack: make sure the columns are large enough for the dropzone
   min-height      : 100%;
   margin          : 0;
   padding         : 0 10px;
@@ -86,31 +98,14 @@ $backlog-width: 235px;
   min-height      : 1000px;
 }
 
-.show-bl{
-  #backlog-drawer .drawer{
-    left           : 0;
-  }
-  .issue-columns{
-    margin-left:$backlog-width
-  }
-}
-.hide-bl{
-
-  #backlog-drawer {
-    width:0;
-    .drawer{
-      display        : block;
-      left           : $backlog-width * -1;
-    }
-  }
-}
-
+/************* BACKLOG PANEL ****************/
+// Left drawer that contains all the backlog issues
 #backlog-drawer {
-  position        : fixed;
-  top             : $header-height;
-  bottom          : 0;
-  left            : 0;
-  width         : $backlog-width - 12;
+  position         : fixed;
+  top              : $header-height;
+  bottom           : 0;
+  left             : 0;
+  width            : $backlog-width;
 
   @include transition(width $animation-speed ease-in);
 
@@ -123,7 +118,7 @@ $backlog-width: 235px;
     box-sizing    : border-box;
     @include transition(left $animation-speed ease-in);
     z-index       : 1;
-    width         : $backlog-width - 12;
+    width         : $backlog-width;
     background    : desaturate(lighten($color-background, 10),5);
     border-radius : 0 0 0 $br-card;
     box-shadow    : 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -137,58 +132,71 @@ $backlog-width: 235px;
 #backlog-toggle-btn{
     position        : absolute;
     top             : 5px;
-    right            : -20px;
-    z-index: 10;
+    right           : -20px;
+    z-index         : 10;
     padding         : 5px;
     padding-bottom  : 6px;
     background      : lighten($color-grey,30);
     border          : 1px solid lighten($color-grey,20);
-    border-right-color: lighten($color-grey,30); // so the button merges into the header
     border-radius   : 0 $br-card $br-card 0;
     color           : $color-grey;
     text-shadow     : 0 1px 0 $color-lightest;
     font-size       : 1.5em;  // size of the icon
 }
 
-.columns,
-.columns > div{
-  height:100%
+// Styling when backlog is visible
+.show-bl{
+  // Move backlog on screen
+  #backlog-drawer .drawer{
+    left            : 0;
+  }
+  // Move other columns over
+  .issue-columns{
+    margin-left     : $backlog-width + 12; // leave room for scrollbar
+  }
 }
 
+// Styling when backlog is hidden
+.hide-bl{
+  // move backlog offscreen
+  #backlog-drawer {
+    width           : 0;
+
+    .drawer{
+      left            : $backlog-width * -1;
+    }
+  }
+}
+
+// Link to github's new issue page
 #new-issue{
-  display:block;
-  text-align: center;
+  display         : block;
+  text-align      : center;
   background      : transparentize($color-lightest, .85);
   border          : 2px dashed transparentize($color-lightest, .5);
   border-radius   : $br-card;
-  padding:5px;
-  color: transparentize($color-lightest, .5);
-  font-weight: bold;
+  padding         : 5px;
+  color           : transparentize($color-lightest, .5);
+  font-weight     : bold;
+
+  // look like a button when hovered over
   &:hover,&:active{
-    background-color: $color-primary;
-    background-image: -moz-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(lighten($color-primary,10)), to(darken($color-primary,5)));
-    background-image: -webkit-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
-    background-image: -o-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
-    background-image: linear-gradient(to bottom, lighten($color-primary,10), darken($color-primary,5));
-    background-repeat: repeat-x;
-    border: 1px solid $color-primary;
-    border-color: darken($color-primary,5) darken($color-primary,5) darken($color-primary,15);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-    padding:6px;
-    color:$color-lightest;
-    text-decoration:none;
+    @include background-image(linear-gradient(lighten($color-primary,10), darken($color-primary,5)));
+    border          : 1px solid $color-primary;
+    border-color    : darken($color-primary,5) darken($color-primary,5) darken($color-primary,15);
+    box-shadow      : inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding         : 6px;
+    color           : $color-lightest;
+    text-decoration : none;
   }
-  &:active{
-    background-color: $color-primary;
-    background-image: -moz-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(lighten($color-primary,10)), to(darken($color-primary,5)));
-    background-image: -webkit-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
-    background-image: -o-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
-    background-image: linear-gradient(to bottom, darken($color-primary,10), darken($color-primary,5));
+
+  &:active {
+    @include background-image(linear-gradient(darken($color-primary,10), darken($color-primary,5)));
   }
 
 }
-.milestone-selection{
-  width:100%;
+
+// Dropdown list of milestone fileters
+.milestone-selection {
+  width           : 100%;
 }
