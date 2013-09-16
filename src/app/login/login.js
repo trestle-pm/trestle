@@ -7,9 +7,7 @@
  */
 
 // Add our module to the namespace
-angular.module( 'Trestle.login', [
-  'ui.state'
-])
+angular.module( 'Trestle.login', [])
 
 
 .controller( 'LoginCtrl', function HomeController($http, $location, auth, gh) {

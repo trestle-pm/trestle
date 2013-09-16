@@ -64,7 +64,7 @@ module.exports = {
       ],
       assets: [
          'vendor/bootstrap/docs/assets/img/glyphicons-halflings.png',
-         'vendor/bootstrap/docs/assets/img/glyphicons-halflings-white.png',
+         'vendor/bootstrap/docs/assets/img/glyphicons-halflings-white.png'
       ]
    }
 };
