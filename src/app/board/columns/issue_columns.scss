@@ -1,3 +1,5 @@
+$backlog-width: 235px;
+
 // Remove bullet from cards
 .card-wrapper {
   list-style      : none;
@@ -15,6 +17,12 @@
 .milestone-columns {
   @include inline-block-list-container();
   margin-left     : 25px;
+  overflow: auto;
+  height: 100%;
+  padding-top: 8px;
+  padding-top:$header-height + 8px;
+  box-sizing:border-box;
+  @include transition(margin $animation-speed ease-in);
 
   > li {
     @include inline-block-list-item();
@@ -66,8 +74,7 @@
 .column {
   box-sizing      : border-box;
   // hack: make sure the columns are large enough for the dropzone
-  min-height      : 1000px;
-
+  min-height      : 100%;
   margin          : 0;
   padding         : 0 10px;
   margin-before   : 0;
@@ -77,4 +84,111 @@
 .column-body {
   // Make sure there is some place to put drag issues to
   min-height      : 1000px;
+}
+
+.show-bl{
+  #backlog-drawer .drawer{
+    left           : 0;
+  }
+  .issue-columns{
+    margin-left:$backlog-width
+  }
+}
+.hide-bl{
+
+  #backlog-drawer {
+    width:0;
+    .drawer{
+      display        : block;
+      left           : $backlog-width * -1;
+    }
+  }
+}
+
+#backlog-drawer {
+  position        : fixed;
+  top             : $header-height;
+  bottom          : 0;
+  left            : 0;
+  width         : $backlog-width - 12;
+
+  @include transition(width $animation-speed ease-in);
+
+  // Styling for the drawer's background
+  .drawer {
+    position      : fixed;
+    left          : 0;
+    top           : $header-height;
+    bottom        : 0;
+    box-sizing    : border-box;
+    @include transition(left $animation-speed ease-in);
+    z-index       : 1;
+    width         : $backlog-width - 12;
+    background    : desaturate(lighten($color-background, 10),5);
+    border-radius : 0 0 0 $br-card;
+    box-shadow    : 1px 1px 3px rgba(0, 0, 0, 0.5);
+    overflow-y    : auto;
+    overflow-x    : hidden;
+    padding       : 8px 12px 10px 8px;
+  }
+}
+
+// Drawer that hides and shows the panel
+#backlog-toggle-btn{
+    position        : absolute;
+    top             : 5px;
+    right            : -20px;
+    z-index: 10;
+    padding         : 5px;
+    padding-bottom  : 6px;
+    background      : lighten($color-grey,30);
+    border          : 1px solid lighten($color-grey,20);
+    border-right-color: lighten($color-grey,30); // so the button merges into the header
+    border-radius   : 0 $br-card $br-card 0;
+    color           : $color-grey;
+    text-shadow     : 0 1px 0 $color-lightest;
+    font-size       : 1.5em;  // size of the icon
+}
+
+.columns,
+.columns > div{
+  height:100%
+}
+
+#new-issue{
+  display:block;
+  text-align: center;
+  background      : transparentize($color-lightest, .85);
+  border          : 2px dashed transparentize($color-lightest, .5);
+  border-radius   : $br-card;
+  padding:5px;
+  color: transparentize($color-lightest, .5);
+  font-weight: bold;
+  &:hover,&:active{
+    background-color: $color-primary;
+    background-image: -moz-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(lighten($color-primary,10)), to(darken($color-primary,5)));
+    background-image: -webkit-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
+    background-image: -o-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
+    background-image: linear-gradient(to bottom, lighten($color-primary,10), darken($color-primary,5));
+    background-repeat: repeat-x;
+    border: 1px solid $color-primary;
+    border-color: darken($color-primary,5) darken($color-primary,5) darken($color-primary,15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding:6px;
+    color:$color-lightest;
+    text-decoration:none;
+  }
+  &:active{
+    background-color: $color-primary;
+    background-image: -moz-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(lighten($color-primary,10)), to(darken($color-primary,5)));
+    background-image: -webkit-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
+    background-image: -o-linear-gradient(top, lighten($color-primary,10), darken($color-primary,5));
+    background-image: linear-gradient(to bottom, darken($color-primary,10), darken($color-primary,5));
+  }
+
+}
+.milestone-selection{
+  width:100%;
 }
