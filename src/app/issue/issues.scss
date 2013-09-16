@@ -146,6 +146,10 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
     &.pending .build-header { @include build-header-style($color-primary); }
     &.unknown .build-header { @include build-header-style;                 }
 
+  &.updated {
+    border : 4px solid blue;
+  }
+
   // Card header with title & assigned person
   .header {
     position        : relative;
@@ -515,6 +519,15 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
         // Selected labels
         &.enabled {
            background     : lighten($color-grey,15);
+        }
+
+        // Small block of color for each label
+        .color-preview {
+          display         : inline-block;
+          width           : 10px;
+          height          : 10px;
+          border-radius   : 2px;
+          margin          : 0 3px;
         }
       }
     }

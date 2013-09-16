@@ -56,7 +56,8 @@ module.exports = {
          'vendor/angular-ui-router/release/angular-ui-router.js',
          'vendor/angular-ui-utils/modules/route/route.js',
          'vendor/restangular/dist/restangular.js',
-         'vendor/angular-sanitize/angular-sanitize.js'
+         'vendor/angular-sanitize/angular-sanitize.js',
+         'vendor/depot/depot.js'
       ],
       css: [
          'vendor/bootstrap/docs/assets/css/bootstrap.css',
