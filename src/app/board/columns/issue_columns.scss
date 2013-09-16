@@ -152,7 +152,7 @@ $backlog-width: 235px;
   }
   // Move other columns over
   .issue-columns{
-    margin-left     : $backlog-width + 12; // leave room for scrollbar
+    margin-left     : $backlog-width + 12px; // leave room for scrollbar
   }
 }
 
