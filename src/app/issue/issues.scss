@@ -488,7 +488,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       position        : absolute;
       top             : -1px;
       left            : 10px;
-
+      z-index         : 10;
 
       // Dropdown button
       .btn {
