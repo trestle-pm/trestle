@@ -1,0 +1,18 @@
+<class="modal-header">
+  <h3>Create Authentication Token</h3>
+</h1>
+
+<div class="modal-body">
+  <p>A token is required to use Trestle.  May we create one for you?</p>
+  <p class="muted">
+    The token will be added to GitHub with the description of "trestle".  If at any point you wish to revoke Trestles access to your account simply delete that token from your GitHub account.  If later on you want to use trestle again we will simply ask to creat the token then and our feelings wont be hurt.
+  </p>
+
+</div>
+<div class="modal-footer">
+  <button ng-click="$close('create')"
+          class="btn btn-primary">Create Token</button>
+  <button ng-click="$dismiss('cancel')"
+          class="btn">Cancel</button>
+</div>
+
