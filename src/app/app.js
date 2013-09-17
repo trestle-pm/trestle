@@ -49,6 +49,9 @@ angular.module( 'Trestle', [
          },
          onEnter: function() {
             console.log('entering repos');
+         },
+         onExit: function(trReposSrv) {
+            trReposSrv.stop();
          }
       });
 
