@@ -115,6 +115,11 @@ angular.module( 'Trestle', [
       }
    });
 
+   // Treat the board as the default choice
+   $urlRouterProvider.when('/repo/:owner/:repo', function($match) {
+         return ['/repo', $match.owner, $match.repo, 'board'].join('/');
+   });
+
    $urlRouterProvider.otherwise('/login');
 })
 
