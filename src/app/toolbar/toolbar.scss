@@ -6,8 +6,11 @@
   z-index:1000;
   width:100%;
   height:$header-height;
+
   .navbar-inner{
-    border-radius:0;
+    border-radius   : 0;
+    background      : desaturate(lighten($color-background, 30),15);
+    border          : 1px solid desaturate(lighten($color-background, 20),10);
   }
   .brand img {
     height          : 1em;
