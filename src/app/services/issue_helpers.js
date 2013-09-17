@@ -91,13 +91,28 @@ angular.module('Trestle')
 
       // Go get all comments for the issue
       // - Get the comments as HTML so to simplify the +1 counting
-      gh.getIssueComments(trRepoModel.owner, trRepoModel.repo, issue.number, {asHtml: true})
+      gh.getIssueComments(trRepoModel.owner, trRepoModel.repo,
+                          issue.number, {asHtml: true})
          .then(function(commentResults) {
             // Store on the issue
             issue.tr_comments = commentResults;
             _calculateCommentVoting(issue);
+            _calculateTodos(issue);
          }
       );
+   }
+
+   function _calculateTodos(issue) {
+      // Find any checkboxes (across all comments and the body)
+      // XXX add body check
+      var dom = $(_.pluck(issue.tr_comments, 'body_html').join(' '));
+      var total_todos = $('input[type="checkbox"]', dom),
+          fin_todos   = $('input[type="checkbox"]:checked', dom);
+
+      issue.tr_todos = {
+         total:    total_todos.length,
+         finished: fin_todos.length
+      };
    }
 
    /**
@@ -105,13 +120,16 @@ angular.module('Trestle')
    * the comments.
    */
    function _getCleanComment(commentText) {
-      return commentText
-         // - strip code blocks so that things like `i = i+1` do not trigger
-         //   the plus one counting.
-         .replace(/<code.*<\/code>/, '')
+      var dom = $(commentText);
+      // - strip code blocks so that things like `i = i+1` do not trigger
+      //   the plus one counting.
+      dom = $(dom, 'code').remove();
 
-         // - Attempt to strip links since they can contain text we don't care about
-         .replace(/https?.*\s?/, '');
+      // - Attempt to strip links since they can contain text we don't care about
+      dom = $(dom, 'a').remove();
+
+      // Return the text to search against
+      return $(dom).text();
    }
 
    function _calculateCommentVoting(issue) {
