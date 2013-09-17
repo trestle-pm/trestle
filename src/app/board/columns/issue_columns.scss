@@ -4,7 +4,7 @@
 
 // ISSUE VARS & MIXINS
 // -------------------------------------------------------
-$backlog-width: 235px;
+$backlog-width: 19%;
 
 // SHARED COMPONENTS
 // -------------------------------------------------------
@@ -152,7 +152,7 @@ $backlog-width: 235px;
   }
   // Move other columns over
   .issue-columns{
-    margin-left     : $backlog-width + 12px; // leave room for scrollbar
+    margin-left     : $backlog-width + 2%; // leave room for scrollbar
   }
 }
 
