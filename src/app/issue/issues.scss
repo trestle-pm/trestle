@@ -472,7 +472,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       .labels {
         display         : inline-block;
         @include box-sizing(border-box);
-        width           : 80%;
+        width           : 100%;
         height          : 30px;
         overflow        : hidden;
         margin          : 0;
@@ -496,7 +496,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       width           : 60px;
       position        : absolute;
       top             : -1px;
-      left            : 10px;
+      left            : 4px;
       z-index         : 10;
 
       // Dropdown button
@@ -634,7 +634,9 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
   select.milestone {
     width           : 35%;
   }
-
+  .label-editor{
+      left          : 10px;
+  }
   .label-bar {
     width           : 65%;
     padding-left    : 10px;
