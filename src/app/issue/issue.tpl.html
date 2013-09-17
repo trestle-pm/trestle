@@ -6,7 +6,8 @@
       ng-class="issueCtrl.getBuildStatus()"
       ng-click="issueCtrl.showIssueDetails()">
    <div class="build-header"
-         ng-if="issueCtrl.isPullRequest()">
+         ng-if="issueCtrl.isPullRequest()"
+         title="{{issueCtrl.issue.tr_top_build_status.description}}">
    </div>
    <div class="header">
       <a class="issue-number"
