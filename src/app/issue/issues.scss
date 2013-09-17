@@ -146,8 +146,17 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
     &.pending .build-header { @include build-header-style($color-primary); }
     &.unknown .build-header { @include build-header-style;                 }
 
+  // Highlight cards that have been recently updated
   &.updated {
-    border : 4px solid blue;
+    border          : 1px solid darken($color-primary, 10);
+    box-shadow      : 0 0 2px 2px lighten($color-primary, 10);
+
+    .header {
+      background      : lighten(saturate($color-primary, 15),40);
+    }
+    .stats {
+      color           : $color-primary;
+    }
   }
 
   // Card header with title & assigned person
