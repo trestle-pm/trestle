@@ -14,7 +14,7 @@
             target="_blank"
             title="Open on GitHub"
             ng-href="{{issueCtrl.issue.html_url}}"
-            ng-click="$event.stopPropagation()">
+            ng-click="issueCtrl.markAsViewed(); $event.stopPropagation()">
          <i class="icon-code-fork" ng-if="issueCtrl.isPullRequest()"></i>
          {{issueCtrl.issue.number}}
       </a>
