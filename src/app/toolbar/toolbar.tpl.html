@@ -42,9 +42,16 @@
     </ul>
 
     <button class="pull-right btn"
+            title="Refresh All Issues"
             ng-click="toolbarCtrl.refreshRepo()">
       <i class="icon-refresh"
          ng-class="{ 'icon-spin': toolbarCtrl.isRefreshing }"></i>
+    </button>
+
+    <button class="pull-right btn"
+            title="Mark All Viewed"
+            ng-click="toolbarCtrl.markAllRead()">
+      <i class="icon-check"></i>
     </button>
 
     <ul class="nav pull-right"
