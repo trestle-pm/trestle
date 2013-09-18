@@ -671,9 +671,25 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 }
 
 /************* CONVERT TO PULL ****************/
-// Popup window for creating pull request
-.convert-to-pull {
-  margin: 8px;
+.convert-modal {
+  min-height: 80%;
+
+  // Popup window for creating pull request
+  /*.convert-to-pull {
+      margin: 8px;
+    }*/
+
+  h3 {
+    margin: 0;
+    font-size: 1.1em;
+    line-height: 1.2em;
+    padding: 6px 12px;
+    border-bottom: 1px solid #ccc;
+  }
+  .branches{
+    margin: 6px 12px;
+    font-size: 1.3em;
+  }
 
   .branch-selector {
     display: inline-block;

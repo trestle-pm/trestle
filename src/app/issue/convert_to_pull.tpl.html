@@ -1,42 +1,11 @@
 <div class="convert-to-pull"
      ng-controller="ConvertToPullCtrl as convertCtrl"
      ng-init="convertCtrl.init(issue)" >
-
-  <div class="modal-header">
-    <h3>Convert Issue to pull</h3>
-  </div>
-
-  <p>We are converting pull for issue: {{convertCtrl.issue.title}}</p>
-
+  <h3>Convert <em>"{{convertCtrl.issue.title}}"</em> to Pull&nbsp;Request</h3>
+  <i class="close icon-remove" ng-click="$close()"></i>
   <div class="branches">
-    <!-- Base Branch -->
-    <span class="branch_type">Base Branch:</span>
-    <div class="branch-selector dropdown" >
-      <a class="btn dropdown-toggle-no-close" >
-        {{convertCtrl.baseBranch}}<span class="caret"></span>
-      </a>
-
-      <div class="branch-pulldown dropdown-menu">
-        <div class="menu-header no-close">
-          <span class="menu-title">Choose base branch</span>
-        </div>
-        <div class="menu-filter no-close" >
-          <input type="text" placeholder="Search" ng-model="baseBranchSearch"
-                 class="search-query" ></input>
-        </div>
-
-        <div class="menu-list">
-          <div class="menu-item"
-              ng-repeat="branch in convertCtrl.branches | filter:baseBranchSearch"
-              ng-click="convertCtrl.selectBaseBranch(branch.name)">
-            {{branch.name}}
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Topic Branch -->
-    <span class="branch_type">Topic Branch:</span>
+    <span class="branch_type">Merge from </span>
     <div class="branch-selector dropdown" >
       <a class="btn dropdown-toggle-no-close" >
         {{convertCtrl.topicBranch}}<span class="caret"></span>
@@ -61,13 +30,37 @@
       </div>
     </div>
 
-  </div>
+   <!-- Base Branch -->
+    <span class="branch_type">into</span>
+    <div class="branch-selector dropdown" >
+      <a class="btn dropdown-toggle-no-close" >
+        {{convertCtrl.baseBranch}}<span class="caret"></span>
+      </a>
 
-  <button ng-click="convertCtrl.convertToPull()"
-          class="btn btn-primary"
-          ng-disabled="convertCtrl.baseBranch === convertCtrl.topicBranch">
-    Convert
-  </button>
+      <div class="branch-pulldown dropdown-menu">
+        <div class="menu-header no-close">
+          <span class="menu-title">Choose base branch</span>
+        </div>
+        <div class="menu-filter no-close" >
+          <input type="text" placeholder="Search" ng-model="baseBranchSearch"
+                 class="search-query" ></input>
+        </div>
+
+        <div class="menu-list">
+          <div class="menu-item"
+              ng-repeat="branch in convertCtrl.branches | filter:baseBranchSearch"
+              ng-click="convertCtrl.selectBaseBranch(branch.name)">
+            {{branch.name}}
+          </div>
+        </div>
+      </div>
+    </div>
+   <button ng-click="convertCtrl.convertToPull()"
+             class="btn btn-primary"
+             ng-disabled="convertCtrl.baseBranch === convertCtrl.topicBranch">
+       Convert
+     </button>
+  </div>
 
   <div class="compare_summary"
        ng-show="convertCtrl.compareResults">
