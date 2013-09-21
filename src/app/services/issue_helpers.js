@@ -223,9 +223,10 @@ angular.module('Trestle')
                issue.tr_pull_details = pullResult;
 
                gh.getStatus(trRepoModel.owner, trRepoModel.repo, head_ref).then(
-                  function(statusResult) {
-                     issue.tr_build_status     = statusResult;
-                     issue.tr_top_build_status = statusResult[0];
+                  function(statusResults) {
+                     issue.tr_build_status     = statusResults;
+                     issue.tr_top_build_status = _.last(
+                        _.sortBy(statusResults, 'updated_at'));
                   }
                );
             }
