@@ -40,7 +40,7 @@ $backlog-width: 19%;
   height          : 100%;
   padding-top     : 8px;
   padding-top     : $header-height + 8px;
-  box-sizing      : border-box;
+  @include box-sizing(border-box);
   @include transition(margin $animation-speed ease-in);
 
   // Columns
@@ -53,7 +53,7 @@ $backlog-width: 19%;
 // Text labels on the top of each column
 .column-header {
   position        : relative;
-  box-sizing      : border-box;
+  @include box-sizing(border-box);
   margin-top      : 0;
   margin-bottom   : 10px;
   padding         : 3px 4px 3px 7px;
@@ -85,7 +85,7 @@ $backlog-width: 19%;
 }
 
 .column {
-  box-sizing      : border-box;
+  @include box-sizing(border-box);
   min-height      : 100%;
   margin          : 0;
   padding         : 0 10px;
@@ -115,7 +115,7 @@ $backlog-width: 19%;
     left          : 0;
     top           : $header-height;
     bottom        : 0;
-    box-sizing    : border-box;
+    @include box-sizing(border-box);
     @include transition(left $animation-speed ease-in);
     z-index       : 1;
     width         : $backlog-width;
