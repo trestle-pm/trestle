@@ -28,7 +28,7 @@ angular.module('Trestle')
          number       : issue.number,
          commentCount : issue.comments,
          isPull       : !!issue.tr_pull_details,
-         pullComments : (issue.tr_pull_details ? issue.tr_pull_details.comments : null),
+         pullComments : (issue.tr_pull_details ? issue.tr_pull_details.review_comments : null),
          pullHead     : (issue.tr_pull_details ? issue.tr_pull_details.tr_head.sha : null),
          bodyHash     : hashCode(issue.body),
          titleHash    : hashCode(issue.title)
