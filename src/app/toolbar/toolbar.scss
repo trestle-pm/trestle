@@ -22,7 +22,7 @@
       .search-query {
         width           :      100%;
         padding         :    13px;
-        box-sizing      : border-box;
+        @include box-sizing(border-box);
       }
     }
 
