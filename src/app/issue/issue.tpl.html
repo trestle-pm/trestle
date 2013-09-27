@@ -40,7 +40,7 @@
       </span>
    </div>
    <div class="reviews"
-         ng-if="issueCtrl.issue.tr_comments.length > 0">
+        ng-if="issueCtrl.issue.tr_all_comments.length > 0">
       <div class="votes">
          <div class="vote-count"
                ng-class="{
@@ -62,7 +62,7 @@
          <!--<span class="todos"><i class="icon-check"></i>3/6</span>-->
          <span class="comments">
             <i class="icon-comments"></i>
-            {{issueCtrl.issue.comments}}
+            {{issueCtrl.issue.tr_all_comments.length}}
          </span>
       </div>
    </div>
