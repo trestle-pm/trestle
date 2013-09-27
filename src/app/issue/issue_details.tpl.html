@@ -42,7 +42,7 @@
             ng-class="issueCtrl.getBuildStatus()">
          <a target="_blank"
                href="{{issueCtrl.issue.tr_top_build_status.target_url}}" >
-            Build Status: {{issueCtrl.issue.tr_top_build_status.description}}
+            {{issueCtrl.getBuildStatusText()}}
          </a>
       </div>
       <div class="comment-summary">

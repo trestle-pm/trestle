@@ -224,9 +224,27 @@ angular.module('Trestle')
 
                gh.getStatus(trRepoModel.owner, trRepoModel.repo, head_ref).then(
                   function(statusResults) {
-                     issue.tr_build_status     = statusResults;
-                     issue.tr_top_build_status = _.last(
-                        _.sortBy(statusResults, 'updated_at'));
+                     var sorted_statuses = null,
+                         success         = null;
+
+                     // Store all statuses
+                     issue.tr_build_status = statusResults;
+
+                     // Sort the build statuses
+                     sorted_statuses = _.sortBy(statusResults, 'updated_at');
+
+                     // Pick out the most recent successful build status.
+                     // This mimics github's behavior. Since the builds are all for the same
+                     // hash, as long as one of the builds passed we're good to go.
+                     success = _.last(_.where(sorted_statuses, {"state" : "success"}));
+
+                     // Use the successful status if we have one, otherwise the most recent.
+                     if(success) {
+                        issue.tr_top_build_status = success;
+                     } else {
+                        issue.tr_top_build_status = _.last(sorted_statuses);
+                     }
+
                   }
                );
             }

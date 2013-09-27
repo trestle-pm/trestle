@@ -19,7 +19,9 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 // Build colors in modal window
 @mixin build-details-style ($color:$color-grey) {
   background      : lighten($color, 30);
-  color           : darken($color, 15);
+  a {
+     color           : darken($color, 15);
+  }
 }
 
 // SHARED COMPONENTS
@@ -389,7 +391,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       display         : inline-block;
       @include box-sizing(border-box);
       height          : 100%;
-      width           : 60%;
+      width           : 80%;
       z-index         : 10;
       overflow        : hidden;
       padding         : 3px 0 3px 65px;
@@ -409,7 +411,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       right           : 1px;
       top             : 0;
       z-index         : 0;
-      min-width       : 40%;
+      min-width       : 20%;
       height          : 100%;
       padding         : 3px 0;
       margin          : 0;
