@@ -40,7 +40,10 @@
       <div ng-if="issueCtrl.isPullRequest()"
             class="build-status"
             ng-class="issueCtrl.getBuildStatus()">
-         {{issueCtrl.getBuildStatusText()}}
+         <a target="_blank"
+               href="{{issueCtrl.issue.tr_top_build_status.target_url}}" >
+            {{issueCtrl.getBuildStatusText()}}
+         </a>
       </div>
       <div class="comment-summary">
          <!--<span class="todos"><i class="icon-check"></i>3/6</span>-->

@@ -19,7 +19,9 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 // Build colors in modal window
 @mixin build-details-style ($color:$color-grey) {
   background      : lighten($color, 30);
-  color           : darken($color, 15);
+  a {
+     color           : darken($color, 15);
+  }
 }
 
 // SHARED COMPONENTS
