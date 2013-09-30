@@ -19,7 +19,7 @@ angular.module('Trestle')
 
    /**
    * Spawns off queries to resolve all grafted on information for the issue.
-   *  (all comments, counts, build status, etc)
+   *  (all comments, counts, build status, pull request info, etc)
    * We call this every time the issue is retrieved so that we can get
    * the full details.
    */
@@ -111,13 +111,21 @@ angular.module('Trestle')
          .replace(/<code.*<\/code>/, '')
 
          // - Attempt to strip links since they can contain text we don't care about
-         .replace(/https?.*\s?/, '');
+         .replace(/https?.*\s?/, '')
+
+         // - Remove ``` blocks from comments that are non-html
+         .replace(/```[\s\S]*?```/, '');
    }
 
    function _calculateCommentVoting(issue) {
       // Calculate the counting
 
-      var votes = _.reduce(issue.tr_comments, function(votes, comment) {
+      var comments = issue.tr_comments.slice(0);
+      if(issue.tr_review_comments) {
+         comments.push.apply(comments, issue.tr_review_comments);
+      }
+
+      var votes = _.reduce(comments, function(votes, comment) {
          var login = comment.user.login;
 
          if(!votes[login]) {
@@ -127,8 +135,12 @@ angular.module('Trestle')
             };
          }
 
-         // Extract any math out of the comment
-         var counts = _getCleanComment(comment.body_html).match(/([-+][0-9]+)/g);
+         // Extract any math out of the comment (prefer HTML version of body)
+         var body   = (comment.body_html ? comment.body_html : comment.body);
+         // match any vote numbers at start of line or with whitespace ahead of them
+         // then strip out any non-number parts
+         var counts = _getCleanComment(body).match(/(?:[>\s]|^)([-+][0-9]+)/gm);
+         counts = _.map(counts, function(s) { return s.match(/[+-][0-9]+/)[0]; });
          // - convert the string counts into numbers
          counts = _.map(counts, function(numStr) {return parseInt(numStr, 10);});
          // - Run the math for the comment (this is silly but allows people to
@@ -212,8 +224,9 @@ angular.module('Trestle')
    * added to the issue.
    */
    function resolvePullStatus(issue) {
-      issue.tr_build_status = issue.tr_build_status || null;
-      issue.tr_pull_details = issue.tr_pull_details || null;
+      issue.tr_build_status    = issue.tr_build_status || null;
+      issue.tr_pull_details    = issue.tr_pull_details || null;
+      issue.tr_review_comments = issue.tr_review_comments || null;
 
       // If we have a valid pull for the issue, spawn off query for it's details
       if(issue.pull_request && issue.pull_request.html_url) {
@@ -222,6 +235,7 @@ angular.module('Trestle')
                var head_ref = pullResult.tr_head.sha;
                issue.tr_pull_details = pullResult;
 
+               // Spawn off build status request
                gh.getStatus(trRepoModel.owner, trRepoModel.repo, head_ref).then(
                   function(statusResults) {
                      var sorted_statuses = null,
@@ -247,6 +261,20 @@ angular.module('Trestle')
 
                   }
                );
+
+               // Spawn off review comments request
+               if(pullResult.review_comments > 0) {
+                  // Go get all comments for the issue
+                  // - get the comments as HTML so to simplify the +1 counting
+                  gh.getReviewComments(trRepoModel.owner, trRepoModel.repo, issue.number,
+                                       {asHtml: true})
+                     .then(function(reviewCommentResults) {
+                        // Store on the issue
+                        issue.tr_review_comments = reviewCommentResults;
+                        _calculateCommentVoting(issue);
+                     }
+                  );
+               }
             }
          );
       }

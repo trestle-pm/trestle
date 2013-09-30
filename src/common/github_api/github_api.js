@@ -331,6 +331,20 @@ angular.module('github.api', ['restangular'])
          .get();
    };
 
+   /**
+   * Return list of all comments on the issue.
+   */
+   this.getReviewComments = function(owner, repo, issueNumber, options) {
+      var headers = {};
+      if (options.asHtml) {
+         headers.Accept = 'application/vnd.github.html+json';
+      }
+      return GitHubRestangular
+         .one(['repos', owner, repo, 'pulls', issueNumber, 'comments'].join('/'))
+         .get({}, headers);
+   };
+
+
    this.createPullFromIssue = function(owner, repo, issueNumber, base, head) {
       return GitHubRestangular
          .all(['repos', owner, repo, 'pulls'].join('/'))
