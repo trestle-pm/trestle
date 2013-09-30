@@ -1,4 +1,4 @@
-/*jshint bitwise: false*/
+/* jshint bitwise: false */
 
 angular.module('Trestle')
 
@@ -10,14 +10,16 @@ angular.module('Trestle')
 
    /** String hash code. */
    function hashCode(str){
-     var hash = 0;
+     var hash = 0,
+         alpha, i;
+
      if (str.length === 0) {
         return hash;
      }
      for (i = 0; i < str.length; i+=1) {
-        char = str.charCodeAt(i);
-         hash = ((hash<<5)-hash)+char;
-         hash = hash & hash; // Convert to 32bit integer
+        alpha = str.charCodeAt(i);
+        hash = ((hash<<5)-hash) + alpha;
+        hash = hash & hash; // Convert to 32bit integer
      }
      return hash;
    }
