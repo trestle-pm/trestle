@@ -86,8 +86,8 @@
         <img class="avatar"
              ng-src="{{commit.committer.avatar_url}}?s=30"></img>
         <span class="committer"> {{commit.committer.name}} </span>
-        <a ng-href="{{commit.url}}" class="message">{{commit.commit.message}}</a>
-        <a ng-href="{{commit.url}}" class="sha">{{commit.sha | limitTo:7}}</a>
+        <a class="message" ng-href="{{commit.url}}" class="message">{{commit.commit.message}}</a>
+        <a class="hash" ng-href="{{commit.url}}" class="sha">{{commit.sha | limitTo:7}}</a>
       </div>
     </div>
 
@@ -95,7 +95,11 @@
     <div class="file_list">
       <div class="file_details"
            ng-repeat="file in convertCtrl.compareResults.files">
-        <div class="file_header">{{file.filename}} - {{file.additions}} - {{file.deletions}}</div>
+        <div class="file_header">
+          <span class="filename">{{file.filename}}</span>
+          <span class="additions">{{file.additions}}</span>
+          <span class="deletions">{{file.deletions}}</span>
+        <div>
         <div class="patch">
           <pre>{{file.patch}}</pre>
         </div>

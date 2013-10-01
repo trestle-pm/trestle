@@ -763,6 +763,34 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       .avatar {
         margin: 2px;
       }
+      .hash {
+        float  : right;
+        margin : 5px;
+      }
+    }
+
+    .file_list {
+      .file_details {
+        .file_header {
+          .filename {
+            font-weight: bold;
+          }
+          .additions {
+            color: green;
+            &:before {
+              content: "+"
+            }
+          }
+
+          .deletions {
+            color: red;
+            &:before {
+              content: "-"
+            }
+          }
+
+        }
+      }
     }
   }
 }
