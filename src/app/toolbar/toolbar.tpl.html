@@ -16,14 +16,14 @@
 
         <div id="repo-list" class="dropdown-menu">
           <div class="filter no-close" >
-            <input type="text" placeholder="Search" ng-model="repoSearchText"
+            <input autofocus type="search" placeholder="Search" ng-model="repoSearchText"
                    class="search-query" ></input>
           </div>
 
-          <ol class="repo-list">
+          <ol class="org-list">
             <li ng-repeat="(owner, repos) in toolbarCtrl.allRepos">
-              {{owner}}
-              <ol>
+              <h3 class="muted" >{{owner}}</h3>
+              <ol class="repo-list" >
                 <li ng-repeat="repo in repos | filter:repoSearchText"
                     ng-click="toolbarCtrl.onSwitchToRepo(repo)">
                   {{repo.full_name}}
