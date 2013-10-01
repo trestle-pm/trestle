@@ -20,10 +20,10 @@
                    class="search-query" ></input>
           </div>
 
-          <ol class="repo-list">
+          <ol class="org-list">
             <li ng-repeat="(owner, repos) in toolbarCtrl.allRepos">
-              {{owner}}
-              <ol>
+              <h3 class="muted" >{{owner}}</h3>
+              <ol class="repo-list" >
                 <li ng-repeat="repo in repos | filter:repoSearchText"
                     ng-click="toolbarCtrl.onSwitchToRepo(repo)">
                   {{repo.full_name}}
