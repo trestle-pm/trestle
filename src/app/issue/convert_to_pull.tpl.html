@@ -1,7 +1,9 @@
 <div class="convert-to-pull"
      ng-controller="ConvertToPullCtrl as convertCtrl"
      ng-init="convertCtrl.init(issue)" >
-  <h3>Convert <em>"{{convertCtrl.issue.title}}"</em> to Pull&nbsp;Request</h3>
+  <div class="convert-header">
+     Convert <em>"{{convertCtrl.issue.title}}"</em> to Pull&nbsp;Request</h3>
+  </div>
   <i class="close icon-remove" ng-click="$close()"></i>
   <div class="branches">
     <!-- Topic Branch -->
@@ -30,7 +32,7 @@
       </div>
     </div>
 
-   <!-- Base Branch -->
+    <!-- Base Branch -->
     <span class="branch_type">into</span>
     <div class="branch-selector dropdown" >
       <a class="btn dropdown-toggle-no-close" >
@@ -62,27 +64,35 @@
      </button>
   </div>
 
-  <div class="compare_summary"
+  <div class="compare-summary"
        ng-show="convertCtrl.compareResults">
-    <p>Status: {{convertCtrl.compareResults.status}}</p>
-    <p>Total commits: {{convertCtrl.compareResults.total_commits}}</p>
-    <p>Files changed: {{convertCtrl.compareResults.files.length}}</p>
-    <a class="btn" target="_blank"
-     ng-href="{{convertCtrl.compareResults.html_url}}">Compare</a>
 
+    <h4>Stats</h4>
+    <ul class="stats-list">
+      <li>Status: {{convertCtrl.compareResults.status}}</li>
+      <li>Total commits: {{convertCtrl.compareResults.total_commits}}</li>
+      <li>Files changed: {{convertCtrl.compareResults.files.length}}</li>
+    </ul>
+
+    <a class="compare btn" target="_blank"
+     ng-href="{{convertCtrl.compareResults.html_url}}">
+      Compare <i class="icon-external-link"/>
+    </a>
+
+    <h4>Commits</h4>
     <div class="commit_list">
       <div class="commit"
            ng-repeat="commit in convertCtrl.compareResults.commits">
         <img class="avatar"
              ng-src="{{commit.committer.avatar_url}}?s=30"></img>
         <span class="committer"> {{commit.committer.name}} </span>
-        <a ng-href="{{commit.url}}" class="message">{{commit.commit.message}}</span>
-        <a ng-href="{{commit.url}}" class="sha">{{commit.sha | limitTo:7}}</span>
+        <a ng-href="{{commit.url}}" class="message">{{commit.commit.message}}</a>
+        <a ng-href="{{commit.url}}" class="sha">{{commit.sha | limitTo:7}}</a>
       </div>
     </div>
 
+    <h4>Files</h4>
     <div class="file_list">
-      <div>Files:</div>
       <div class="file_details"
            ng-repeat="file in convertCtrl.compareResults.files">
         <div class="file_header">{{file.filename}} - {{file.additions}} - {{file.deletions}}</div>
