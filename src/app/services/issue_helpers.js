@@ -181,9 +181,10 @@ angular.module('Trestle')
 
    function resolveIssueConf(issue) {
       var config = {
-         // XXX only do this if the config did not have it already
-         columnWeight:    _.random(-1000, 1000),
-         milestoneWeight: _.random(-1000, 1000)
+         // Defualt the weights so that they are stable and *should* be at the
+         // top of the columns.
+         columnWeight:    -issue.number,
+         milestoneWeight: -issue.number
       };
 
       var body = issue.body;
