@@ -1,3 +1,5 @@
+/* jshint -W072 */
+
 angular.module('Trestle')
 
 .service('trRepoModel', function($rootScope) {
@@ -32,7 +34,7 @@ angular.module('Trestle')
  * connected to and using.
 */
 .service('trReposSrv', function($modal, $q, gh, $stateParams, issueWatchSrv,
-                                trRepoModel, trIssueHelpers, auth) {
+                                buildStatusWatchSrv, trRepoModel, trIssueHelpers, auth) {
    var TRESTLE_CONFIG_TITLE = 'TRESTLE_CONFIG',
        DEFAULT_CONFIG = {
           "columns": ["In Progress", "Review", "CI", "Ship"],
@@ -44,6 +46,7 @@ angular.module('Trestle')
 
       // Cancel any previous watchers
       issueWatchSrv.stop();
+      buildStatusWatchSrv.stop();
 
       trRepoModel.owner = stateParams.owner;
       trRepoModel.repo  = stateParams.repo;
@@ -60,6 +63,7 @@ angular.module('Trestle')
       var has_repo = trRepoModel.owner && trRepoModel.repo;
       if( has_repo && auth.getAuthToken()) {
          issueWatchSrv.start();
+         buildStatusWatchSrv.start();
 
          return $q.all([
             this._loadConfig(),
@@ -81,6 +85,7 @@ angular.module('Trestle')
 
    this.stop = function() {
       issueWatchSrv.stop();
+      buildStatusWatchSrv.stop();
    };
 
    this._loadIssues = function() {

@@ -17,6 +17,29 @@ angular.module('Trestle')
       return [body, config_header, JSON.stringify(configObj), config_footer].join('\n');
    };
 
+   this.updateBuildStatus = function(issue) {
+      var head_ref = issue.tr_pull_details.tr_head.sha;
+
+      return gh.getStatus(trRepoModel.owner, trRepoModel.repo, head_ref).then(
+         function(statusResults) {
+            var sorted_statuses = null,
+                success         = null;
+
+            // Sort the build statuses
+            sorted_statuses = _.sortBy(statusResults, 'updated_at');
+
+            // Pick out the most recent successful build status.
+            // This mimics github's behavior. Since the builds are all for the same
+            // hash, as long as one of the builds passed we're good to go.
+            success = _.last(_.where(sorted_statuses, {"state" : "success"}));
+
+            issue.tr_build_status = statusResults;
+            // Use the successful status if we have one, otherwise the most recent.
+            issue.tr_top_build_status = success ? success : _.last(sorted_statuses);
+         }
+      );
+   };
+
    /**
    * Spawns off queries to resolve all grafted on information for the issue.
    *  (all comments, counts, build status, etc)
@@ -217,38 +240,11 @@ angular.module('Trestle')
 
       // If we have a valid pull for the issue, spawn off query for it's details
       if(issue.pull_request && issue.pull_request.html_url) {
-         gh.getPull(trRepoModel.owner, trRepoModel.repo, issue.number).then(
-            function(pullResult) {
-               var head_ref = pullResult.tr_head.sha;
+         gh.getPull(trRepoModel.owner, trRepoModel.repo, issue.number)
+            .then(function(pullResult) {
                issue.tr_pull_details = pullResult;
-
-               gh.getStatus(trRepoModel.owner, trRepoModel.repo, head_ref).then(
-                  function(statusResults) {
-                     var sorted_statuses = null,
-                         success         = null;
-
-                     // Store all statuses
-                     issue.tr_build_status = statusResults;
-
-                     // Sort the build statuses
-                     sorted_statuses = _.sortBy(statusResults, 'updated_at');
-
-                     // Pick out the most recent successful build status.
-                     // This mimics github's behavior. Since the builds are all for the same
-                     // hash, as long as one of the builds passed we're good to go.
-                     success = _.last(_.where(sorted_statuses, {"state" : "success"}));
-
-                     // Use the successful status if we have one, otherwise the most recent.
-                     if(success) {
-                        issue.tr_top_build_status = success;
-                     } else {
-                        issue.tr_top_build_status = _.last(sorted_statuses);
-                     }
-
-                  }
-               );
-            }
-         );
+               me.updateBuildStatus(issue);
+            });
       }
    }
 
@@ -341,6 +337,5 @@ angular.module('Trestle')
       });
    };
 })
-
 
 ;
