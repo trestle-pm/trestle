@@ -291,6 +291,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 // Popup window with all the issue/pull details
 .modal {
   max-height      : 80%;
+  min-height      : 80%;
   overflow        : auto;
   padding         : 0;
   background      : lighten($color-grey,30);
