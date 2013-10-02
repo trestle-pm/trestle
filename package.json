@@ -6,7 +6,7 @@
   "homepage": "",
   "licenses": {
     "type": "BSD",
-    "url": "https://raw.github.com/my8bird/master/license.txt"
+    "url": "https://github.com/trestle-pm/trestle/blob/master/license.txt"
   },
   "dependencies": {},
   "devDependencies": {
