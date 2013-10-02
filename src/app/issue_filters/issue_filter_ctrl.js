@@ -21,6 +21,7 @@ angular.module('Trestle')
    scope.milestone    = null;
    scope.reviewer     = null;
    scope.labels       = null;
+   scope.buildFailing = null;
 
    return scope;
 })
@@ -77,6 +78,13 @@ angular.module('Trestle')
          issues = _.filter(issues, function(issue) {
             var labels = _.pluck(issue.labels, 'name');
             return _.difference(trIssueFilters.labels, labels).length === 0;
+         });
+      }
+
+      if (trIssueFilters.buildFailing) {
+         issues = _.filter(issues, function(issue) {
+            var state = (issue.tr_top_build_status || {}).state;
+            return state === 'failure';
          });
       }
 

@@ -22,6 +22,11 @@
           Reviewed by Me
           <i class="icon-remove"></i>
         </li>
+        <li ng-click="filterCtrl.setFilter('buildFailing', true)"
+            ng-class="{active: issueFilters.buildFailing}">
+          Failing Build
+          <i class="icon-remove"></i>
+        </li>
       </ul>
       <h3>Collaborator</h3>
       <ul class="collaborator">
