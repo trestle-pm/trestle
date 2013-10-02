@@ -2,63 +2,57 @@
      ng-controller="IssueFilterCtrl as filterCtrl"
      ng-init="filterCtrl.init()" >
 
-   <div class="drawer" class="hide" ng-class="{show: fitlerCtrl.showDrawer,
-                                 hide: !fitlerCtrl.showDrawer}" >
-      <button id="filter-toggle-btn"
-              ng-click="fitlerCtrl.showDrawer = !fitlerCtrl.showDrawer" >
-        <span ng-if="fitlerCtrl.showDrawer"><i class="icon-caret-right"></i></span>
-        <span ng-if="!fitlerCtrl.showDrawer"><i class="icon-caret-left"></i></span>
-      </button>
-      <h1>Filters</h1>
-      <div class="content">
-         <ul >
-            <li ng-click="filterCtrl.setFilter('owner', sessionModel.user.login)"
-              ng-class="{active: issueFilters.owner == sessionModel.user.login}">
-            Assigned to Me
-             <i class="icon-remove"></i>
-            </li>
-            <li ng-click="filterCtrl.setFilter('reviewer', sessionModel.user.login)"
-              ng-class="{active: issueFilters.reviewer == sessionModel.user.login}">
-            Reviewed by Me
-            <i class="icon-remove"></i>
-            </li>
-            <!-- TODO: Make it work-->
-            <li ng-click="filterCtrl.setFilter('reviewer', sessionModel.user.login)"
-              ng-class="{active: issueFilters.reviewer == sessionModel.user.login}">
-            Updated Recently
-            <i class="icon-remove"></i>
-            </li>
-         </ul>
-         <h3>Collaborator</h3>
-         <ul class="collaborator">
-            <li class="avatar"
-              ng-repeat="user in repoModel.assignees"
-              ng-click="filterCtrl.setFilter('owner', user.login)"
-              ng-class="{active: issueFilters.owner == user.login}" >
-            <img ng-src="{{user.avatar_url}}?s=30" ng-title="{{user.login}}" />
-            </li>
-         </ul>
-         <h3>Milestone</h3>
-         <ul>
-            <li ng-repeat="milestone in repoModel.milestones"
-              ng-click="filterCtrl.setFilter('milestone', milestone.title)"
-              ng-class="{active: issueFilters.milestone == milestone.title}" >
-            {{milestone.title}}
-            <i class="icon-remove"></i>
-            </li>
-         </ul>
-         <h3>Label</h3>
-         <ul>
-            <!--TODO: Get filter to work?-->
-            <li ng-repeat="label in repoModel.labels | nonColumnLabels"
-              ng-click="filterCtrl.setFilter('label', label.name)"
-              ng-class="{active: issueFilters.label == label.name}" >
-                <span class="color-preview"
-                    style="background-color: #{{label.color}}"></span>
-            {{label.name}}
-            <i class="icon-remove"></i>
-            </li>
-         </ul>
-      </div>
-   </div>
+  <div class="drawer" class="hide" ng-class="{show: fitlerCtrl.showDrawer,
+                                             hide: !fitlerCtrl.showDrawer}" >
+    <button id="filter-toggle-btn"
+            ng-click="fitlerCtrl.showDrawer = !fitlerCtrl.showDrawer" >
+      <span ng-if="fitlerCtrl.showDrawer"><i class="icon-caret-right"></i></span>
+      <span ng-if="!fitlerCtrl.showDrawer"><i class="icon-caret-left"></i></span>
+    </button>
+    <h1>Filters</h1>
+    <div class="content">
+      <ul >
+        <li ng-click="filterCtrl.setFilter('owner', sessionModel.user.login)"
+            ng-class="{active: issueFilters.owner == sessionModel.user.login}">
+          Assigned to Me
+          <i class="icon-remove"></i>
+        </li>
+        <li ng-click="filterCtrl.setFilter('reviewer', sessionModel.user.login)"
+            ng-class="{active: issueFilters.reviewer == sessionModel.user.login}">
+          Reviewed by Me
+          <i class="icon-remove"></i>
+        </li>
+      </ul>
+      <h3>Collaborator</h3>
+      <ul class="collaborator">
+        <li class="avatar"
+            ng-repeat="user in repoModel.assignees | filter:{login: '!'+sessionModel.user.login}"
+            ng-click="filterCtrl.setFilter('owner', user.login)"
+            ng-class="{active: issueFilters.owner == user.login}" >
+          <img ng-src="{{user.avatar_url}}?s=30" ng-title="{{user.login}}" />
+        </li>
+      </ul>
+      <h3>Milestone</h3>
+      <ul>
+        <li ng-repeat="milestone in repoModel.milestones"
+            ng-click="filterCtrl.setFilter('milestone', milestone.title)"
+            ng-class="{active: issueFilters.milestone == milestone.title}" >
+          {{milestone.title}}
+          <i class="icon-remove"></i>
+        </li>
+      </ul>
+      <h3>Label</h3>
+      <ul>
+        <!--TODO: Get filter to work?-->
+        <li ng-repeat="label in repoModel.labels | nonColumnLabels"
+            ng-click="filterCtrl.setFilter('label', label.name)"
+            ng-class="{active: issueFilters.label == label.name}" >
+          <span class="color-preview"
+                style="background-color: #{{label.color}}"></span>
+          {{label.name}}
+          <i class="icon-remove"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
