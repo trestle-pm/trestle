@@ -289,11 +289,26 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
   border-radius   : $br-card;
 }
 
-/************* DETAILS ****************/
-// Popup window with all the issue/pull details
+/************* COMMON MODAL SETTINGS ************/
 .modal {
-  min-height      : 300px;
+  min-height      : 50%;
   max-height      : 80%;
+
+  /** Keep the modal at a decent width */
+  min-width : 700px;
+  width     : 60%;
+
+  /* All the modal to resize and stay centered.
+  * - requires modals `position:fixed`
+  *   stretch the modal across the entire windows width
+  * - Give the left and right margins auto sizing which
+  *   will center the modal
+  */
+  left   : 0;
+  right  : 0;
+  margin : 0 auto;
+
+  /** Base styling for the modal */
   overflow        : auto;
   padding         : 0;
   background      : lighten($color-grey,30);
@@ -319,6 +334,12 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       line-height     : 1.3em;
     }
 
+}
+
+/************* DETAILS ****************/
+// Popup window with all the issue/pull details
+.modal.issue-details-modal {
+  // .header
     // Link to issue or pull
     .issue-number {
       position        : absolute;
@@ -360,8 +381,11 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 
       // List of users to assign
       .dropdown-menu {
-        z-index         : 50;
-        margin-top      : 19px;
+        z-index     : 50;
+        margin-top  : 19px;
+        overflow    : auto;
+        min-width   : 200px;
+        max-height  : 250px;
 
         h4 {
           margin          : 0;
@@ -675,19 +699,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 
 /************* CONVERT TO PULL ****************/
 .convert-modal {
-  min-height: 80%;
-
-  // Keep the modal at a decent width
-  min-width : 700px;
-  width     : 60%;
-
-  // All the modal to resize and stay centered.
-  // - requires modals `position:fixed`
-  //   stretch the modal across the entire windows width
-  left   : 0;
-  right  : 0;
-  // - Give the left and right margins auto sizing which will center the modal
-  margin : 0 auto;
+  min-height: 80%;   // Make this one taller by default
 
   .convert-header {
     margin        : 0;
