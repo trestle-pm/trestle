@@ -290,8 +290,8 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 /************* DETAILS ****************/
 // Popup window with all the issue/pull details
 .modal {
+  min-height      : 300px;
   max-height      : 80%;
-  min-height      : 80%;
   overflow        : auto;
   padding         : 0;
   background      : lighten($color-grey,30);
@@ -674,14 +674,18 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 /************* CONVERT TO PULL ****************/
 .convert-modal {
   min-height: 80%;
-  min-width: 50%; // 80%;
 
-  // How can I center it?
+  // Keep the modal at a decent width
+  min-width: 700px;
+  max-width: 80%;
 
-  // Popup window for creating pull request
-  /*.convert-to-pull {
-      margin: 8px;
-    }*/
+  // All the modal to resize and stay centered.
+  // - requires modals `position:fixed`
+  //   stretch the modal across the entire windows width
+  left   : 0;
+  right  : 0;
+  // - Give the left and right margins auto sizing which will center the modal
+  margin : 0 auto;
 
   .convert-header {
     margin        : 0;
@@ -795,4 +799,3 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
     }
   }
 }
-
