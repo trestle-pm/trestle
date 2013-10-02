@@ -676,8 +676,8 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
   min-height: 80%;
 
   // Keep the modal at a decent width
-  min-width: 700px;
-  max-width: 80%;
+  min-width : 700px;
+  width     : 60%;
 
   // All the modal to resize and stay centered.
   // - requires modals `position:fixed`
