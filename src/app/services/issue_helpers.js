@@ -161,7 +161,13 @@ angular.module('Trestle')
          }, 0);
 
          // Update the users total count with the new information
-         memo[login].count = memo[login].count + total;
+         // - Once a user has blackballed a pull it stays there
+         if (total < 0 || memo[login].count < 0) {
+            memo[login].count = -1;
+         }
+         else {
+            memo[login].count = memo[login].count + total;
+         }
 
          return memo;
       }, all_users);
@@ -169,6 +175,8 @@ angular.module('Trestle')
       issue.tr_comment_voting = {
          users: votes,
          // Provide a total count for the pull
+         // - If anyone gave the pull a negative review then the total is -1
+         //   to blackball the issue.
          total: _.reduce(votes, function(count, voteDetails) {
             if(voteDetails.count < 0 || count < 0) {
                return -1;
