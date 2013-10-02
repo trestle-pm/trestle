@@ -51,7 +51,7 @@
       <h1 class="column-header">
         <span class="column_name">{{colCtrl.columnName}}</span>
         <span ng-class="{
-                'over-limit': (repoModel.issues | issuesWithLabel:colCtrl.labelName).length > repoModel.config.wip_limit
+                'over-limit': (repoModel.issues | issuesWithLabel:colCtrl.labelName).length > colCtrl.getWipLimit()
               }"
               class="wip-count">{{(repoModel.issues | issuesWithLabel:colCtrl.labelName).length}}</span>
       </h1>
