@@ -43,10 +43,9 @@
       </ul>
       <h3>Label</h3>
       <ul>
-        <!--TODO: Get filter to work?-->
         <li ng-repeat="label in repoModel.labels | nonColumnLabels"
-            ng-click="filterCtrl.setFilter('label', label.name)"
-            ng-class="{active: issueFilters.label == label.name}" >
+            ng-click="filterCtrl.toggleArrayFilter('labels', label.name)"
+            ng-class="{active: issueFilters.labels.indexOf(label.name) >= 0}" >
           <span class="color-preview"
                 style="background-color: #{{label.color}}"></span>
           {{label.name}}
