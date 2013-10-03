@@ -80,7 +80,7 @@
             <div class="dropdown-menu">
                <div class="label-list no-close">
                   <div class="label-item"
-                        ng-repeat="label in repoModel.labels | nonColumnLabels"
+                        ng-repeat="label in repoModel.labels | nonColumnLabels | orderBy:'name'"
                         ng-click="issueCtrl.toggleLabel(label)"
                         ng-class="{
                            enabled: (issueCtrl.issue.tr_label_names | contains:label.name)

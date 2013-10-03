@@ -1,5 +1,17 @@
 angular.module('Trestle.issue')
 
+.filter('assignedUser', function() {
+   return function(issue) {
+      var assignee = issue.assignee,
+          default_url = 'http://www.gravatar.com/avatar/0?d=mm&f=y&s=';
+
+      return {
+         name:       assignee ? assignee.login      : 'no one',
+         avatar_url: assignee ? assignee.avatar_url : default_url
+      };
+   };
+})
+
 .filter('isPullRequest', function() {
    return function(issue) {
       return issue.pull_request && issue.pull_request.html_url;

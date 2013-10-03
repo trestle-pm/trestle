@@ -23,10 +23,8 @@
               ng-model="msFilterVal"
               ng-options="m.value as m.title for m in columnsCtrl.getMilestoneSelectOptions()">
       </select>
-     <a id="new-issue" class=""
-        ng-href="https://github.com/{{repoModel.owner}}/{{repoModel.repo}}/issues/new"
-        target="_blank">New Issue</a>
 
+      <button id="new-issue" tr-new-issue-button >New Issue</button
 
      <!-- CARDS List -->
      <ul class="column-body"

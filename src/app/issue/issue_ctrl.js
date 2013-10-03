@@ -1,19 +1,21 @@
 angular.module('Trestle.issue', [])
 
-.filter('assignedUser', function() {
-   return function(issue) {
-      var assignee = issue.assignee,
-          default_url = 'http://www.gravatar.com/avatar/0?d=mm&f=y&s=';
-
-      return {
-         name:       assignee ? assignee.login      : 'no one',
-         avatar_url: assignee ? assignee.avatar_url : default_url
-      };
+.directive('trIssueCard', function() {
+   return {
+      restrict: 'EA',
+      replace: true,
+      templateUrl: "issue/issue.tpl.html",
+      scope: {
+         // XXX: This should allow access in the template but is not for some reason
+         //      need to figure this out and make better.
+         issue: '=issue'
+      }
    };
 })
 
-
 .controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh, trIssueCache) {
+   $scope.repoModel = trRepoModel;
+
    // init
    _.extend(this, {
       init: function(issue) {
@@ -27,41 +29,6 @@ angular.module('Trestle.issue', [])
          $rootScope.$on('markAllIssuesRead', function(event) {
             me.markAsViewed();
          });
-      },
-
-      isPullRequest: function() {
-         return this.issue.pull_request && this.issue.pull_request.html_url;
-      },
-
-      /** Return status of build.
-      * - "pending", "success", "failure", "error", "unknown"
-      */
-      getBuildStatus: function() {
-         var status = "unknown";
-         if(this.issue.tr_top_build_status) {
-            status = this.issue.tr_top_build_status.state;
-         }
-         return status;
-      },
-
-      /**
-       * Return the build status text for the pull.
-       **/
-      getBuildStatusText: function() {
-         var text   = "",
-             status = this.getBuildStatus();
-
-         if(status === "unknown") {
-            text = "Build not started";
-         } else if(status === "success") {
-            text = "Built successfully";
-         } else if(status === "failure") {
-            text = "Failed: " + this.issue.tr_top_build_status.description;
-         } else {
-            text = this.issue.tr_top_build_status.description;
-         }
-
-         return text;
       },
 
       /** Return true if the given label is enabled on our issue.
@@ -106,11 +73,9 @@ angular.module('Trestle.issue', [])
          modal_scope.$id = "modal:issue_details:" + modal_scope.$id;
 
          modal_scope.issue = this.issue;
-         modal_scope.repoModel = trRepoModel;
 
          var opts = {
             scope        : modal_scope,
-            windowClass  : 'issue-details-modal',
             backdrop     : true,
             keyboard     : true,
             templateUrl  : "issue/issue_details.tpl.html"
@@ -203,19 +168,6 @@ angular.module('Trestle.issue', [])
    });
 
    this.init($scope.$parent.issue);
-})
-
-.directive('trIssueCard', function() {
-   return {
-      restrict: 'EA',
-      replace: true,
-      templateUrl: "issue/issue.tpl.html",
-      scope: {
-         // XXX: This should allow access in the template but is not for some reason
-         //      need to figure this out and make better.
-         issue: '=issue'
-      }
-   };
 })
 
 ;

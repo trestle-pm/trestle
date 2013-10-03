@@ -47,6 +47,7 @@ angular.module('Trestle')
    * the full details.
    */
    this._resolveIssueFields = function(issue) {
+      console.log('resolve', issue);
       // Add a quick list of the issue label names
       issue.tr_label_names = _.map(issue.labels, function(labelObj) {
          return labelObj.name;
@@ -69,11 +70,13 @@ angular.module('Trestle')
             return issue;
          });
       }
+      // endpoint: Create issue
+      else if (operation === 'post' && /^repos\/.+\/.+\/issues$/.exec(what)) {
+         me._resolveIssueFields(response);
+      }
       // endpoint: specific issue
       else if (operation === 'get' && /^repos\/.+\/.+\/issues\/[0-9]+$/.exec(what)) {
-         var issue = response;
-         me._resolveIssueFields(issue);
-         return issue;
+         me._resolveIssueFields(response);
       }
 
       // Add override on pull request handler

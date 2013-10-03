@@ -177,6 +177,7 @@ $backlog-width: 250px;
   border          : 2px dashed transparentize($color-lightest, .5);
   border-radius   : $br-card;
   padding         : 5px;
+  width           : 100%;
   color           : transparentize($color-lightest, .5);
   font-weight     : bold;
 
