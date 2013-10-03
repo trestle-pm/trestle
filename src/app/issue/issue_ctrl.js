@@ -1,6 +1,6 @@
-var mod = angular.module('Trestle.issue', []);
+angular.module('Trestle.issue', [])
 
-mod.filter('assignedUser', function() {
+.filter('assignedUser', function() {
    return function(issue) {
       var assignee = issue.assignee,
           default_url = 'http://www.gravatar.com/avatar/0?d=mm&f=y&s=';
@@ -10,12 +10,11 @@ mod.filter('assignedUser', function() {
          avatar_url: assignee ? assignee.avatar_url : default_url
       };
    };
-});
+})
 
 
-mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh, trIssueCache) {
+.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh, trIssueCache) {
    // init
-
    _.extend(this, {
       init: function(issue) {
          var me = this;
@@ -204,9 +203,9 @@ mod.controller('IssueCtrl', function($scope, $modal, $rootScope, trRepoModel, gh
    });
 
    this.init($scope.$parent.issue);
-});
+})
 
-mod.directive('trIssueCard', function() {
+.directive('trIssueCard', function() {
    return {
       restrict: 'EA',
       replace: true,
@@ -217,4 +216,6 @@ mod.directive('trIssueCard', function() {
          issue: '=issue'
       }
    };
-});
+})
+
+;

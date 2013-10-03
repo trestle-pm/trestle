@@ -323,7 +323,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
   .header {
     position        : relative;
     margin          : 0;
-    padding         : 3px 90px 3px ($avatar-size-details + 5);
+    padding         : 3px 45px 3px ($avatar-size-details + 5);
     background      : lighten($color-grey,30);
     border-bottom   : 1px solid lighten($color-grey,20);
     border-radius   : $br-card $br-card 0 0;
