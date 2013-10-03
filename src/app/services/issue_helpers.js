@@ -253,7 +253,8 @@ angular.module('Trestle')
          milestoneWeight: -issue.number
       };
 
-      var body = issue.body;
+      // It is possible for new issues to have a blank body set to null
+      var body = issue.body || "";
 
       var lines = _.map(body.split('\n'), function(line) {return line.trim();}),
           conf_begin = -1, conf_end = -1;
