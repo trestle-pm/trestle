@@ -101,14 +101,15 @@ angular.module('Trestle')
    * as part of this we are going to calculate voting information.
    */
 
-   function _updateAllCommentsArray(issue) {
+   function _onCommentsUpdated(issue) {
       issue.tr_all_comments = issue.tr_review_comments.concat(issue.tr_comments);
+      _calculateCommentVoting(issue);
    }
 
    function resolveIssueComments(issue) {
       issue.tr_comments = issue.tr_comments || [];
       issue.tr_review_comments = issue.tr_review_comments || [];
-      _updateAllCommentsArray(issue);
+      _onCommentsUpdated(issue);
 
       issue.tr_comment_voting = {
          users: {
@@ -126,8 +127,8 @@ angular.module('Trestle')
          .then(function(commentResults) {
             // Store on the issue
             issue.tr_comments = commentResults;
-            _updateAllCommentsArray(issue);
-            _calculateCommentVoting(issue);
+            _onCommentsUpdated(issue);
+            _calculateTodos(issue);
          }
       );
 
@@ -136,10 +137,42 @@ angular.module('Trestle')
             .then(function(commentResults) {
                // Store on the issue
                issue.tr_review_comments = commentResults;
-               _updateAllCommentsArray(issue);
-               _calculateCommentVoting(issue);
+               _onCommentsUpdated(issue);
             });
       }
+   }
+
+   /**
+    Finds all todos on the issue and creates a count of all and pending todos
+    for an issue.
+    */
+   function _calculateTodos(issue) {
+      // NOTE: We only look at the issue comments (not the review ones)
+      // - convert all comments into doms by passing them to jquery
+      var comments = _.map(_.pluck(issue.tr_comments, 'body_html'), $);
+
+      var total = _.reduce(comments, function(count, comment) {
+         // Find the comments
+         return count + $('.task-list-item-checkbox', comment).length;
+      }, 0);
+
+      var finished = _.reduce(comments, function(count, comment) {
+         // Find the comments
+         return count + $('.task-list-item-checkbox:checked', comment).length;
+      }, 0);
+
+      if (total > 0) {
+         issue.tr_todos = {
+            total:     total,
+            finished:  finished,
+            remaining: total - finished
+         };
+         console.log(issue.tr_todos);
+      }
+      else {
+         issue.tr_todos = null;
+      }
+
    }
 
    /**
