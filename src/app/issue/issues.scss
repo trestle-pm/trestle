@@ -241,6 +241,8 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
     position        : relative;
     white-space     : normal;
     padding         : 3px 6px 1px;
+
+    @include clearfix;
   }
     // Thumbnails of who has commented
     .vote-avatar {
@@ -254,14 +256,15 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       &.no  { border-color: darken($color-danger,5);  }
     }
 
+    .votes {
+      float: left;
+    }
+
     // Number of comments & todos
     .stats {
-      position        : absolute;
-      right           : 3px;
-      bottom          : 5px;
-      padding         : 0 4px;
+      float           : right;
+      padding-top     : 4px;
       color           : $color-grey;
-      font-size       : 1.2em;
 
       &:hover {
         color           : darken($color-grey,35);
