@@ -9,15 +9,15 @@
                   ng-class="{
                      empty: !issueCtrl.issue.assignee
                   }"
-                  title="Assigned to {{issueCtrl.getAssignedUserDetails(30).name}}"
-                  ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
+                  title="Assigned to {{(issueCtrl.issue | assignedUser).name}}"
+                  ng-src="{{(issueCtrl.issue | assignedUser).avatar_url}}"/>
          </a>
          <ul class="dropdown-menu">
             <h4>Assign to:</h4>
             <li class="assignee"
                   ng-repeat="user in repoModel.assignees"
                   ng-click="issueCtrl.assignUser(user)">
-               <img class="avatar" ng-src="{{user.avatar_url}}?s=30"></img>
+               <img class="avatar" ng-src="{{user.avatar_url}}"></img>
                <span class="user_login">
                   {{user.login}}
                </span>
@@ -118,7 +118,7 @@
       <div class="comment"
             ng-repeat="comment in issueCtrl.issue.tr_comments">
          <img class="commenter"
-               ng-src="{{comment.user.avatar_url}}?s=30"/>
+               ng-src="{{comment.user.avatar_url}}"/>
          <h4>
             <em>{{comment.user.login}}</em> commented:
          </h4>

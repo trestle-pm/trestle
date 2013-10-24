@@ -84,7 +84,7 @@
       <div class="commit"
            ng-repeat="commit in convertCtrl.compareResults.commits">
         <img class="avatar"
-             ng-src="{{commit.committer.avatar_url}}?s=30"></img>
+             ng-src="{{commit.committer.avatar_url}}"></img>
         <span class="committer"> {{commit.committer.name}} </span>
         <a class="message" ng-href="{{commit.url}}" class="message">{{commit.commit.message}}</a>
         <a class="hash" ng-href="{{commit.url}}" class="sha">{{commit.sha | limitTo:7}}</a>

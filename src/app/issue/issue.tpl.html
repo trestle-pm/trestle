@@ -25,8 +25,8 @@
             ng-class="{
                empty: !issueCtrl.issue.assignee
             }"
-            title="Assigned to {{issueCtrl.getAssignedUserDetails(30).name}}"
-            ng-src="{{issueCtrl.getAssignedUserDetails(30).avatar_url}}"/>
+            title="Assigned to {{(issueCtrl.issue | assignedUser).name}}"
+            ng-src="{{(issueCtrl.issue | assignedUser).avatar_url}}"/>
    </div>
    <div class="content">
       <span class="milestone"
@@ -52,7 +52,7 @@
          <img class="vote-avatar"
                title="{{login}} {{details.count}}"
                ng-repeat="(login, details) in issueCtrl.issue.tr_comment_voting.users"
-               ng-src="{{details.avatar_url}}?s=30"
+               ng-src="{{details.avatar_url}}"
                ng-class="{
                   yes: details.count > 0,
                   no: details.count < 0

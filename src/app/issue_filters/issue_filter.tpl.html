@@ -34,7 +34,7 @@
             ng-repeat="user in repoModel.assignees | filter:{login: '!'+sessionModel.user.login}"
             ng-click="filterCtrl.setFilter('owner', user.login)"
             ng-class="{active: issueFilters.owner == user.login}" >
-          <img ng-src="{{user.avatar_url}}?s=30" ng-title="{{user.login}}" />
+          <img ng-src="{{user.avatar_url}}" ng-title="{{user.login}}" />
         </li>
       </ul>
       <h3>Milestone</h3>
