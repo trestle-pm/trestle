@@ -61,7 +61,7 @@
       </div>
    </div>
    <div class="branch-info"
-         ng-show="issueCtrl.isPullRequest()">
+         ng-if="issueCtrl.isPullRequest()">
       to <pre>{{issueCtrl.issue.tr_pull_details.base.label}}</pre>
       from <pre>{{issueCtrl.issue.tr_pull_details.tr_head.label}}</pre>
    </div>

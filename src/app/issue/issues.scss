@@ -466,12 +466,6 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       }
     }
 
-  // Details on which branches are being merged
-  // - doesn't show for issue
-  .branch-info {
-     display        : none;
-  }
-
   // Bar with actions you can perform on a pull/issue
   .controls {
     padding         : 5px 10px;
