@@ -1,0 +1,29 @@
+
+.repo-build-status {
+    // Undo browser style so that we can span the entire view
+    margin: 0px;
+
+    li {
+        display: inline-block;
+        float:   left;
+
+        height: 8px;
+
+        background-color: $color-grey;
+
+        &.pending {
+            background-color: $color-primary;
+        }
+
+        &.failure {
+            background-color: $color-danger;
+        }
+
+        &.success {
+            background-color: $color-success;
+        }
+
+    }
+
+    @include clearfix;
+}
