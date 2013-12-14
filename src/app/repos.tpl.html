@@ -3,7 +3,11 @@
      ng-init="reposCtrl.init()">
 
   <div ng-include="'toolbar/toolbar.tpl.html'"></div>
-  <div ui-view="columns" class="columns"></div>
-  <div ui-view="filter"></div>
+
+  <div class="toolbar-clear">
+    <div ui-view="columns" class="columns"></div>
+
+    <div ui-view="filter"></div>
+  </div>
 
 </div>
