@@ -14,16 +14,16 @@ $filter-width: 175px;   // width of the filter panel
 /************* FILTER PANEL ****************/
 // Right drawer that contains all the filters
 #issue-filters-drawer {
-  position        : fixed;
-  top             : $header-height - 1;
+  position        : absolute;
+  top             : 0;
   bottom          : 0;
   right           : 0;
 
   // Styling for the drawer's background
   .drawer {
-    position      : fixed;
+    position      : absolute;
     right         : 0;
-    top           : $header-height - 1;
+    top           : 0;
     bottom        : 0;
     @include box-sizing(border-box);
     @include transition(right $animation-speed ease-in);

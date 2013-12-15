@@ -80,3 +80,9 @@
     }
   }
 }
+
+.toolbar-clear {
+    position: absolute;
+    top:      $header-height - 1;
+    bottom:   0px;
+}

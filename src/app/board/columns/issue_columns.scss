@@ -4,7 +4,7 @@
 
 // ISSUE VARS & MIXINS
 // -------------------------------------------------------
-$backlog-width: 19%;
+$backlog-width: 250px;
 
 // SHARED COMPONENTS
 // -------------------------------------------------------
@@ -17,7 +17,7 @@ $backlog-width: 19%;
 .issue-columns,
 .milestone-columns,
 .column-body {
-  margin          :  0;
+  margin          : 0;
   padding         : 0;
 }
 
@@ -39,7 +39,6 @@ $backlog-width: 19%;
   overflow        : auto;
   height          : 100%;
   padding-top     : 8px;
-  padding-top     : $header-height + 8px;
   @include box-sizing(border-box);
   @include transition(margin $animation-speed ease-in);
 
@@ -103,8 +102,8 @@ $backlog-width: 19%;
 /************* BACKLOG PANEL ****************/
 // Left drawer that contains all the backlog issues
 #backlog-drawer {
-  position         : fixed;
-  top              : $header-height;
+  position         : absolute;
+  top              : 0;
   bottom           : 0;
   left             : 0;
   width            : $backlog-width;
@@ -113,14 +112,14 @@ $backlog-width: 19%;
 
   // Styling for the drawer's background
   .drawer {
-    position      : fixed;
+    overflow-x    : hidden;
+    position      : absolute;
     left          : 0;
-    top           : $header-height;
+    top           : 0;
     bottom        : 0;
     @include box-sizing(border-box);
     @include transition(left $animation-speed ease-in);
     z-index       : 1;
-    width         : $backlog-width;
     background    : desaturate(lighten($color-background, 10),5);
     border-radius : 0 0 0 $br-card;
     box-shadow    : 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -154,7 +153,7 @@ $backlog-width: 19%;
   }
   // Move other columns over
   .issue-columns{
-    margin-left     : $backlog-width + 2%; // leave room for scrollbar
+    margin-left     : $backlog-width; // leave room for scrollbar
   }
 }
 
@@ -162,10 +161,10 @@ $backlog-width: 19%;
 .hide-bl{
   // move backlog offscreen
   #backlog-drawer {
-    width           : 0;
+    width : 0;
 
     .drawer{
-      left            : $backlog-width * -1;
+      left : $backlog-width * -1;
     }
   }
 }
