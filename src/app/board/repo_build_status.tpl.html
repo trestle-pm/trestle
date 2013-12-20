@@ -1,8 +1,10 @@
 <ul class="repo-build-status" ng-controller="RepoBuildStatusCtrl as repoBuildStatusCtrl" >
   <li ng-repeat="(branch, details) in repoBuildStatusCtrl.branches"
-      ng-attr-title="{{branch}}"
+      ng-attr-title="{{branch}}: {{details.description}}"
       ng-class="details.state"
       ng-style="{width: (100.0 / _.keys(repoBuildStatusCtrl.branches).length) + '%'}"
+
+      ng-click="repoBuildStatusCtrl.onShowBuildStatus(details)"
       >
   </li>
 </ul>
