@@ -49,7 +49,7 @@ module.exports = {
       js: [
          'vendor/jquery/jquery.js',
          'vendor/jquery-ui/ui/jquery-ui.js',
-         'vendor/lodash/lodash.js',
+         'vendor/lodash/dist/lodash.js',
          'vendor/dump/angular/angular.js',
          'vendor/angular-ui-sortable/src/sortable.js',
          'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
