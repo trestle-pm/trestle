@@ -1,4 +1,42 @@
 #login-form {
-    input {
+    width:  400px;
+    margin: 0 auto;
+
+    color: rgb(194, 194, 194);
+
+    padding:       10px;
+    border-radius: 30px;
+    border:        12px solid rgb(25, 25, 25);
+    margin-top:    80px;
+
+    background-color: rgba(255, 255, 255, 0.2);
+
+    text-align: center;
+
+    .header {
+        h2 {
+            color: rgb(241, 241, 241);
+        }
+    }
+
+    .form-row {
+        width:  250px;
+        margin: 0 auto;
+    }
+
+    input[type=text], input[type=password] {
+        box-sizing:     border-box;
+        width:          100%;
+        padding-top:    14px;
+        padding-bottom: 14px;
+    }
+
+    .bottom-row {
+        span {
+            float: left;
+        }
+        button {
+            float: right;
+        }
     }
 }

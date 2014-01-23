@@ -1,8 +1,26 @@
-<form id="login-form" ng-controller="LoginCtrl as loginCtrl">
-  <input id="username" placeholder="Username" ng-model="loginCtrl.username"></input>
-  <input id="password" placeholder="Password" ng-model="loginCtrl.password" type="password"></input>
+<div id="login-form" >
+  <div class="header" >
+    <h2>Sign In</h2>
+    <p>Login with your normal GitHub credentials.</p>
+  </div>
 
-  <input type="checkbox" ng-model="loginCtrl.rememberMe"> Remember Me
+  <form ng-controller="LoginCtrl as loginCtrl">
+    <div class="form-row">
+      <input id="username" placeholder="Username" type="text"
+             ng-model="loginCtrl.username"></input>
+    </div>
 
-  <button id="submit" ng-click="loginCtrl.attemptLogin()" >Login</button>
-</form>
+    <div class="form-row" >
+      <input id="password" placeholder="Password"
+             ng-model="loginCtrl.password" type="password"></input>
+    </div>
+
+    <div class="form-row bottom-row clearfix">
+      <span >
+        <input type="checkbox" ng-model="loginCtrl.rememberMe"> Remember Me
+      </span>
+      <button ng-click="loginCtrl.attemptLogin()" class="btn pull-right" >Login</button>
+    </div>
+  </form>
+
+</div>
