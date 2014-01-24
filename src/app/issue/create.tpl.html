@@ -1,0 +1,82 @@
+<div class="issue_detail"
+     ng-controller="NewIssueCtrl as issueCtrl"
+     ng-init="issue = {};">
+
+  <div class="header">
+    <span class="user-selector dropdown">
+      <a class="dropdown-toggle">
+        <img class="avatar"
+             ng-class="{
+                       empty: !issue.assignee
+                       }"
+             title="Assigned to {{(issue | assignedUser).name}}"
+             ng-src="{{(issue | assignedUser).avatar_url}}"/>
+      </a>
+      <ul class="dropdown-menu">
+        <h4>Assign to:</h4>
+        <li class="assignee"
+            ng-repeat="user in repoModel.assignees"
+            ng-click="issue.assignee = user">
+          <img class="avatar" ng-src="{{user.avatar_url}}"></img>
+          <span class="user_login">
+            {{user.login}}
+          </span>
+        </li>
+      </ul>
+    </span>
+
+    <input ng-model="issue.title" class="title"
+           type="text" placeholder="Issue Title" ></input>
+
+    <i class="close icon-remove" ng-click="$close()"></i>
+  </div>
+
+  <div class="controls">
+    <select class="milestone"
+            ng-model="issue.milestone"
+            ng-options="m.number as m.title for m in repoModel.milestones" >
+      <option value="">No Milestone</option>
+
+    </select><!--Keep collapsed to prevent spacing bug--><div class="label-bar">
+      <div class="label-editor dropdown">
+        <button class="btn dropdown-toggle-no-close">
+          Labels&nbsp;<span class="caret"></span>
+        </button>
+        <div class="dropdown-menu">
+          <div class="label-list no-close">
+            <div class="label-item"
+                 ng-repeat="label in repoModel.labels | nonColumnLabels | orderBy:'name'"
+                 ng-class="{
+                           enabled: (issue.labels | contains:label)
+                           }"
+                 ng-click="issueCtrl.toggleLabel(issue, label)" >
+              <span class="color-preview"
+                    style="background-color: #{{label.color}}">
+              </span>
+              {{label.name}}
+            </div>
+          </div>
+        </div>
+      </div><!--Keep collapsed to prevent spacing bug--><div class="labels">
+        <span class="label"
+              style="background-color: #{{label.color}}"
+              ng-repeat="label in issue.labels | nonColumnLabels | orderBy:'name'">
+          {{label.name}}
+        </span>&nbsp;
+      </div>
+    </div>
+  </div>
+
+  <textarea ng-model="issue.description"
+            class="description"
+            placeholder="Issue Description" ></textarea>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-success"
+            ng-disabled="!issue.title"
+            ng-click="issueCtrl.onCreate(issue)" >
+      Create Issue
+    </button>
+  </div>
+
+</div>

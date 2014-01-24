@@ -323,7 +323,7 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
   .header {
     position        : relative;
     margin          : 0;
-    padding         : 3px 90px 3px ($avatar-size-details + 5);
+    padding         : 3px 45px 3px ($avatar-size-details + 5);
     background      : lighten($color-grey,30);
     border-bottom   : 1px solid lighten($color-grey,20);
     border-radius   : $br-card $br-card 0 0;
@@ -333,15 +333,20 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
 
     // Name of the issue or pull
     .title {
-      white-space     : normal;
-      line-height     : 1.3em;
+      white-space : normal;
+      line-height : 1.3em;
+    }
+
+    input.title {
+      width : 100%;
+      margin-bottom: 0;
     }
 
 }
 
 /************* DETAILS ****************/
 // Popup window with all the issue/pull details
-.modal.issue-details-modal {
+.modal .issue_detail {
   // .header
     // Link to issue or pull
     .issue-number {
@@ -596,6 +601,11 @@ $avatar-size-comment : 40px;  // size of avatar on issue/pull comments
       color           : $color-grey;
       font-size       : 1em;
     }
+  }
+
+  textarea.description {
+    width: 100%;
+    box-sizing: border-box;
   }
 
   // Comments on an issue/pull

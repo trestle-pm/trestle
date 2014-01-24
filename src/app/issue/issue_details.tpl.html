@@ -1,7 +1,7 @@
 <div class="issue_detail"
       ng-controller="IssueCtrl as issueCtrl"
       ng-init="issueCtrl.init(issue)"
-      ng-class="{pull: issueCtrl.isPullRequest()}">
+      ng-class="{pull: (issueCtrl.issue | isPullRequest)}">
    <div class="header">
       <span class="user-selector dropdown">
          <a class="dropdown-toggle">
@@ -31,18 +31,18 @@
             target="_blank"
             href="{{issueCtrl.issue.html_url}}"
             title="Open on GitHub">
-         <i class="icon-code-fork" ng-if="issueCtrl.isPullRequest()"></i>
+         <i class="icon-code-fork" ng-if="issueCtrl.issue | isPullRequest"></i>
          {{issueCtrl.issue.number}}
       </a>
       <i class="close icon-remove" ng-click="$close()"></i>
    </div>
    <div class="status-header">
-      <div ng-if="issueCtrl.isPullRequest()"
+      <div ng-if="issueCtrl.issue | isPullRequest"
             class="build-status"
-            ng-class="issueCtrl.getBuildStatus()">
+            ng-class="issueCtrl.issue | buildStatus">
          <a target="_blank"
                href="{{issueCtrl.issue.tr_top_build_status.target_url}}" >
-            {{issueCtrl.getBuildStatusText()}}
+            {{issueCtrl.issue | buildStatusText}}
          </a>
       </div>
       <div class="comment-summary">
@@ -61,7 +61,7 @@
       </div>
    </div>
    <div class="branch-info"
-         ng-if="issueCtrl.isPullRequest()">
+         ng-show="issueCtrl.issue | isPullRequest">
       to <pre>{{issueCtrl.issue.tr_pull_details.base.label}}</pre>
       from <pre>{{issueCtrl.issue.tr_pull_details.tr_head.label}}</pre>
    </div>
@@ -80,10 +80,10 @@
             <div class="dropdown-menu">
                <div class="label-list no-close">
                   <div class="label-item"
-                        ng-repeat="label in repoModel.labels | nonColumnLabels"
+                        ng-repeat="label in repoModel.labels | nonColumnLabels | orderBy:'name'"
                         ng-click="issueCtrl.toggleLabel(label)"
                         ng-class="{
-                           enabled: issueCtrl.isLabelEnabled(label.name)
+                           enabled: (issueCtrl.issue.tr_label_names | contains:label.name)
                         }">
                      <span class="color-preview"
                            style="background-color: #{{label.color}}">
@@ -100,7 +100,7 @@
             </span>&nbsp;
          </div>
       </div><!--Keep collapsed to prevent spacing bug--><button class="convert-pull btn btn-success"
-            ng-if="!issueCtrl.isPullRequest()"
+            ng-if="!(issueCtrl.issue | isPullRequest)"
             ng-click="issueCtrl.convertToPull()">
          Convert to Pull
       </button>
